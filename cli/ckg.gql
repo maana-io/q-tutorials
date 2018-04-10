@@ -1,0 +1,9 @@
+mutation addServiceSource {
+  addServiceSource(
+    input: {
+      name: "CLISample"
+      schema:  "type Person {\n  id: ID!\n  name: String!\n  dob: String\n  employer: Employer\n}\ntype Employer {\n  id: ID!\n  name: String!\n  ceo: Person}"
+    }
+  )
+}
+

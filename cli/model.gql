@@ -1,0 +1,12 @@
+type Person {
+  id: ID!
+  name: String!
+  dob: Date
+  employer: Employer
+}
+
+type Employer {
+  id: ID!
+  name: String!
+  ceo: Person
+}

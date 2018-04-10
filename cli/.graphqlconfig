@@ -1,0 +1,8 @@
+{
+  "schemaPath": "schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "ckg": "http://cs12-0.dev.corp.maana.io:8003/graphql"
+    }
+  }
+}
