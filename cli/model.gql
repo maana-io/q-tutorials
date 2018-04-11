@@ -1,7 +1,7 @@
 type Person {
   id: ID!
   name: String!
-  dob: Date
+  dob: String
   employer: Employer
 }
 
