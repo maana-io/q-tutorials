@@ -1,27 +1,40 @@
+fragment personDetail on Person {
+  id
+  name
+  dob
+  employer {
+    ...employerDetail
+  }
+}
+
+fragment employerDetail on Employer {
+  id
+  name
+  ceo {
+    name
+  }
+}
+
 query person($id: ID!) {
   person(id: $id) {
-    name
-    dob
-    employer {
-      name
-      ceo {
-        name
-        dob
-      }
-    }
+    ...personDetail
   }
 }
 
 query allPersons {
   allPersons {
-    name
-    dob
-    employer {
-      name
-      ceo {
-        name
-        dob
-      }
-    }
+    ...personDetail
+  }
+}
+
+query employer($id: ID!) {
+  employer(id: $id) {
+    ...employerDetail
+  }
+}
+
+query allEmployers {
+  allEmployers {
+    ...employerDetail
   }
 }
