@@ -1,0 +1,27 @@
+query person($id: ID!) {
+  person(id: $id) {
+    name
+    dob
+    employer {
+      name
+      ceo {
+        name
+        dob
+      }
+    }
+  }
+}
+
+query allPersons {
+  allPersons {
+    name
+    dob
+    employer {
+      name
+      ceo {
+        name
+        dob
+      }
+    }
+  }
+}
