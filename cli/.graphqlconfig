@@ -1,1 +1,19 @@
-{"schemaPath":"schema.graphql","extensions":{"endpoints":{"ckg":"http://cs12-0.dev.corp.maana.io:8003/graphql","basic":"http://cs12-0.dev.corp.maana.io:8003/service/126303a1-c3a4-4225-b4a6-445b625d290d/graphql"},"load":{}}}
+{
+  "schemaPath": "schema.graphql",
+  "projects": {
+    "ckg": {},
+    "basic": {
+      "schemaPath": "basic/schema.graphql"
+    }
+  },
+  "extensions": {
+    "endpoints": {
+      "ckg": "http://cs12-0.dev.corp.maana.io:8003/graphql",
+      "basic":
+        "http://cs12-0.dev.corp.maana.io:8003/service/51fe1157-e744-4e81-8f88-b4697cbd1e79/graphql"
+    },
+    "maana": {
+      "test": "12"
+    }
+  }
+}
