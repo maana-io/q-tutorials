@@ -1,7 +1,8 @@
 {
-  "schemaPath": "schema.graphql",
   "projects": {
-    "ckg": {},
+    "ckg": {
+      "schemaPath": "schema.graphql"
+    },
     "basic": {
       "schemaPath": "basic/schema.graphql"
     }
