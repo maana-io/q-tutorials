@@ -1,4 +1,4 @@
-# h4-tutorials
+# Q Tutorials
 A collection of tutorial projects and datasets for learning how to use the Maana Knowledge Platform
 
 ## Git Large File Storage (LFS)
