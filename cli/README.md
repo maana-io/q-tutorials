@@ -20,10 +20,10 @@ The tutorial repo you cloned above includes a sample .graphqlconfig. It might be
 
 The config consists of:
 
-- **projects** : these are equivalent to Maana &quot;service name&quot; and tell the CLI where to find the schema for the endpoint
-- **endpoints** : these are the &quot;service endpoint URLs&quot;
+- **projects** : these are equivalent to Maana "service name" and tell the CLI where to find the schema for the endpoint
+- **endpoints** : these are the "service endpoint URLs"
 
-For consistency and simplicity, we recommend you use the same name for the **Maana service** , the **project** , and the **endpoint** (e.g., &quot;ckg&quot;, &quot;basic&quot;, &quot;projectX&quot;).
+For consistency and simplicity, we recommend you use the same name for the **Maana service** , the **project** , and the **endpoint** (e.g., "ckg", "basic", "projectX").
 
 To create a configuration from scratch, create a CKG project and GraphQL endpoint, as in:
 
@@ -41,12 +41,12 @@ About to write to /home/dthompson/src/maana/scratch/.graphqlconfig:
 {
   "projects": {
   "ckg": {
-      &quot;schemaPath&quot;: &quot;schema.graphql&quot;
+      "schemaPath": "schema.graphql"
     }
   },
-  &quot;extensions&quot;: {
-    &quot;endpoints&quot;: {
-      &quot;ckg&quot;: &quot;http://cs12-0.dev.corp.maana.io:8003/graphql&quot;
+  "extensions": {
+    "endpoints": {
+      "ckg": "http://cs12-0.dev.corp.maana.io:8003/graphql"
     }
   }
 }
@@ -84,8 +84,8 @@ Execute the **addServiceSource.sh** script, which takes the **service ** name an
 Loading model: basic/model.gql...
 Creating service: Basic...
 {
-  &quot;data&quot;: {
-    &quot;addServiceSource&quot;: &quot;5726439d-d879-46a8-9928-1a87c6135663&quot;
+  "data": {
+    "addServiceSource": "5726439d-d879-46a8-9928-1a87c6135663"
   }
 }
 ```
@@ -95,12 +95,12 @@ Take note of the generated service id, since we&#39;l add it as a new GraphQL **
 First, create a new **project** :
 
 ```diff
-&quot;projects&quot;: {
-    &quot;ckg&quot;: {
-      &quot;schemaPath&quot;: &quot;schema.graphql&quot;
+"projects": {
+    "ckg": {
+      "schemaPath": "schema.graphql"
 +++    },
-+++    &quot;basic&quot;: {
-+++      &quot;schemaPath&quot;: &quot;basic/schema.graphql&quot;
++++    "basic": {
++++      "schemaPath": "basic/schema.graphql"
     }
 ```
 
@@ -128,31 +128,31 @@ Create instances from common data formats, such as CSV and JSON that conform to 
 
 ### person.csv
 ```baash
-&quot;id&quot;,&quot;name&quot;,&quot;dob&quot;,&quot;employer&quot;
-&quot;P00&quot;,&quot;Han Solo&quot;,&quot;1942-07-13&quot;,&quot;E00&quot;
-&quot;P01&quot;,&quot;George Lucas&quot;,&quot;1944-05-14&quot;,&quot;E00&quot;
+"id","name","dob","employer"
+"P00","Han Solo","1942-07-13","E00"
+"P01","George Lucas","1944-05-14","E00"
 ```
 
 ### employer.csv
 ```baash
-&quot;id&quot;,&quot;name&quot;,&quot;ceo&quot;
-&quot;E00&quot;,&quot;Lucasfilm Ltd.&quot;,&quot;P01&quot;
+"id","name","ceo"
+"E00","Lucasfilm Ltd.","P01"
 ```
 
 ### person.json
 ```json
 [
   {
-    &quot;id&quot;: &quot;P00&quot;,
-    &quot;name&quot;: &quot;Han Solo&quot;,
-    &quot;dob&quot;: &quot;1942-07-13&quot;,
-    &quot;employer&quot;: &quot;E00&quot;
+    "id": "P00",
+    "name": "Han Solo",
+    "dob": "1942-07-13",
+    "employer": "E00"
   },
   {
-    &quot;id&quot;: &quot;P01&quot;,
-    &quot;name&quot;: &quot;George Lucas&quot;,
-    &quot;dob&quot;: &quot;1944-05-14&quot;,
-    &quot;employer&quot;: &quot;E00&quot;
+    "id": "P01",
+    "name": "George Lucas",
+    "dob": "1944-05-14",
+    "employer": "E00"
   }
 ]
 ```
@@ -161,9 +161,9 @@ Create instances from common data formats, such as CSV and JSON that conform to 
 ```json
 [
   {
-    &quot;id&quot;: &quot;E00&quot;,
-    &quot;name&quot;: &quot;Lucasfilm Ltd.&quot;,
-    &quot;ceo&quot;: &quot;P01&quot;
+    "id": "E00",
+    "name": "Lucasfilm Ltd.",
+    "ceo": "P01"
   }
 ]
 ```
@@ -226,7 +226,7 @@ These queries can be invoked from the command line, such as:
 
 ```bash
 graphql query basic/basicOps.gql -p basic -e basic -o allEmployers
-graphql query basic/basicOps.gql -p basic -e basic -o person --variables &quot;{\&quot;id\&quot;:\&quot;P01\&quot;}&quot;
+graphql query basic/basicOps.gql -p basic -e basic -o person --variables "{\"id\":\"P01\"}"
 ```
 
 ## Issuing a Kind Query
