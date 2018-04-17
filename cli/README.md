@@ -221,6 +221,7 @@ query allEmployers {
     ...employerDetail
   }
 }
+```
 
 These queries can be invoked from the command line, such as:
 
@@ -230,5 +231,4 @@ graphql query basic/basicOps.gql -p basic -e basic -o person --variables "{\"id\
 ```
 
 ## Issuing a Kind Query
-
 TODO
