@@ -1,7 +1,6 @@
 from BaseQuery import BaseQueryClass
 from jsonpath_rw import parse
 from geopy.distance import geodesic
-import json
 
 
 class GetNearbyWellsForLocation(BaseQueryClass):
@@ -12,15 +11,17 @@ class GetNearbyWellsForLocation(BaseQueryClass):
                     {
                         allWells{
                             id
-                            lat
-                            long
+                            location {
+                                lat
+                                long
+                            }
                         }
                     }
                     """
         self.well_expr = parse('data.allWells[*]')
         self.id_expr = parse('id')
-        self.lat_expr = parse('lat')
-        self.lon_expr = parse('long')
+        self.lat_expr = parse('location.lat')
+        self.lon_expr = parse('location.long')
         self.drilling_location = drilling_location
         self.number_of_wells = num
 
@@ -36,18 +37,20 @@ class GetNearbyWellsForLocation(BaseQueryClass):
 
     def process_results(self, result):
         loc_dict = dict()
+
         for match in self.well_expr.find(result):
             inst_id = self.id_expr.find(match.value)
             lat = self.lat_expr.find(match.value)
             lon = self.lon_expr.find(match.value)
-            temp_dict = {'lat': lat[0].value, 'lon': lon[0].value}
+
+            temp_dict = {'lat': float(lat[0].value), 'lon': float(lon[0].value)}
             loc_dict[inst_id[0].value] = temp_dict
 
         return loc_dict
 
     def parse_drilling_location(self):
-        ref_lat = self.lat_expr.find(self.drilling_location)
-        ref_lon = self.lon_expr.find(self.drilling_location)
+        ref_lat = float(self.drilling_location[0])
+        ref_lon = float(self.drilling_location[1])
         return [ref_lat, ref_lon]
 
     def filter_results(self, loc_dict, ref_loc, number):
@@ -85,20 +88,20 @@ class GetNearbyWellsForLocation(BaseQueryClass):
 
         for k,v in well_dict.items():
             count = count + 1
-            result_line = '{"id":' + k + ', "dist":' + str(v) + '}'
+            result_line = '{"id": "'+ k + '", "dist": "' + str(v) + '"}'
             json_result = json_result + result_line
             if count < item_count:
                 json_result = json_result + ','
 
-        json_result = json_result + "]}}"
+        json_result = json_result + ']}}'
 
         return json_result
 
 
 def main():
-    lq = GetNearbyWellsForLocation(drilling_location="{lat: 29.511, lon: -93.275}", num=2)
+    lq = GetNearbyWellsForLocation(drilling_location=(29.511,-93.275), num=2)
 #    print('In main, result to return is\n')
-#    print(lq.get_nearby_wells())
+    print(lq.get_nearby_wells())
     return lq.get_nearby_wells()
 
 

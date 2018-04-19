@@ -5,7 +5,7 @@ class BaseQueryClass:
     url = ""
 
     def __init__(self):
-        self.url = 'http://138.91.199.6:8003/workspace/42376604-0bf6-4866-9348-506ed3f6b6a5/graphql'
+        self.url = 'http://138.91.199.6:8003/service/536b826a-2bf3-4262-90d0-ac57dabfc40d/graphql'
         self.query = ""
 
     def run_query(self, query):
