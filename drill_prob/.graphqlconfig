@@ -3,15 +3,15 @@
     "ckg": {
       "schemaPath": "ckg.graphql"
     },
-    "basic": {
-      "schemaPath": "basic/basic.graphql"
+    "dp": {
+      "schemaPath": "data/dp.graphql"
     }
   },
   "extensions": {
     "endpoints": {
       "ckg": "http://138.91.199.6:8003/graphql",
-      "basic":
-        "http://138.91.199.6:8003/service/33ff60a5-ddc8-475a-a964-ae278f63db6c/graphql"
+      "dp":
+        "http://138.91.199.6:8003/service/19b1328f-e0a8-4a99-898e-8a7731f98d89/graphql"
     }
   }
 }

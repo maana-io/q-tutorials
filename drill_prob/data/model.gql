@@ -1,0 +1,36 @@
+type Well {
+  id: ID!
+  well_name: String!
+  location: Location!
+}
+
+type DrillingReport {
+  id: ID!
+  well: Well!
+  date: String!
+  comment: String!
+  drillingProblem: DrillingProblem
+}
+
+type Location {
+  id: ID!
+  lat: String!
+  long: String!
+}
+
+type DrillingProblem {
+  id: ID!
+  problemType: String!
+}
+
+type ExpectedDrillingProblem {
+  id: ID!
+  probability: String!
+  drillingProblem: DrillingProblem!
+}
+
+type NearbyWell {
+  id: ID!
+  well: Well!
+  distance: String!
+}
