@@ -29,6 +29,18 @@ class GetDrillingReportsForWells(BaseQueryClass):
         self.well_json = well_json
 
     def get_drilling_reports(self):
+
+        """
+        Gets the drilling reports, extracts relevant info, narrows to nearby wells.
+
+        The set of nearby wells is part of the initialization of the class.
+        This set is processed to a data structure for later use.
+        The CKG is queried for all drilling reports, and that information is merged with the
+        nearby well data to restrict to that set of wells.
+
+        :return: Dictionaries {well_id, distance} and {well_id, {problems}}
+        """
+
         well_dist_dict, well_probs_dict = self.process_nearby_wells()
 
         result = super().run_query(self.query)
@@ -38,6 +50,12 @@ class GetDrillingReportsForWells(BaseQueryClass):
         return well_dist_dict, well_probs_dict
 
     def process_nearby_wells(self):
+
+        """
+        Parses the nearby wells JSON to a data structure and populates the dictionaries
+
+        :return: Dictionaries {well_id, distance} and {well_id, {problems}} (second one is empty)
+        """
         well_dist_dict = dict()
         well_probs_dict = dict()
         well_expr = parse("data.nearbyWells[*]")
@@ -53,6 +71,18 @@ class GetDrillingReportsForWells(BaseQueryClass):
         return well_dist_dict, well_probs_dict
 
     def process_report_information(self, result, wdd, wpd):
+
+        """
+        Process the reports and populates the well dictionaries.
+
+        Using only those reports associated with a nearby well, extracts problems
+        Populates the well_probs_dict with these problems and counts of occurrences
+
+        :param result: The reports returned by the query allDrillingReports
+        :param wdd: Dictionary {well_id, distance}
+        :param wpd: Empty dictionary {well_id, {}}
+        :return: None - dictionaries are passed by reference
+        """
         for match in self.report_expr.find(result):  #For each report
             wid = self.well_id_expr.find(match.value)   #Get the well id
             well_id = str(wid[0].value)
@@ -86,6 +116,17 @@ class GetExpectedProblemsForLocation:
         self.max_problem_distance = max_dist
 
     def get_expected_problems(self):
+
+        """
+        Aggregates the sets of problems for the nearby wells and calculates probabilities for the location.
+
+        For each nearby well, the problems are rolled up by type and discounted by distance.
+        For each problem type, the weighted counts are average to give a probability of occurrence at the
+        designated drilling location.
+
+        :return: JSON representation of the ExpectedDrillingProblems
+        """
+
         exp_problem_dict = dict()   #problem, prob
         nearby_well_count = 0
 
@@ -117,6 +158,14 @@ class GetExpectedProblemsForLocation:
         return json_result
 
     def format_results_as_json(self, epd):
+
+        """
+        Provide a JSON representation of the expected drilling problems
+
+        :param epd: expected problems in {problem_id, probability} form
+        :return: JSON string of that information for use in graphql
+        """
+
         json_result = '{"data": {"expectedDrillingProblems": ['
         count = 0
         item_count = len(epd)
