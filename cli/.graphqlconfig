@@ -1,17 +1,12 @@
 {
   "projects": {
     "ckg": {
-      "schemaPath": "ckg.graphql"
-    },
-    "basic": {
-      "schemaPath": "basic/basic.graphql"
-    }
-  },
-  "extensions": {
-    "endpoints": {
-      "ckg": "http://138.91.199.6:8003/graphql",
-      "basic":
-        "http://138.91.199.6:8003/service/33ff60a5-ddc8-475a-a964-ae278f63db6c/graphql"
+      "schemaPath": "schema.graphql",
+      "extensions": {
+        "endpoints": {
+          "default": "http://138.91.199.6:8003/graphql"
+        }
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
-# source: http://cs12-0.dev.corp.maana.io:8003/graphql
-# timestamp: Sat Apr 21 2018 12:50:48 GMT-0700 (PDT)
+# source: http://138.91.199.6:8003/graphql
+# timestamp: Sat Apr 21 2018 16:24:41 GMT-0700 (PDT)
 
 input AddApplicationInput {
   id: ID!
