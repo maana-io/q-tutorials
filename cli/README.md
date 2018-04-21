@@ -31,25 +31,27 @@ To create a configuration from scratch, create a CKG project and GraphQL endpoin
 graphql init
 ? Enter project name (Enter to skip): ckg
 ? Local schema file path: schema.graphql
-? Endpoint URL (Enter to skip): http://cs12-0.dev.corp.maana.io:8003/graphql
-? Name of this endpoint, for e.g. default, dev, prod: ckg
+? Endpoint URL (Enter to skip): http://138.91.199.6:8003/graphql
+? Name of this endpoint, for e.g. default, dev, prod: (default)
 ? Subscription URL (Enter to skip):
 ? Do you want to add other endpoints? No
 ? What format do you want to save your config in? JSON
 
 About to write to /home/dthompson/src/maana/scratch/.graphqlconfig:
+
 {
   "projects": {
-  "ckg": {
-      "schemaPath": "schema.graphql"
-    }
-  },
-  "extensions": {
-    "endpoints": {
-      "ckg": "http://cs12-0.dev.corp.maana.io:8003/graphql"
+    "ckg": {
+      "schemaPath": "schema.graphql",
+      "extensions": {
+        "endpoints": {
+          "default": "http://138.91.199.6:8003/graphql"
+        }
+      }
     }
   }
 }
+
 ? Is this ok? Yes
 ```
 
@@ -92,24 +94,12 @@ Creating service: Basic...
 
 Take note of the generated service id, since we&#39;l add it as a new GraphQL **endpoint** to your CLI configuration.
 
-First, create a new **project** :
-
-```diff
-"projects": {
-    "ckg": {
-      "schemaPath": "schema.graphql"
-+++    },
-+++    "basic": {
-+++      "schemaPath": "basic/schema.graphql"
-    }
-```
-
-Next, create a new  **endpoint:**
-
-```baash
-graphql add-endpoint
-? Endpoint URL (Enter to skip): http://cs12-0.dev.corp.maana.io:8003/5726439d-d879-46a8-9928-1a87c6135663/graphql
-? Name of this endpoint, for e.g. default, dev, prod: basic
+```bash
+graphql add-project
+? Enter project name for new project: basic
+? Local schema file path: basic/schema.graphql
+? Endpoint URL (Enter to skip): http://138.91.199.6:8003/service/5726439d-d879-46a8-9928-1a87c6135663/graphql
+? Name of this endpoint, for e.g. default, dev, prod: (default)
 ? Subscription URL (Enter to skip):
 ? Do you want to add other endpoints? No
 
@@ -120,7 +110,7 @@ Adding the following endpoints to your config:  basic
 And retrieve the schema from the **service** , which will populate the schemaPath (i.e., basic/schema.graphql) with the generated schema for your service:
 
 ```bash
-graphql get-schema -p basic -e basic
+graphql get-schema -p basic
 ```
 
 ## Creating Instance Data
@@ -172,8 +162,8 @@ Create instances from common data formats, such as CSV and JSON that conform to 
 The above CSV and JSON data can be loaded by using the &#39;load&#39; GraphQL CLI command, passing the mutation to call, the data file, field mappings (if any). delimeters, etc.
 
 ```bash
-graphql mload -p basic -e basic -m addPersons -j basic/person.json
-graphql mload -p basic -e basic -m addEmployers -j basic/employer.json
+graphql mload -p basic -m addPersons -j basic/person.json
+graphql mload -p basic -m addEmployers -j basic/employer.json
 ```
 
 ## Using Default Queries
@@ -226,8 +216,8 @@ query allEmployers {
 These queries can be invoked from the command line, such as:
 
 ```bash
-graphql query basic/basicOps.gql -p basic -e basic -o allEmployers
-graphql query basic/basicOps.gql -p basic -e basic -o person --variables "{\"id\":\"P01\"}"
+graphql query basic/basicOps.gql -p basic -o allEmployers
+graphql query basic/basicOps.gql -p basic -o person --variables "{\"id\":\"P01\"}"
 ```
 
 ## Issuing a Kind Query
