@@ -21,4 +21,4 @@ variables="{\"input\":{\"name\":\"$1\",\"schema\":\"$model\"}}"
 # Perform the GraphQL query "addServiceSource" on the CKG service with
 # the input we constructed above
 echo "Creating service: $1..."
-graphql query ckgOps.gql -o addServiceSource --variables "$variables" -p ckg -e ckg
+graphql query ckgOps.gql -o addServiceSource --variables "$variables" -p ckg
