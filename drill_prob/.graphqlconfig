@@ -1,17 +1,20 @@
 {
   "projects": {
     "ckg": {
-      "schemaPath": "ckg.graphql"
+      "schemaPath": "ckg.graphql",
+      "extensions": {
+        "endpoints": {
+          "default": "http://qtraining01.knowledge.maana.io:8003/graphql"
+        }
+      }
     },
     "dp": {
-      "schemaPath": "data/dp.graphql"
-    }
-  },
-  "extensions": {
-    "endpoints": {
-      "ckg": "http://138.91.199.6:8003/graphql",
-      "dp":
-        "http://138.91.199.6:8003/service/19b1328f-e0a8-4a99-898e-8a7731f98d89/graphql"
+      "schemaPath": "data/dp.graphql",
+      "extensions": {
+        "endpoints": {
+          "default": "http://qtraining01.knowledge.maana.io:8003/service/051850b1-f088-46b1-8e35-679f5d2ac84f/graphql"
+        }
+      }
     }
   }
 }

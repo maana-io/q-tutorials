@@ -14,7 +14,6 @@ type DrillingReport {
 
 type Location {
   id: ID!
-  name: String
   lat: String!
   long: String!
 }
@@ -27,14 +26,12 @@ type DrillingProblem {
 
 type ExpectedDrillingProblem {
   id: ID!
-  name: String
   probability: String!
   drillingProblem: DrillingProblem!
 }
 
 type NearbyWell {
   id: ID!
-  name: String
   well: Well!
   distance: String!
 }
