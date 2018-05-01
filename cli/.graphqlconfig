@@ -1,10 +1,10 @@
 {
   "projects": {
     "ckg": {
-      "schemaPath": "schema.graphql",
+      "schemaPath": "ckg.graphql",
       "extensions": {
         "endpoints": {
-          "default": "http://138.91.199.6:8003/graphql"
+          "default": "http://qtraining01.knowledge.maana.io:8003/graphql"
         }
       }
     }

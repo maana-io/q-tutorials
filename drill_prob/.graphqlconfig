@@ -9,10 +9,10 @@
       }
     },
     "dp": {
-      "schemaPath": "data/dp.graphql",
+      "schemaPath": "dp.graphql",
       "extensions": {
         "endpoints": {
-          "default": "http://qtraining01.knowledge.maana.io:8003/service/051850b1-f088-46b1-8e35-679f5d2ac84f/graphql"
+          "default": "http://qtraining01.knowledge.maana.io:8003/service/50d759d5-983d-4ea2-9773-20077c9b823e/graphql"
         }
       }
     }
