@@ -81,7 +81,7 @@ Now that we've defined our model, we would like Maana to manage it for us (i.e.,
 Execute the **maddsvc** ("add service") command, which takes the **service name** and the **GraphQL model** definition (i.e., your types, queries, mutations, and subscriptions):
 
 ```bash
-gql maddServiceSource -n Basic -s basic/model.gql
+gql maddsvc -n Basic -s basic/model.gql
 Using endpoint default: {"url":"http://qtraining01.knowledge.maana.io:8003/graphql"}
 Read file: basic/model.gql size: 136
 Sending query:
