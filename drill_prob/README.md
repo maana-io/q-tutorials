@@ -87,7 +87,7 @@ The included `.graphqlconfig` already contains a project, `dp`, that specified t
 ```bash
 gql add-project
 ? Enter project name for new project: dp
-? Local schema file path: basic/dp.graphql
+? Local schema file path: dp.graphql
 ? Endpoint URL (Enter to skip): http://qtraining01.knowledge.maana.io:8003/service/1788c00e-3a29-4843-aa56-44ba374cf682/graphql
 ? Name of this endpoint, for e.g. default, dev, prod: (default)
 ? Subscription URL (Enter to skip):
