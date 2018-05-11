@@ -1,3 +1,5 @@
+scalar Date
+
 type Well {
   id: ID!
   name: String!
@@ -7,15 +9,15 @@ type Well {
 type DrillingReport {
   id: ID!
   well: Well!
-  date: String!
+  date: Date!
   comment: String!
   drillingProblem: DrillingProblem
 }
 
 type Location {
   id: ID!
-  lat: String!
-  long: String!
+  lat: Float!
+  long: Float!
 }
 
 type DrillingProblem {

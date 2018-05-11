@@ -1,5 +1,5 @@
-# source: http://qtraining01.knowledge.maana.io:8003/graphql
-# timestamp: Wed Apr 25 2018 13:18:25 GMT+0100 (BST)
+# source: http://138.91.199.6:8003/graphql
+# timestamp: Fri May 11 2018 15:31:13 GMT-0700 (PDT)
 
 input AddApplicationInput {
   id: ID!
@@ -47,6 +47,19 @@ input AddFieldMappingInput {
 input AddFieldsInput {
   kindId: ID!
   fields: [FieldInput!]!
+}
+
+"""Create a File instance"""
+input AddFileFromUrlInput {
+  id: ID
+
+  """
+  these are all optional, but the resolver(s) must produce a 'name' value, since it is required
+  """
+  name: String
+  url: String!
+  thumbnailUrl: String
+  mimeType: String
 }
 
 """Create a File instance"""
@@ -655,6 +668,7 @@ input FieldMappingInput {
 enum FieldModifiers {
   NONULL
   LIST
+  NOIDX
 }
 
 enum FieldType {
@@ -1198,8 +1212,9 @@ type Mutation {
   updateDocuments(input: [UpdateDocumentInput!]!): [ID]
   deleteDocument(id: ID!): Document
   deleteDocuments(ids: [ID!]!): [Document]
-  addFile(input: AddFileInput): ID
+  addFile(input: AddFileInput!): ID!
   addFiles(input: [AddFileInput!]!): Boolean!
+  addFileFromUrl(input: AddFileFromUrlInput!): ID!
   updateFile(input: UpdateFileInput): ID
   updateFiles(input: [UpdateFileInput!]!): [ID]
   deleteFile(id: ID!): File
