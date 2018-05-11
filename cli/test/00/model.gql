@@ -1,0 +1,16 @@
+scalar Date
+
+type Person {
+  id: ID!
+  name: String!
+  dob: Date!
+  age: Int!
+  employer: Employer
+}
+
+type Employer {
+  id: ID!
+  name: String!
+  forProfit: Boolean!
+  ceo: Person
+}
