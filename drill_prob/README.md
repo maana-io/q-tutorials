@@ -53,7 +53,7 @@ We would like to have Maana completely manage these types, creating the boilerpl
 We can use the GraphQL CLI with the Maana plugin command: `maddsvc` ("add service"):
 
 ```bash
-gql maddsvc -p ckg -n "Drillng Problems" -s model.gql
+gql maddsvc "Drillng Problems" -s model.gql -p ckg
 Using endpoint default: {"url":"http://qtraining01.knowledge.maana.io:8003/graphql"}
 Read file: model.gql size: 483
 Sending query:

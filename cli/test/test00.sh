@@ -1,4 +1,4 @@
-gql mload -p test00 -c 00/employer.csv -m addEmployers
-gql mload -p test00 -j 00/employer.json -m addEmployers
-gql mload -p test00 -c 00/person.csv -m addPersons
-gql mload -p test00 -j 00/person.json -m addPersons
+gql mload 00/employer.csv -p test00
+gql mload 00/employer.json -p test00
+gql mload 00/person.csv -p test00
+gql mload 00/person.json -p test00

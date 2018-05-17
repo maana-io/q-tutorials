@@ -81,7 +81,7 @@ Now that we've defined our model, we would like Maana to manage it for us (i.e.,
 Execute the **maddsvc** ("add service") command, which takes the **service name** and the **GraphQL model** definition (i.e., your types, queries, mutations, and subscriptions):
 
 ```bash
-gql maddsvc -p ckg -n Basic -s basic/model.gql
+gql maddsvc Basic -s basic/model.gql -p ckg
 Using endpoint default: {"url":"http://qtraining01.knowledge.maana.io:8003/graphql"}
 Read file: basic/model.gql size: 136
 Sending query:
@@ -169,8 +169,8 @@ Create instances from common data formats, such as CSV and JSON that conform to 
 The above CSV and JSON data can be loaded by using the &#39;load&#39; GraphQL CLI command, passing the mutation to call, the data file, field mappings (if any). delimeters, etc.
 
 ```bash
-gql mload -p basic -m addPersons -j basic/person.json
-gql mload -p basic -m addEmployers -j basic/employer.json
+gql mload basic/person.json -p basic
+gql mload basic/employer.json -p basic
 ```
 
 ## Using Default Queries
