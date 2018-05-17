@@ -110,10 +110,10 @@ gql get-schema -p dp
 Now that the model has been turned into a service, we can upload instance data to populate ("hydrate") the graph:
 
 ```bash
-gql mload -p dp -c data/DrillingProblem.csv -m addDrillingProblems
-gql mload -p dp -c data/DrillingReport.csv -m addDrillingReports
-gql mload -p dp -c data/Location.csv -m addLocations
-gql mload -p dp -c data/Well.csv -m addWells
+gql mload data/DrillingProblem.csv -p dp
+gql mload data/Location.csv -p dp
+gql mload data/DrillingReport.csv -p dp
+gql mload data/Well.csv -p dp
 ```
 
 For convenience, these steps have been added to a script file: `loadData.sh`
