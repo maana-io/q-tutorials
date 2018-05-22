@@ -1,3 +1,0 @@
-mutation addServiceSource($input: AddServiceSourceInput!) {
-  addServiceSource(input: $input)
-}
