@@ -4,7 +4,12 @@
       "schemaPath": "ckg.graphql",
       "extensions": {
         "endpoints": {
-          "default": "http://qtraining01.knowledge.maana.io:8003/graphql"
+          "default": {
+            "url": "https://latest.knowledge.maana.io:8443/graphql",
+            "headers": {
+              "Authorization": "Bearer ${env:AUTH_TOKEN_ENV}"
+            }
+          }
         }
       }
     },
@@ -12,7 +17,12 @@
       "schemaPath": "dp.graphql",
       "extensions": {
         "endpoints": {
-          "default": "http://qtraining01.knowledge.maana.io:8003/service/50d759d5-983d-4ea2-9773-20077c9b823e/graphql"
+          "default": {
+            "url": "https://latest.knowledge.maana.io:8443/service/50d759d5-983d-4ea2-9773-20077c9b823e/graphql",
+            "headers": {
+              "Authorization": "Bearer ${env:AUTH_TOKEN_ENV}"
+            }
+          }
         }
       }
     }

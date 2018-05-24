@@ -1,5 +1,5 @@
-# source: http://138.91.199.6:8003/graphql
-# timestamp: Fri May 11 2018 15:31:13 GMT-0700 (PDT)
+# source: https://latest.knowledge.maana.io:8443/graphql
+# timestamp: Thu May 24 2018 15:56:11 GMT-0700 (PDT)
 
 input AddApplicationInput {
   id: ID!
@@ -1268,6 +1268,13 @@ enum OnTypeErrorBehavior {
 type Organization {
   id: ID!
   name: String!
+}
+
+type PatternMatchResult {
+  subject: String
+  predicate: String
+  object: String
+  score: Float
 }
 
 type Percentage {

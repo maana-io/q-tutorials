@@ -4,7 +4,12 @@
       "schemaPath": "ckg.graphql",
       "extensions": {
         "endpoints": {
-          "default": "http://qtraining01.knowledge.maana.io:8003/graphql"
+          "default": {
+            "url": "https://latest.knowledge.maana.io:8443/graphql",
+            "headers": {
+              "Authorization": "Bearer ${env:AUTH_TOKEN_ENV}"
+            }
+          }
         }
       }
     }

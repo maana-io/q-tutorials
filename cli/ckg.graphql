@@ -1,10 +1,21 @@
-# source: http://138.91.199.6:8003/graphql
-# timestamp: Sat Apr 21 2018 16:24:41 GMT-0700 (PDT)
+# source: https://latest.knowledge.maana.io:8443/graphql
+# timestamp: Thu May 24 2018 15:49:10 GMT-0700 (PDT)
 
 input AddApplicationInput {
   id: ID!
   name: String!
   thumbnailUrl: String
+}
+
+input AddBotActionInput {
+  name: String
+  serviceName: String!
+  serviceId: ID
+  eventName: String
+  mutationName: String
+  queryName: String
+  inputInstanceRef: InstanceRefInput
+  outputInstanceRef: InstanceRefInput
 }
 
 """Create a Document instance"""
@@ -24,10 +35,11 @@ input AddEntitiesInput {
 }
 
 input AddFieldMappingInput {
-  """You need to give fieldMappingId or fromKind and toKind"""
-  kindMapping: ID
+  """You need to give query binding Id or fromKind and toKind"""
+  queryBinding: ID
   fromKind: ID
   toKind: ID
+  serviceQuery: ID
   serviceId: ID!
   fieldMappings: [FieldMappingInput!]!
 }
@@ -35,6 +47,19 @@ input AddFieldMappingInput {
 input AddFieldsInput {
   kindId: ID!
   fields: [FieldInput!]!
+}
+
+"""Create a File instance"""
+input AddFileFromUrlInput {
+  id: ID
+
+  """
+  these are all optional, but the resolver(s) must produce a 'name' value, since it is required
+  """
+  name: String
+  url: String!
+  thumbnailUrl: String
+  mimeType: String
 }
 
 """Create a File instance"""
@@ -254,9 +279,137 @@ type BooleanKind {
   value: Boolean!
 }
 
+type BotAction {
+  """io.maana.kind"""
+  id: ID!
+  name: String!
+
+  """bookkeeping"""
+  created: DateTime!
+  lastUpdated: DateTime!
+  status: BotActionStatus!
+  progress: Float
+  errors: [JSON!]
+
+  """operation"""
+  service: Service!
+  eventName: String
+  mutation: ServiceMutation
+  query: ServiceQuery
+  input: InstanceRef
+  output: InstanceRef
+}
+
+type BotActionAddedEvent {
+  id: ID!
+  name: String!
+  serviceName: String!
+  serviceId: ID
+  eventName: String
+  mutationName: String
+  queryName: String
+  inputInstanceRef: InstanceRef
+  outputInstanceRef: InstanceRef
+}
+
+"""io.maana.ckg"""
+enum BotActionStatus {
+  PENDING
+  IN_PROGRESS
+  STOPPING
+  STOPPED
+  ERROR
+  COMPLETE
+}
+
+type BotActionUpdatedEvent {
+  id: ID!
+  oldStatus: BotActionStatus!
+  newStatus: BotActionStatus!
+  progress: Float
+  errors: [JSON!]
+}
+
+enum CandidateFeaturizer {
+  SBOW
+  TFIDF
+}
+
+enum CandidateModel {
+  GAUSSIANNB
+  MULTINOMIALNB
+  RANDOMFOREST
+  SGD
+  LINEARSVC
+  LOGISTIC
+}
+
 type Categorical {
   id: ID!
   name: String!
+}
+
+type Class {
+  id: ID!
+  name: String!
+  kind: Kind
+  domains: [Domain]
+}
+
+type Classification {
+  id: ID!
+  classifier: Classifier
+  instanceId: ID
+  classKind: Kind
+}
+
+input ClassificationInput {
+  targetAccuracy: Float!
+
+  """one of the following"""
+  kindName: String
+  kindId: ID
+
+  """one of the following"""
+  textFieldName: String
+  textFieldId: ID
+
+  """one of the following"""
+  classFieldName: String
+  classFieldId: ID
+
+  """one of the following"""
+  domainInstanceName: String
+  domainInstanceId: ID
+  classifierName: String
+
+  """cross validation folds"""
+  crossValidationFold: Int!
+
+  """choosen candidate classification models:"""
+  candidateModels: [CandidateModel!]!
+
+  """choosen candidate featurizer:"""
+  candidateFeaturizers: [CandidateFeaturizer!]!
+
+  """
+  classifier profiling episodes. Reinforcement learning training episodes (>=1)
+  """
+  modelProfilingEpisode: Int!
+
+  """
+  parameter search episodes. After model profiling is done and best classifier is chosen, perform paramter search (>=1)
+  """
+  modelSearchEpisode: Int!
+}
+
+type Classifier {
+  id: ID!
+  name: String!
+  model: Model
+  featurizer: Featurizer
+  domain: Domain
+  accuracy: Float
 }
 
 type Comment {
@@ -363,6 +516,12 @@ type DocumentUpdatedEvent {
   name: String!
 }
 
+type Domain {
+  id: ID!
+  name: String!
+  classes: [Class]
+}
+
 type Email {
   id: ID!
   name: String!
@@ -385,6 +544,13 @@ input EntityInput {
   percent: Float
 }
 
+type ExtractText {
+  offset: Int
+  span: Int
+  value: String!
+  name: String!
+}
+
 type FaceDetectedEvent {
   id: ID!
   name: String!
@@ -402,6 +568,12 @@ type FaceRecognizedEvent {
   personId: ID!
   detectedFaceId: ID!
   recognitionConfidence: Float!
+}
+
+type Featurizer {
+  id: ID!
+  name: String!
+  parameter: JSON
 }
 
 """extend io.maana.kinddb's Field type"""
@@ -496,6 +668,7 @@ input FieldMappingInput {
 enum FieldModifiers {
   NONULL
   LIST
+  NOIDX
 }
 
 enum FieldType {
@@ -689,6 +862,7 @@ type InstanceRef {
   kind: Kind
   instance: Instance
   innerKind: Kind
+  innerServiceQuery: ServiceQuery
 }
 
 input InstanceRefInput {
@@ -709,8 +883,9 @@ type InstanceSet {
 }
 
 type Inventory {
-  serviceKinds: [Kind]
-  workspaceKinds: [Kind]
+  serviceKinds: [Kind!]!
+  workspaceKinds: [Kind!]!
+  serviceQueries: [ServiceQuery!]!
 }
 
 type IpAddress {
@@ -743,8 +918,8 @@ type Kind {
   linksFrom: [Link]
   linksTo: [Link]
   service: Service
-  fromKindMappings: [KindMapping!]
-  toKindMappings: [KindMapping!]
+  fromQueryBindings: [QueryBinding!]
+  toQueryBindings: [QueryBinding!]
 }
 
 type KindAddedEvent {
@@ -759,24 +934,6 @@ input KindInput {
   isPublic: Boolean
   isManaged: Boolean
   schema: [FieldInput]
-}
-
-type KindMapping {
-  id: ID!
-  name: String
-  fromKind: Kind!
-  toKind: Kind!
-  serviceId: ID!
-  fieldMappings: [FieldMapping!]
-}
-
-input KindMappingInput {
-  id: ID
-  name: String
-  fromKind: ID!
-  toKind: ID!
-  serviceId: ID!
-  fieldMappings: [FieldMappingInput!]
 }
 
 """Query tree"""
@@ -926,16 +1083,28 @@ type Longitude {
   name: String!
 }
 
+type Model {
+  id: ID!
+  name: String!
+  parameter: JSON
+}
+
 type Mutation {
   """Services"""
   addService(input: AddServiceInput!): ID!
   updateServiceSchema(input: UpdateServiceSchemaInput): Boolean!
   refreshServiceSchema(id: ID!): Service!
   updateService(input: UpdateServiceInput!): Service!
+  addServiceQuery(input: ServiceQueryInput!): ID!
+  addQueryBinding(input: QueryBindingInput!): ID!
 
   """Applications"""
   addApplication(input: AddApplicationInput!): ID
   updateApplication(input: UpdateApplicationInput!): ID
+  addBotAction(input: AddBotActionInput!): ID
+  runBotAction(id: ID!): BotActionStatus
+  stopBotAction(id: ID!): BotActionStatus
+  updateBotAction(input: UpdateBotActionInput!): BotActionStatus
   addDetectedFaces(input: [DetectedFaceInput!]!): Boolean!
   addRecognizedFaces(input: [RecognizedFaceInput!]!): Boolean!
 
@@ -985,11 +1154,10 @@ type Mutation {
   """Users"""
   setTheme(userId: ID!, theme: Theme!): Boolean!
 
-  """KindMapping"""
-  addKindMapping(input: KindMappingInput!): KindMapping!
-  addFieldMapping(input: AddFieldMappingInput!): KindMapping!
-  updateKindMapping(input: UpdateKindMappingInput!): Boolean!
-  removeKindMapping(id: ID!): Boolean!
+  """QueryBinding"""
+  addFieldMapping(input: AddFieldMappingInput!): QueryBinding!
+  updateQueryBinding(input: UpdateQueryBindingInput!): Boolean!
+  removeQueryBinding(id: ID!): Boolean!
   removeFieldMappings(input: [RemoveFieldMappingInput!]!): Boolean!
   updateFieldMapping(input: UpdateFieldMappingInput!): Boolean!
 
@@ -1044,8 +1212,9 @@ type Mutation {
   updateDocuments(input: [UpdateDocumentInput!]!): [ID]
   deleteDocument(id: ID!): Document
   deleteDocuments(ids: [ID!]!): [Document]
-  addFile(input: AddFileInput): ID
+  addFile(input: AddFileInput!): ID!
   addFiles(input: [AddFileInput!]!): Boolean!
+  addFileFromUrl(input: AddFileFromUrlInput!): ID!
   updateFile(input: UpdateFileInput): ID
   updateFiles(input: [UpdateFileInput!]!): [ID]
   deleteFile(id: ID!): File
@@ -1069,6 +1238,11 @@ type Mutation {
 
   """Entities"""
   addEntities(input: AddEntitiesInput!): Boolean
+  demobootstrap: Boolean!
+  train(input: ClassificationInput!): Classifier
+  classifyKindandLink(input: PredictionInput!): [ID]
+  classifyText(rawtext: String!, classifierId: ID, classifierName: String): Classification
+  classifyKind(input: PredictionInput!): [Classification]
 }
 
 type Number {
@@ -1077,14 +1251,30 @@ type Number {
   value: Float
 }
 
+"""
+Behavior if type doesn't match, for instance: - FLOAT can be converted to
+STRING, but not all STRING can't be converted to FLOAT
+"""
 enum OnTypeErrorBehavior {
+  """Skip instance that produced error"""
   SKIP
+
+  """
+  Query of this kind will produce error even if single instance has produced error
+  """
   STOP
 }
 
 type Organization {
   id: ID!
   name: String!
+}
+
+type PatternMatchResult {
+  subject: String
+  predicate: String
+  object: String
+  score: Float
 }
 
 type Percentage {
@@ -1139,6 +1329,12 @@ type PhoneNumber {
   name: String!
 }
 
+type PhysicalDimension {
+  id: ID!
+  name: String!
+  formula: String!
+}
+
 type PhysicalQuantity {
   id: ID!
   name: String!
@@ -1147,10 +1343,21 @@ type PhysicalQuantity {
   dimension: String!
 }
 
-"""Standard queries (instance and batch)"""
-type Query {
-  info: Info!
+input PredictionInput {
+  """one of the following"""
+  kindName: String
+  kindId: ID
 
+  """one of the following"""
+  textFieldName: String
+  textFieldId: String
+
+  """one of the following"""
+  classifierName: String
+  classifierId: ID
+}
+
+type Query {
   """Services"""
   service(id: ID!): Service
   allServices: [Service]
@@ -1160,6 +1367,9 @@ type Query {
   """Applications"""
   application(id: ID!): Application
   allApplications: [Application]
+  botAction(id: ID!): BotAction
+  botActions(ids: [ID!]!): [BotAction]
+  allBotActions: [BotAction]
 
   """Tenants"""
   tenant(id: ID!): Tenant
@@ -1186,6 +1396,7 @@ type Query {
 
   """Fill in missing pieces of an instance ref"""
   instanceRef(tenantId: ID!, id: ID!): InstanceRef
+  populateInstanceRef(tenantId: ID!, instanceRef: InstanceRefInput!): InstanceRef
   instances(tenantId: ID!, kindId: ID, kindName: String, ids: [ID!]!): InstanceSet
   instancesByRef(tenantId: ID!, instanceRefs: [InstanceRefInput!]!): [Instance]
   allInstances(tenantId: ID!, kindId: ID, kindName: String, fieldIds: [ID!], take: Int): InstanceSet
@@ -1206,8 +1417,10 @@ type Query {
   If relationId is provided, list all links, otherwise list only links of specific relation
   """
   allLinks(tenantId: ID!, relationId: ID): [Link]
-  kindMapping(id: ID!): KindMapping!
-  kindMappings(ids: [ID!]!): [KindMapping!]!
+  info: Info!
+  queryBinding(id: ID!): QueryBinding!
+  queryBindings(ids: [ID!]!): [QueryBinding!]!
+  queryFields(ids: [ID]): [QueryField!]!
 
   """Workspaces"""
   workspace(id: ID!): Workspace
@@ -1251,6 +1464,95 @@ type Query {
   """specialized queries"""
   personsByName(name: String!): [Person]
   personsByDateOfBirth(date: DateTime!): [Person]
+  classifier(id: ID!): Classifier
+  featurizer(id: ID!): Featurizer
+  model(id: ID!): Model
+  class(id: ID!): Class
+  domain(id: ID!): Domain
+  classification(id: ID!): Classification
+}
+
+type QueryBinding {
+  id: ID!
+
+  """
+  Name of the field that will be added to original kind to call implicit
+  conversion. If omitted, field will not be added. Field name must be unique
+  within a fromKind, and must be safe (i.e. proper graphql name). Adding a
+  binding with mapping function will add a function
+  """
+  name: String
+
+  """
+  Optional. If not provided, means input is not a kind of workspace (e.g. scalar)
+  """
+  fromKind: Kind
+
+  """
+  Optional. If not provided, means output is not a kind of workspace/service (e.g. scalar)
+  """
+  toKind: Kind
+
+  """
+  Even though kinds are uniquely identifying services, to avoid constant
+  roundtrips to kinddb i would prefer to have a service (or workspace) ID to filter on
+  """
+  serviceId: ID!
+
+  """
+  Optional. If not provided, means that there's no mappings (e.g. just importing query into workspace)
+  """
+  fieldMappings: [FieldMapping!]
+
+  """
+  Reference to actual 'ServiceQuery' instance (mapping function) - that contains
+  reference to name, arguments etc. If not defined, QueryBinding will be treated
+  only as Kind Mapping
+  """
+  serviceQuery: ServiceQuery
+}
+
+input QueryBindingInput {
+  id: ID!
+  name: String
+
+  """
+  Optional. If not provided, means input is not a kind of workspace (e.g. scalar)
+  """
+  fromKind: ID
+
+  """
+  Optional. If not provided, means output is not a kind of workspace/service (e.g. scalar)
+  """
+  toKind: ID
+  serviceId: ID!
+
+  """
+  Optional. If not provided, means that there's no mappings (e.g. just importing query into workspace)
+  """
+  fieldMappings: [FieldMappingInput!]
+  serviceQuery: ID
+}
+
+type QueryField {
+  """required"""
+  id: ID!
+  name: String!
+  type: FieldType!
+
+  """optional"""
+  description: String
+  modifiers: [FieldModifiers]
+  typeKindId: ID
+}
+
+input QueryFieldInput {
+  id: ID
+  name: String
+  description: String
+  type: FieldType
+  typeKindId: ID
+  modifiers: [FieldModifiers!]
 }
 
 type QueryGraph {
@@ -1386,7 +1688,7 @@ type RelationAddedEvent {
 }
 
 input RemoveFieldMappingInput {
-  kindMappingId: ID!
+  queryBindingId: ID!
   fieldMappingId: ID!
 }
 
@@ -1448,6 +1750,8 @@ type Service {
   queries: [ServiceQuery]
   mutations: [ServiceMutation]
   subscriptions: [ServiceSubscription]
+  workspace: Workspace
+  serviceSource: ServiceSource
 }
 
 type ServiceInstance {
@@ -1472,11 +1776,36 @@ input ServiceMutationInput {
 type ServiceQuery {
   id: ID!
   name: String!
+  description: String
+  serviceId: ID!
+
+  """Input arguments"""
+  fields: [QueryField!]
+
+  """Output"""
+  outputType: FieldType!
+  outputModifiers: [FieldModifiers]
+  outputKindId: ID
+
+  """Inferred"""
+  kind: Kind
+  service: Service
+  queryBindings: [QueryBinding!]
 }
 
 input ServiceQueryInput {
-  id: ID!
+  id: ID
+  serviceId: ID!
   name: String!
+  description: String
+
+  """Input arguments"""
+  fields: [QueryFieldInput!]
+
+  """Output"""
+  outputType: FieldType!
+  outputModifiers: [FieldModifiers]
+  outputKindId: ID
 }
 
 type ServiceSource {
@@ -1508,6 +1837,8 @@ type SocialSecurityNumber {
 """Available subscriptions"""
 type Subscription {
   serviceAdded: ID
+  botActionAdded: BotActionAddedEvent!
+  botActionUpdated: BotActionUpdatedEvent!
   faceDetected: FaceDetectedEvent!
   faceRecognized: FaceRecognizedEvent!
   kindAdded: KindAddedEvent!
@@ -1544,6 +1875,12 @@ type TenantUserRole {
   roles: [Role]
 }
 
+type TextClassifiedEvent {
+  kindId: ID!
+  textClassifiedId: ID!
+  name: String!
+}
+
 type TextElement {
   id: ID!
   name: String!
@@ -1568,6 +1905,9 @@ type TimeKind {
   name: String!
 }
 
+"""
+Currently a convenience - may need to use either a string for encoding function, or interface, or strongly typed hierarchy
+"""
 enum Transformation {
   TO_LOWER
   TO_UPPER
@@ -1580,6 +1920,12 @@ input UpdateApplicationInput {
   id: ID!
   name: String!
   thumbnailUrl: String
+}
+
+input UpdateBotActionInput {
+  status: BotActionStatus!
+  progress: Float
+  error: JSON
 }
 
 """Create a Document instance"""
@@ -1648,15 +1994,6 @@ input UpdateKindInput {
   schema: [FieldInput]
 }
 
-input UpdateKindMappingInput {
-  id: ID!
-  name: String
-  fromKind: ID!
-  toKind: ID!
-  serviceId: ID!
-  fieldMappings: [UpdateFieldMappingInput!]
-}
-
 input UpdateKnowledgeGraphLayoutInput {
   id: ID!
   nodes: [KnowledgeGraphLayoutNodeInput!]
@@ -1698,6 +2035,16 @@ input UpdatePersonInput {
   givenName: String
   familyName: String
   dateOfBirth: DateTime
+}
+
+input UpdateQueryBindingInput {
+  id: ID!
+  name: String
+  fromKind: ID
+  toKind: ID
+  serviceId: ID!
+  fieldMappings: [UpdateFieldMappingInput!]
+  serviceQuery: ID
 }
 
 input UpdateRelationInput {

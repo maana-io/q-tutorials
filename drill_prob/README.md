@@ -20,13 +20,13 @@ We have included a `.graphqlconfig` file preconfigured for this tutorial.
 gql init
 ? Enter project name (Enter to skip): ckg
 ? Local schema file path: ckg.graphql
-? Endpoint URL (Enter to skip): http://qtraining01.knowledge.maana.io:8003/graphql
+? Endpoint URL (Enter to skip): https://qtraining01.knowledge.maana.io:8443/graphql
 ? Name of this endpoint, for e.g. default, dev, prod: (default)
 ? Subscription URL (Enter to skip):
 ? Do you want to add other endpoints? No
 ? What format do you want to save your config in? JSON
 
-About to write to /home/dthompson/src/maana/scratch/.graphqlconfig:
+About to write to /home/me/maana/training/.graphqlconfig:
 
 {
   "projects": {
@@ -34,7 +34,7 @@ About to write to /home/dthompson/src/maana/scratch/.graphqlconfig:
       "schemaPath": "ckg.graphql",
       "extensions": {
         "endpoints": {
-          "default": "http://qtraining01.knowledge.maana.io:8003/graphql"
+          "default": "https://qtraining01.knowledge.maana.io:8443/graphql"
         }
       }
     }
@@ -42,6 +42,51 @@ About to write to /home/dthompson/src/maana/scratch/.graphqlconfig:
 }
 
 ? Is this ok? Yes
+```
+
+Change the endpoint so that it includes the authorization header needed to communicate securely to the Maana endpoint:
+
+```diff
+     "ckg": {
+      "schemaPath": "ckg.graphql",
+       "extensions": {
+         "endpoints": {
+-           "default": "https://qtraining01.knowledge.maana.io:8443/graphql"
++           "default": {
++             "url": "https://qtraining01.knowledge.maana.io:8443/graphql",
++             "headers": {
++               "Authorization": "Bearer ${env:AUTH_TOKEN_ENV}"
++             }
++           }
+         }
+       }
+     }
+```
+
+## Authentication with Maana
+
+Maana endpoints require a valid (authenticated) user in order to prevent unauthorized access. You must first obtain a token and the update the configuration to use the token by updating the endpoint configuration.
+
+* Login to the Maana Knowledge Portal
+* Click on your user icon and select your profile
+* At the bottom of the profile page click the 'Get CLI Authentication Token' button
+* Go through the login process (again)
+* Copy the generated auth token that shows up below the button
+* In the terminal add an environment variable for the auth token
+
+```sh
+# *nix based systems
+export AUTH_TOKEN_ENV=<paste auth token here>
+```
+
+```bat
+rem windows command line
+set AUTH_TOKEN_ENV=<paste auth token here>
+```
+
+```ps1
+# windows power shell
+$Env:AUTH_TOKEN_ENV = "<paste auth token here>"
 ```
 
 ## Create the Service
@@ -54,7 +99,7 @@ We can use the GraphQL CLI with the Maana plugin command: `maddsvc` ("add servic
 
 ```bash
 gql maddsvc "Drillng Problems" -s model.gql -p ckg
-Using endpoint default: {"url":"http://qtraining01.knowledge.maana.io:8003/graphql"}
+Using endpoint default: {"url":"https://qtraining01.knowledge.maana.io:8443/graphql"}
 Read file: model.gql size: 483
 Sending query:
 
@@ -75,8 +120,13 @@ The included `.graphqlconfig` already contains a project, `dp`, that specified t
       "schemaPath": "dp.graphql",
        "extensions": {
          "endpoints": {
--          "default": "http://qtraining01.knowledge.maana.io:8003/service/051850b1-f088-46b1-8e35-679f5d2ac84f/graphql"
-+          "default": "http://qtraining01.knowledge.maana.io:8003/service/50d759d5-983d-4ea2-9773-20077c9b823e/graphql"
+-           "default": "https://qtraining01.knowledge.maana.io:8443/service/051850b1-f088-46b1-8e35-679f5d2ac84f/graphql"
++           "default": {
++             "url": "https://qtraining01.knowledge.maana.io:8443/service/50d759d5-983d-4ea2-9773-20077c9b823e/graphql"
++             "headers": {
++               "Authorization": "Bearer ${env:AUTH_TOKEN_ENV}"
++             }
++           }
          }
        }
      }
@@ -88,7 +138,7 @@ The included `.graphqlconfig` already contains a project, `dp`, that specified t
 gql add-project
 ? Enter project name for new project: dp
 ? Local schema file path: dp.graphql
-? Endpoint URL (Enter to skip): http://qtraining01.knowledge.maana.io:8003/service/1788c00e-3a29-4843-aa56-44ba374cf682/graphql
+? Endpoint URL (Enter to skip): https://qtraining01.knowledge.maana.io:8443/service/1788c00e-3a29-4843-aa56-44ba374cf682/graphql
 ? Name of this endpoint, for e.g. default, dev, prod: (default)
 ? Subscription URL (Enter to skip):
 ? Do you want to add other endpoints? No
