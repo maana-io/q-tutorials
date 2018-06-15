@@ -65,7 +65,29 @@ Change the endpoint so that it includes the authorization header needed to commu
 
 ## Authentication with Maana
 
-Maana endpoints require a valid (authenticated) user in order to prevent unauthorized access. You must first obtain a token and the update the configuration to use the token by updating the endpoint configuration.
+Maana endpoints require a valid (authenticated) user in order to prevent unauthorized access.
+
+### Maana Q v3.1.0 and later
+
+After creating a new `.graphqlconfig` file connecting to a Maana API endpoint:
+* Login to the Maana Knowledge Portal
+* Click on your user icon and select your profile
+* At the bottom of the profile page click the 'Get CLI Authentication Token' button
+* Go through the login process (again)
+* Copy the generated auth token that shows up below the button
+* In the terminal run `gql msignin` and when asked paste the Authentication Token into the prompt
+* Then run `gql menv --shell <your shell>` and follow the directions at the bottom of the output
+* Run `gql ping` to test out that the authentication works (you will get an error if it did not)
+
+#### Additional Notes
+
+* When you add another project to your `.graphqlconfig` file you can run `gql maddheaders --project <Project Name>` to add the headers to the new project.
+* When you want to run the CLI against the Maana API in a different terminal window you will need to run `gql env` again.
+* If your authentication token expires you can run `gql mrefreshauth` to refresh the authentication token, when the Maana API is configured to allow the refreshing of authentication tokens.
+
+### Maana Q v3.0.5
+
+After creating a new project connecting to a Maana endpoint, you will need to setup the project to add an authentication header to the requests.
 
 * Login to the Maana Knowledge Portal
 * Click on your user icon and select your profile
@@ -80,13 +102,32 @@ export AUTH_TOKEN_ENV=<paste auth token here>
 ```
 
 ```bat
-rem windows command line
+rem Windows command line
 set AUTH_TOKEN_ENV=<paste auth token here>
 ```
 
 ```ps1
-# windows power shell
+# Windows power shell
 $Env:AUTH_TOKEN_ENV = "<paste auth token here>"
+```
+
+Add the authorization header to the Maana endpoint:
+
+```diff
+     "ckg": {
+      "schemaPath": "ckg.graphql",
+       "extensions": {
+         "endpoints": {
+-           "default": "https://qtraining01.knowledge.maana.io:8443/graphql"
++           "default": {
++             "url": "https://qtraining01.knowledge.maana.io:8443/graphql",
++             "headers": {
++               "Authorization": "Bearer ${env:AUTH_TOKEN_ENV}"
++             }
++           }
+         }
+       }
+     }
 ```
 
 ## Create the Service
