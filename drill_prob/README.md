@@ -44,25 +44,6 @@ About to write to /home/me/maana/training/.graphqlconfig:
 ? Is this ok? Yes
 ```
 
-Change the endpoint so that it includes the authorization header needed to communicate securely to the Maana endpoint:
-
-```diff
-     "ckg": {
-      "schemaPath": "ckg.graphql",
-       "extensions": {
-         "endpoints": {
--           "default": "https://qtraining01.knowledge.maana.io:8443/graphql"
-+           "default": {
-+             "url": "https://qtraining01.knowledge.maana.io:8443/graphql",
-+             "headers": {
-+               "Authorization": "Bearer ${env:AUTH_TOKEN_ENV}"
-+             }
-+           }
-         }
-       }
-     }
-```
-
 ## Authentication with Maana
 
 Maana endpoints require a valid (authenticated) user in order to prevent unauthorized access.
@@ -76,7 +57,15 @@ After creating a new `.graphqlconfig` file connecting to a Maana API endpoint:
 * Go through the login process (again)
 * Copy the generated auth token that shows up below the button
 * In the terminal run `gql msignin` and when asked paste the Authentication Token into the prompt
-* Then run `gql menv --shell <your shell>` and follow the directions at the bottom of the output
+* Run `gql menv --shell <your shell>` in the current terminal window to run authenticated GraphQL calls.
+  - Example: Run `gql menv --shell bash` if you are using bash
+  - You will see output similar to:
+    ```
+    export MAANA_AUTH_TOKEN=<token here>
+    # Run this command to configure your shell
+    # eval $(gql menv --shell bash)
+    ```
+  - Now run `eval $(gql menv --shell bash)` like it asks you at the bottom of the output
 * Run `gql ping` to test out that the authentication works (you will get an error if it did not)
 
 #### Additional Notes
