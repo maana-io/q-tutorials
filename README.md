@@ -6,12 +6,15 @@ This repository contains datasets used for tutorials.  In order to accommodate t
 
 ## Maana CLI
 
-For information about changes to the CLI view the [change log](./CLI_Changelog.md)
+All of the tutorials contained here require the use of [Maana CLI](https://www.npmjs.com/package/graphql-cli-maana). For information about changes to the CLI view the [change log](https://github.com/maana-io/Q-cli/blob/master/Changelog.md).
 
 ### Installation
 
-**Requirements:** Node.js 8+
+When installing maana CLI, make sure the version is the same as your Maana cluster.
 
-```
-npm i -g graphql-cli graphql-cli-maana
+**Requirements:** Node.js 8+ and graphql-cli
+
+```sh
+# Installing the CLI for Maaana 3.1.0
+npm i -g graphql-cli graphql-cli-maana@3.1.0
 ```
