@@ -15,6 +15,6 @@ When installing maana CLI, make sure the version is the same as your Maana clust
 **Requirements:** Node.js 8+ and graphql-cli
 
 ```sh
-# Installing the CLI for Maaana 3.1.0
-npm i -g graphql-cli graphql-cli-maana@3.1.0
+# Installing the CLI for the Maaana 3.1.0 release
+npm i -g graphql-cli graphql-cli-maana@3.1.0-release
 ```
