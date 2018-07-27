@@ -20,7 +20,7 @@ We have included a `.graphqlconfig` file preconfigured for this tutorial.
 gql init
 ? Enter project name (Enter to skip): ckg
 ? Local schema file path: ckg.graphql
-? Endpoint URL (Enter to skip): https://qtraining01.knowledge.maana.io:8443/graphql
+? Endpoint URL (Enter to skip): https://<maana host>:8443/graphql
 ? Name of this endpoint, for e.g. default, dev, prod: (default)
 ? Subscription URL (Enter to skip):
 ? Do you want to add other endpoints? No
@@ -34,7 +34,7 @@ About to write to /home/me/maana/training/.graphqlconfig:
       "schemaPath": "ckg.graphql",
       "extensions": {
         "endpoints": {
-          "default": "https://qtraining01.knowledge.maana.io:8443/graphql"
+          "default": "https://<maana host>:8443/graphql"
         }
       }
     }
@@ -48,7 +48,7 @@ About to write to /home/me/maana/training/.graphqlconfig:
 
 Maana endpoints require a valid (authenticated) user in order to prevent unauthorized access.
 
-### Maana Q v3.1.0 and later
+### <a name="v3.1.0"></a>Maana Q v3.1.0 and later
 
 After creating a new `.graphqlconfig` file connecting to a Maana API endpoint:
 * Login to the Maana Knowledge Portal
@@ -74,7 +74,7 @@ After creating a new `.graphqlconfig` file connecting to a Maana API endpoint:
 * When you want to run the CLI against the Maana API in a different terminal window you will need to run `gql env` again.
 * If your authentication token expires you can run `gql mrefreshauth` to refresh the authentication token, when the Maana API is configured to allow the refreshing of authentication tokens.
 
-### Maana Q v3.0.5
+### <a name="v3.0.5"></a>Maana Q v3.0.5
 
 After creating a new project connecting to a Maana endpoint, you will need to setup the project to add an authentication header to the requests.
 
@@ -87,17 +87,17 @@ After creating a new project connecting to a Maana endpoint, you will need to se
 
 ```sh
 # *nix based systems
-export AUTH_TOKEN_ENV=<paste auth token here>
+export MAANA_AUTH_TOKEN=<paste auth token here>
 ```
 
 ```bat
 rem Windows command line
-set AUTH_TOKEN_ENV=<paste auth token here>
+set MAANA_AUTH_TOKEN=<paste auth token here>
 ```
 
 ```ps1
 # Windows power shell
-$Env:AUTH_TOKEN_ENV = "<paste auth token here>"
+$Env:MAANA_AUTH_TOKEN = "<paste auth token here>"
 ```
 
 Add the authorization header to the Maana endpoint:
@@ -107,11 +107,11 @@ Add the authorization header to the Maana endpoint:
       "schemaPath": "ckg.graphql",
        "extensions": {
          "endpoints": {
--           "default": "https://qtraining01.knowledge.maana.io:8443/graphql"
+-           "default": "https://<maana host>:8443/graphql"
 +           "default": {
-+             "url": "https://qtraining01.knowledge.maana.io:8443/graphql",
++             "url": "https://<maana host>:8443/graphql",
 +             "headers": {
-+               "Authorization": "Bearer ${env:AUTH_TOKEN_ENV}"
++               "Authorization": "Bearer ${env:MAANA_AUTH_TOKEN}"
 +             }
 +           }
          }
@@ -129,7 +129,7 @@ We can use the GraphQL CLI with the Maana plugin command: `maddsvc` ("add servic
 
 ```bash
 gql maddsvc "Drillng Problems" -s model.gql -p ckg
-Using endpoint default: {"url":"https://qtraining01.knowledge.maana.io:8443/graphql"}
+Using endpoint default: {"url":"https://<maana host>:8443/graphql"}
 Read file: model.gql size: 483
 Sending query:
 
@@ -141,41 +141,34 @@ Sending query:
 {"addServiceSource":"50d759d5-983d-4ea2-9773-20077c9b823e"}
 ```
 
+Take note of the generated service id, since we&#39;ll add it as a new GraphQL **endpoint** to your CLI configuration.
+
 ## Update the Config
 
-The included `.graphqlconfig` already contains a project, `dp`, that specified the schema file and endpoint for this service. However, the service ID needs to be updated to match the output from adding the service (above):
+Add another project to you graphql config using the following template to build your service url. Make sure that your url ends in `/graphql`.
 
-```diff
-     "dp": {
-      "schemaPath": "dp.graphql",
-       "extensions": {
-         "endpoints": {
--           "default": "https://qtraining01.knowledge.maana.io:8443/service/051850b1-f088-46b1-8e35-679f5d2ac84f/graphql"
-+           "default": {
-+             "url": "https://qtraining01.knowledge.maana.io:8443/service/50d759d5-983d-4ea2-9773-20077c9b823e/graphql"
-+             "headers": {
-+               "Authorization": "Bearer ${env:AUTH_TOKEN_ENV}"
-+             }
-+           }
-         }
-       }
-     }
+Template:
+```
+https://<maana host>:8443/service/<service id>/graphql
 ```
 
-**Optionally**, to create this project from scratch:
-
+Command:
 ```bash
 gql add-project
-? Enter project name for new project: dp
-? Local schema file path: dp.graphql
-? Endpoint URL (Enter to skip): https://qtraining01.knowledge.maana.io:8443/service/1788c00e-3a29-4843-aa56-44ba374cf682/graphql
+? Enter project name for new project: db
+? Local schema file path: db/schema.graphql
+? Endpoint URL (Enter to skip): <service url>
 ? Name of this endpoint, for e.g. default, dev, prod: (default)
 ? Subscription URL (Enter to skip):
 ? Do you want to add other endpoints? No
 
-Adding the following endpoints to your config:  dp
+Adding the following endpoints to your config:  db
 ? Is this ok? Yes
 ```
+
+Again, we need to add the authorization header.
+* In Maana Q 3.1.0 or later just run the `gql maddheaders` command
+* In Maana Q 3.5.0 will require adding it manually, check [here](#v3.0.5) for instructions.
 
 ## Introspecting the Service
 
