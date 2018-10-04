@@ -1,0 +1,27 @@
+{
+  "name": "io.maana.graph.logic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "import": "gql get-schema -p model",
+    "docker-build": "docker build -t maana-graph-logic .",
+    "docker-run": "docker run -p 8053:8053 maana-graph-logic",
+    "prepublish": "npm-run-all import docker-build",
+    "watch": "PORT=8053 nodemon src/index.js",
+    "start": "PORT=8053 node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "graphql-yoga": "^1.14.12",
+    "prisma-binding": "^2.1.1"
+  },
+  "devDependencies": {
+    "graphql-cli": "^2.16.4",
+    "graphql-cli-maana": "^3.1.1-beta.5",
+    "nodemon": "^1.18.3",
+    "npm-run-all": "^4.1.3"
+  }
+}

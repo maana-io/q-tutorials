@@ -1,0 +1,17 @@
+# import Port, Vessel, Cargo, PortContingencyPlan from "./imports/io.maana.sample.transportation.model.graphql"
+# import Location, TimeEstimate from "./imports/io.maana.core.model.graphql"
+
+scalar Date
+
+type Query {
+  location(vesselId: ID!): Location
+  eta(vesselId: ID!, portId: ID!): TimeEstimate
+  planPortContingency(
+    vesselId: ID!
+    portId: ID!
+    date: Date!
+  ): [PortContingencyPlan]
+}
+
+# type Mutation {
+# }

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "test-e00",
+    "source": "test-v00",
+    "target": "test-v01",
+    "type": "SpecialEdge"
+  },
+  {
+    "id": "test-e01",
+    "source": "test-v02",
+    "target": "test-v03",
+    "type": "EmptyEdge"
+  }
+]

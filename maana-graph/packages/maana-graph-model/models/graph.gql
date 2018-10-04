@@ -1,0 +1,78 @@
+enum VertexType {
+  Empty
+  Special
+}
+
+enum VertexSubtype {
+  SpecialChild
+}
+
+enum EdgeType {
+  EmptyEdge
+  SpecialEdge
+}
+
+# A collection of vertices and edges between them
+type Graph {
+  # Unique identity of graph instance
+  id: ID! @unique
+
+  # Display label
+  name: String
+
+  # Nodes of the graph
+  vertices: [Vertex!]! @relation(name: "GraphVertices")
+
+  # Edges of the graph
+  edges: [Edge!]! @relation(name: "GraphEdges")
+}
+
+# Node of a graph
+type Vertex {
+  # Unique identity of vertex instance
+  id: ID! @unique
+
+  # Containing graph
+  graph: Graph! @relation(name: "GraphVertices")
+
+  # Horizontal position on the diagram
+  x: Float!
+
+  # Vertical position on the diagram
+  y: Float!
+
+  # Edges where this vertex is the target (i.e., inbound)
+  edgesTarget: [Edge!]! @relation(name: "VertexEdgesTarget")
+
+  # Edges where this vertex is the source (i.e., outbound)
+  edgesSource: [Edge!]! @relation(name: "VertexEdgesSource")
+
+  # Display label
+  title: String
+
+  # Node shape and behavior
+  type: VertexType
+
+  subtype: VertexSubtype
+}
+
+# Edge connecting two vertices in a graph
+type Edge {
+  # Unique identity of edge instance
+  id: ID! @unique
+
+  # Containing graph
+  graph: Graph! @relation(name: "GraphEdges")
+
+  # From node
+  source: Vertex! @relation(name: "VertexEdgesSource")
+
+  # To node
+  target: Vertex! @relation(name: "VertexEdgesTarget")
+
+  # Display label
+  title: String
+
+  # Edge shape and behavior
+  type: EdgeType
+}

@@ -1,0 +1,10 @@
+# import Atom from "./imports/pie.model.graphql"
+
+type Query {
+  atom(id: ID!): Atom
+  atoms: [Atom!]!
+}
+
+type Mutation {
+  createAtom(name: String): Atom
+}

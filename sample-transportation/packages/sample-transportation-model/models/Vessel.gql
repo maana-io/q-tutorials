@@ -1,0 +1,4 @@
+type Vessel {
+  id: ID! @unique
+  name: String
+}

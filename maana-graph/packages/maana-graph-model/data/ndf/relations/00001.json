@@ -1,0 +1,49 @@
+{
+  "valueType": "relations",
+  "values": [
+    [
+      {
+        "_typeName": "Edge",
+        "id": "fg8bxwZvKDcHlVGweAD9rg",
+        "fieldName": "source"
+      },
+      {
+        "_typeName": "Vertex",
+        "id": "k/IyXYsd/wMBHTYcS4JtAw"
+      }
+    ],
+    [
+      {
+        "_typeName": "Edge",
+        "id": "fg8bxwZvKDcHlVGweAD9rg",
+        "fieldName": "target"
+      },
+      {
+        "_typeName": "Vertex",
+        "id": "haSFJEr/nmg48Wk7wISs+A"
+      }
+    ],
+    [
+      {
+        "_typeName": "Edge",
+        "id": "kDNAlJmRo7lJSpoj20ht3A",
+        "fieldName": "source"
+      },
+      {
+        "_typeName": "Vertex",
+        "id": "pr/Ysi8kVlvwaO9cavBwjQ"
+      }
+    ],
+    [
+      {
+        "_typeName": "Edge",
+        "id": "kDNAlJmRo7lJSpoj20ht3A",
+        "fieldName": "target"
+      },
+      {
+        "_typeName": "Vertex",
+        "id": "x+qpE/nSyfcZW9gaiLlFqg"
+      }
+    ]
+  ]
+}

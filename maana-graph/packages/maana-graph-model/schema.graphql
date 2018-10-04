@@ -1,0 +1,1095 @@
+# source: http://localhost:4468
+# timestamp: Wed Jul 18 2018 06:51:42 GMT-0700 (PDT)
+
+type AggregateEdge {
+  count: Int!
+}
+
+type AggregateGraph {
+  count: Int!
+}
+
+type AggregateVertex {
+  count: Int!
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+type Edge implements Node {
+  id: ID!
+  graph(where: GraphWhereInput): Graph!
+  source(where: VertexWhereInput): Vertex!
+  target(where: VertexWhereInput): Vertex!
+  title: String
+  type: EdgeType
+}
+
+"""A connection to a list of items."""
+type EdgeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [EdgeEdge]!
+  aggregate: AggregateEdge!
+}
+
+input EdgeCreateInput {
+  title: String
+  type: EdgeType
+  graph: GraphCreateOneWithoutEdgesInput!
+  source: VertexCreateOneWithoutEdgesSourceInput!
+  target: VertexCreateOneWithoutEdgesTargetInput!
+}
+
+input EdgeCreateManyWithoutGraphInput {
+  create: [EdgeCreateWithoutGraphInput!]
+  connect: [EdgeWhereUniqueInput!]
+}
+
+input EdgeCreateManyWithoutSourceInput {
+  create: [EdgeCreateWithoutSourceInput!]
+  connect: [EdgeWhereUniqueInput!]
+}
+
+input EdgeCreateManyWithoutTargetInput {
+  create: [EdgeCreateWithoutTargetInput!]
+  connect: [EdgeWhereUniqueInput!]
+}
+
+input EdgeCreateWithoutGraphInput {
+  title: String
+  type: EdgeType
+  source: VertexCreateOneWithoutEdgesSourceInput!
+  target: VertexCreateOneWithoutEdgesTargetInput!
+}
+
+input EdgeCreateWithoutSourceInput {
+  title: String
+  type: EdgeType
+  graph: GraphCreateOneWithoutEdgesInput!
+  target: VertexCreateOneWithoutEdgesTargetInput!
+}
+
+input EdgeCreateWithoutTargetInput {
+  title: String
+  type: EdgeType
+  graph: GraphCreateOneWithoutEdgesInput!
+  source: VertexCreateOneWithoutEdgesSourceInput!
+}
+
+"""An edge in a connection."""
+type EdgeEdge {
+  """The item at the end of the edge."""
+  node: Edge!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum EdgeOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  type_ASC
+  type_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type EdgePreviousValues {
+  id: ID!
+  title: String
+  type: EdgeType
+}
+
+type EdgeSubscriptionPayload {
+  mutation: MutationType!
+  node: Edge
+  updatedFields: [String!]
+  previousValues: EdgePreviousValues
+}
+
+input EdgeSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [EdgeSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [EdgeSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [EdgeSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: EdgeWhereInput
+}
+
+enum EdgeType {
+  EmptyEdge
+  SpecialEdge
+}
+
+input EdgeUpdateInput {
+  title: String
+  type: EdgeType
+  graph: GraphUpdateOneWithoutEdgesInput
+  source: VertexUpdateOneWithoutEdgesSourceInput
+  target: VertexUpdateOneWithoutEdgesTargetInput
+}
+
+input EdgeUpdateManyWithoutGraphInput {
+  create: [EdgeCreateWithoutGraphInput!]
+  connect: [EdgeWhereUniqueInput!]
+  disconnect: [EdgeWhereUniqueInput!]
+  delete: [EdgeWhereUniqueInput!]
+  update: [EdgeUpdateWithWhereUniqueWithoutGraphInput!]
+  upsert: [EdgeUpsertWithWhereUniqueWithoutGraphInput!]
+}
+
+input EdgeUpdateManyWithoutSourceInput {
+  create: [EdgeCreateWithoutSourceInput!]
+  connect: [EdgeWhereUniqueInput!]
+  disconnect: [EdgeWhereUniqueInput!]
+  delete: [EdgeWhereUniqueInput!]
+  update: [EdgeUpdateWithWhereUniqueWithoutSourceInput!]
+  upsert: [EdgeUpsertWithWhereUniqueWithoutSourceInput!]
+}
+
+input EdgeUpdateManyWithoutTargetInput {
+  create: [EdgeCreateWithoutTargetInput!]
+  connect: [EdgeWhereUniqueInput!]
+  disconnect: [EdgeWhereUniqueInput!]
+  delete: [EdgeWhereUniqueInput!]
+  update: [EdgeUpdateWithWhereUniqueWithoutTargetInput!]
+  upsert: [EdgeUpsertWithWhereUniqueWithoutTargetInput!]
+}
+
+input EdgeUpdateWithoutGraphDataInput {
+  title: String
+  type: EdgeType
+  source: VertexUpdateOneWithoutEdgesSourceInput
+  target: VertexUpdateOneWithoutEdgesTargetInput
+}
+
+input EdgeUpdateWithoutSourceDataInput {
+  title: String
+  type: EdgeType
+  graph: GraphUpdateOneWithoutEdgesInput
+  target: VertexUpdateOneWithoutEdgesTargetInput
+}
+
+input EdgeUpdateWithoutTargetDataInput {
+  title: String
+  type: EdgeType
+  graph: GraphUpdateOneWithoutEdgesInput
+  source: VertexUpdateOneWithoutEdgesSourceInput
+}
+
+input EdgeUpdateWithWhereUniqueWithoutGraphInput {
+  where: EdgeWhereUniqueInput!
+  data: EdgeUpdateWithoutGraphDataInput!
+}
+
+input EdgeUpdateWithWhereUniqueWithoutSourceInput {
+  where: EdgeWhereUniqueInput!
+  data: EdgeUpdateWithoutSourceDataInput!
+}
+
+input EdgeUpdateWithWhereUniqueWithoutTargetInput {
+  where: EdgeWhereUniqueInput!
+  data: EdgeUpdateWithoutTargetDataInput!
+}
+
+input EdgeUpsertWithWhereUniqueWithoutGraphInput {
+  where: EdgeWhereUniqueInput!
+  update: EdgeUpdateWithoutGraphDataInput!
+  create: EdgeCreateWithoutGraphInput!
+}
+
+input EdgeUpsertWithWhereUniqueWithoutSourceInput {
+  where: EdgeWhereUniqueInput!
+  update: EdgeUpdateWithoutSourceDataInput!
+  create: EdgeCreateWithoutSourceInput!
+}
+
+input EdgeUpsertWithWhereUniqueWithoutTargetInput {
+  where: EdgeWhereUniqueInput!
+  update: EdgeUpdateWithoutTargetDataInput!
+  create: EdgeCreateWithoutTargetInput!
+}
+
+input EdgeWhereInput {
+  """Logical AND on all given filters."""
+  AND: [EdgeWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [EdgeWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [EdgeWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  type: EdgeType
+
+  """All values that are not equal to given value."""
+  type_not: EdgeType
+
+  """All values that are contained in given list."""
+  type_in: [EdgeType!]
+
+  """All values that are not contained in given list."""
+  type_not_in: [EdgeType!]
+  graph: GraphWhereInput
+  source: VertexWhereInput
+  target: VertexWhereInput
+}
+
+input EdgeWhereUniqueInput {
+  id: ID
+}
+
+type Graph implements Node {
+  id: ID!
+  name: String
+  vertices(where: VertexWhereInput, orderBy: VertexOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vertex!]
+  edges(where: EdgeWhereInput, orderBy: EdgeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Edge!]
+}
+
+"""A connection to a list of items."""
+type GraphConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [GraphEdge]!
+  aggregate: AggregateGraph!
+}
+
+input GraphCreateInput {
+  name: String
+  vertices: VertexCreateManyWithoutGraphInput
+  edges: EdgeCreateManyWithoutGraphInput
+}
+
+input GraphCreateOneWithoutEdgesInput {
+  create: GraphCreateWithoutEdgesInput
+  connect: GraphWhereUniqueInput
+}
+
+input GraphCreateOneWithoutVerticesInput {
+  create: GraphCreateWithoutVerticesInput
+  connect: GraphWhereUniqueInput
+}
+
+input GraphCreateWithoutEdgesInput {
+  name: String
+  vertices: VertexCreateManyWithoutGraphInput
+}
+
+input GraphCreateWithoutVerticesInput {
+  name: String
+  edges: EdgeCreateManyWithoutGraphInput
+}
+
+"""An edge in a connection."""
+type GraphEdge {
+  """The item at the end of the edge."""
+  node: Graph!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum GraphOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type GraphPreviousValues {
+  id: ID!
+  name: String
+}
+
+type GraphSubscriptionPayload {
+  mutation: MutationType!
+  node: Graph
+  updatedFields: [String!]
+  previousValues: GraphPreviousValues
+}
+
+input GraphSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [GraphSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [GraphSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [GraphSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: GraphWhereInput
+}
+
+input GraphUpdateInput {
+  name: String
+  vertices: VertexUpdateManyWithoutGraphInput
+  edges: EdgeUpdateManyWithoutGraphInput
+}
+
+input GraphUpdateOneWithoutEdgesInput {
+  create: GraphCreateWithoutEdgesInput
+  connect: GraphWhereUniqueInput
+  delete: Boolean
+  update: GraphUpdateWithoutEdgesDataInput
+  upsert: GraphUpsertWithoutEdgesInput
+}
+
+input GraphUpdateOneWithoutVerticesInput {
+  create: GraphCreateWithoutVerticesInput
+  connect: GraphWhereUniqueInput
+  delete: Boolean
+  update: GraphUpdateWithoutVerticesDataInput
+  upsert: GraphUpsertWithoutVerticesInput
+}
+
+input GraphUpdateWithoutEdgesDataInput {
+  name: String
+  vertices: VertexUpdateManyWithoutGraphInput
+}
+
+input GraphUpdateWithoutVerticesDataInput {
+  name: String
+  edges: EdgeUpdateManyWithoutGraphInput
+}
+
+input GraphUpsertWithoutEdgesInput {
+  update: GraphUpdateWithoutEdgesDataInput!
+  create: GraphCreateWithoutEdgesInput!
+}
+
+input GraphUpsertWithoutVerticesInput {
+  update: GraphUpdateWithoutVerticesDataInput!
+  create: GraphCreateWithoutVerticesInput!
+}
+
+input GraphWhereInput {
+  """Logical AND on all given filters."""
+  AND: [GraphWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [GraphWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [GraphWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  vertices_every: VertexWhereInput
+  vertices_some: VertexWhereInput
+  vertices_none: VertexWhereInput
+  edges_every: EdgeWhereInput
+  edges_some: EdgeWhereInput
+  edges_none: EdgeWhereInput
+}
+
+input GraphWhereUniqueInput {
+  id: ID
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createGraph(data: GraphCreateInput!): Graph!
+  createVertex(data: VertexCreateInput!): Vertex!
+  createEdge(data: EdgeCreateInput!): Edge!
+  updateGraph(data: GraphUpdateInput!, where: GraphWhereUniqueInput!): Graph
+  updateVertex(data: VertexUpdateInput!, where: VertexWhereUniqueInput!): Vertex
+  updateEdge(data: EdgeUpdateInput!, where: EdgeWhereUniqueInput!): Edge
+  deleteGraph(where: GraphWhereUniqueInput!): Graph
+  deleteVertex(where: VertexWhereUniqueInput!): Vertex
+  deleteEdge(where: EdgeWhereUniqueInput!): Edge
+  upsertGraph(where: GraphWhereUniqueInput!, create: GraphCreateInput!, update: GraphUpdateInput!): Graph!
+  upsertVertex(where: VertexWhereUniqueInput!, create: VertexCreateInput!, update: VertexUpdateInput!): Vertex!
+  upsertEdge(where: EdgeWhereUniqueInput!, create: EdgeCreateInput!, update: EdgeUpdateInput!): Edge!
+  updateManyGraphs(data: GraphUpdateInput!, where: GraphWhereInput): BatchPayload!
+  updateManyVertexes(data: VertexUpdateInput!, where: VertexWhereInput): BatchPayload!
+  updateManyEdges(data: EdgeUpdateInput!, where: EdgeWhereInput): BatchPayload!
+  deleteManyGraphs(where: GraphWhereInput): BatchPayload!
+  deleteManyVertexes(where: VertexWhereInput): BatchPayload!
+  deleteManyEdges(where: EdgeWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  graphs(where: GraphWhereInput, orderBy: GraphOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Graph]!
+  vertexes(where: VertexWhereInput, orderBy: VertexOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vertex]!
+  edges(where: EdgeWhereInput, orderBy: EdgeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Edge]!
+  graph(where: GraphWhereUniqueInput!): Graph
+  vertex(where: VertexWhereUniqueInput!): Vertex
+  edge(where: EdgeWhereUniqueInput!): Edge
+  graphsConnection(where: GraphWhereInput, orderBy: GraphOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GraphConnection!
+  vertexesConnection(where: VertexWhereInput, orderBy: VertexOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VertexConnection!
+  edgesConnection(where: EdgeWhereInput, orderBy: EdgeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EdgeConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Subscription {
+  graph(where: GraphSubscriptionWhereInput): GraphSubscriptionPayload
+  vertex(where: VertexSubscriptionWhereInput): VertexSubscriptionPayload
+  edge(where: EdgeSubscriptionWhereInput): EdgeSubscriptionPayload
+}
+
+type Vertex implements Node {
+  id: ID!
+  graph(where: GraphWhereInput): Graph!
+  x: Float!
+  y: Float!
+  edgesTarget(where: EdgeWhereInput, orderBy: EdgeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Edge!]
+  edgesSource(where: EdgeWhereInput, orderBy: EdgeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Edge!]
+  title: String
+  type: VertexType
+  subtype: VertexSubtype
+}
+
+"""A connection to a list of items."""
+type VertexConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [VertexEdge]!
+  aggregate: AggregateVertex!
+}
+
+input VertexCreateInput {
+  x: Float!
+  y: Float!
+  title: String
+  type: VertexType
+  subtype: VertexSubtype
+  graph: GraphCreateOneWithoutVerticesInput!
+  edgesTarget: EdgeCreateManyWithoutTargetInput
+  edgesSource: EdgeCreateManyWithoutSourceInput
+}
+
+input VertexCreateManyWithoutGraphInput {
+  create: [VertexCreateWithoutGraphInput!]
+  connect: [VertexWhereUniqueInput!]
+}
+
+input VertexCreateOneWithoutEdgesSourceInput {
+  create: VertexCreateWithoutEdgesSourceInput
+  connect: VertexWhereUniqueInput
+}
+
+input VertexCreateOneWithoutEdgesTargetInput {
+  create: VertexCreateWithoutEdgesTargetInput
+  connect: VertexWhereUniqueInput
+}
+
+input VertexCreateWithoutEdgesSourceInput {
+  x: Float!
+  y: Float!
+  title: String
+  type: VertexType
+  subtype: VertexSubtype
+  graph: GraphCreateOneWithoutVerticesInput!
+  edgesTarget: EdgeCreateManyWithoutTargetInput
+}
+
+input VertexCreateWithoutEdgesTargetInput {
+  x: Float!
+  y: Float!
+  title: String
+  type: VertexType
+  subtype: VertexSubtype
+  graph: GraphCreateOneWithoutVerticesInput!
+  edgesSource: EdgeCreateManyWithoutSourceInput
+}
+
+input VertexCreateWithoutGraphInput {
+  x: Float!
+  y: Float!
+  title: String
+  type: VertexType
+  subtype: VertexSubtype
+  edgesTarget: EdgeCreateManyWithoutTargetInput
+  edgesSource: EdgeCreateManyWithoutSourceInput
+}
+
+"""An edge in a connection."""
+type VertexEdge {
+  """The item at the end of the edge."""
+  node: Vertex!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum VertexOrderByInput {
+  id_ASC
+  id_DESC
+  x_ASC
+  x_DESC
+  y_ASC
+  y_DESC
+  title_ASC
+  title_DESC
+  type_ASC
+  type_DESC
+  subtype_ASC
+  subtype_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type VertexPreviousValues {
+  id: ID!
+  x: Float!
+  y: Float!
+  title: String
+  type: VertexType
+  subtype: VertexSubtype
+}
+
+type VertexSubscriptionPayload {
+  mutation: MutationType!
+  node: Vertex
+  updatedFields: [String!]
+  previousValues: VertexPreviousValues
+}
+
+input VertexSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [VertexSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [VertexSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [VertexSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: VertexWhereInput
+}
+
+enum VertexSubtype {
+  SpecialChild
+}
+
+enum VertexType {
+  Empty
+  Special
+}
+
+input VertexUpdateInput {
+  x: Float
+  y: Float
+  title: String
+  type: VertexType
+  subtype: VertexSubtype
+  graph: GraphUpdateOneWithoutVerticesInput
+  edgesTarget: EdgeUpdateManyWithoutTargetInput
+  edgesSource: EdgeUpdateManyWithoutSourceInput
+}
+
+input VertexUpdateManyWithoutGraphInput {
+  create: [VertexCreateWithoutGraphInput!]
+  connect: [VertexWhereUniqueInput!]
+  disconnect: [VertexWhereUniqueInput!]
+  delete: [VertexWhereUniqueInput!]
+  update: [VertexUpdateWithWhereUniqueWithoutGraphInput!]
+  upsert: [VertexUpsertWithWhereUniqueWithoutGraphInput!]
+}
+
+input VertexUpdateOneWithoutEdgesSourceInput {
+  create: VertexCreateWithoutEdgesSourceInput
+  connect: VertexWhereUniqueInput
+  delete: Boolean
+  update: VertexUpdateWithoutEdgesSourceDataInput
+  upsert: VertexUpsertWithoutEdgesSourceInput
+}
+
+input VertexUpdateOneWithoutEdgesTargetInput {
+  create: VertexCreateWithoutEdgesTargetInput
+  connect: VertexWhereUniqueInput
+  delete: Boolean
+  update: VertexUpdateWithoutEdgesTargetDataInput
+  upsert: VertexUpsertWithoutEdgesTargetInput
+}
+
+input VertexUpdateWithoutEdgesSourceDataInput {
+  x: Float
+  y: Float
+  title: String
+  type: VertexType
+  subtype: VertexSubtype
+  graph: GraphUpdateOneWithoutVerticesInput
+  edgesTarget: EdgeUpdateManyWithoutTargetInput
+}
+
+input VertexUpdateWithoutEdgesTargetDataInput {
+  x: Float
+  y: Float
+  title: String
+  type: VertexType
+  subtype: VertexSubtype
+  graph: GraphUpdateOneWithoutVerticesInput
+  edgesSource: EdgeUpdateManyWithoutSourceInput
+}
+
+input VertexUpdateWithoutGraphDataInput {
+  x: Float
+  y: Float
+  title: String
+  type: VertexType
+  subtype: VertexSubtype
+  edgesTarget: EdgeUpdateManyWithoutTargetInput
+  edgesSource: EdgeUpdateManyWithoutSourceInput
+}
+
+input VertexUpdateWithWhereUniqueWithoutGraphInput {
+  where: VertexWhereUniqueInput!
+  data: VertexUpdateWithoutGraphDataInput!
+}
+
+input VertexUpsertWithoutEdgesSourceInput {
+  update: VertexUpdateWithoutEdgesSourceDataInput!
+  create: VertexCreateWithoutEdgesSourceInput!
+}
+
+input VertexUpsertWithoutEdgesTargetInput {
+  update: VertexUpdateWithoutEdgesTargetDataInput!
+  create: VertexCreateWithoutEdgesTargetInput!
+}
+
+input VertexUpsertWithWhereUniqueWithoutGraphInput {
+  where: VertexWhereUniqueInput!
+  update: VertexUpdateWithoutGraphDataInput!
+  create: VertexCreateWithoutGraphInput!
+}
+
+input VertexWhereInput {
+  """Logical AND on all given filters."""
+  AND: [VertexWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [VertexWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [VertexWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  x: Float
+
+  """All values that are not equal to given value."""
+  x_not: Float
+
+  """All values that are contained in given list."""
+  x_in: [Float!]
+
+  """All values that are not contained in given list."""
+  x_not_in: [Float!]
+
+  """All values less than the given value."""
+  x_lt: Float
+
+  """All values less than or equal the given value."""
+  x_lte: Float
+
+  """All values greater than the given value."""
+  x_gt: Float
+
+  """All values greater than or equal the given value."""
+  x_gte: Float
+  y: Float
+
+  """All values that are not equal to given value."""
+  y_not: Float
+
+  """All values that are contained in given list."""
+  y_in: [Float!]
+
+  """All values that are not contained in given list."""
+  y_not_in: [Float!]
+
+  """All values less than the given value."""
+  y_lt: Float
+
+  """All values less than or equal the given value."""
+  y_lte: Float
+
+  """All values greater than the given value."""
+  y_gt: Float
+
+  """All values greater than or equal the given value."""
+  y_gte: Float
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  type: VertexType
+
+  """All values that are not equal to given value."""
+  type_not: VertexType
+
+  """All values that are contained in given list."""
+  type_in: [VertexType!]
+
+  """All values that are not contained in given list."""
+  type_not_in: [VertexType!]
+  subtype: VertexSubtype
+
+  """All values that are not equal to given value."""
+  subtype_not: VertexSubtype
+
+  """All values that are contained in given list."""
+  subtype_in: [VertexSubtype!]
+
+  """All values that are not contained in given list."""
+  subtype_not_in: [VertexSubtype!]
+  graph: GraphWhereInput
+  edgesTarget_every: EdgeWhereInput
+  edgesTarget_some: EdgeWhereInput
+  edgesTarget_none: EdgeWhereInput
+  edgesSource_every: EdgeWhereInput
+  edgesSource_some: EdgeWhereInput
+  edgesSource_none: EdgeWhereInput
+}
+
+input VertexWhereUniqueInput {
+  id: ID
+}

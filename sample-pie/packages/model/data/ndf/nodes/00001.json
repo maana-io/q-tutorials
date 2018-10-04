@@ -1,0 +1,13 @@
+{
+  "valueType": "nodes",
+  "values": [
+    {
+      "_typeName": "Atom",
+      "id": "a00"
+    },
+    {
+      "_typeName": "Atom",
+      "id": "a01"
+    }
+  ]
+}

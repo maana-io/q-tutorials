@@ -1,0 +1,196 @@
+# source: http://localhost:8052
+# timestamp: Fri Sep 28 2018 09:30:29 GMT-0700 (PDT)
+
+type AggregateAtom {
+  count: Int!
+}
+
+type Atom implements Node {
+  id: ID!
+}
+
+"""A connection to a list of items."""
+type AtomConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [AtomEdge]!
+  aggregate: AggregateAtom!
+}
+
+"""An edge in a connection."""
+type AtomEdge {
+  """The item at the end of the edge."""
+  node: Atom!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum AtomOrderByInput {
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type AtomPreviousValues {
+  id: ID!
+}
+
+type AtomSubscriptionPayload {
+  mutation: MutationType!
+  node: Atom
+  updatedFields: [String!]
+  previousValues: AtomPreviousValues
+}
+
+input AtomSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AtomSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AtomSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AtomSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: AtomWhereInput
+}
+
+input AtomWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AtomWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AtomWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AtomWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+}
+
+input AtomWhereUniqueInput {
+  id: ID
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createAtom: Atom!
+  deleteAtom(where: AtomWhereUniqueInput!): Atom
+  deleteManyAtoms(where: AtomWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  atoms(where: AtomWhereInput, orderBy: AtomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Atom]!
+  atom(where: AtomWhereUniqueInput!): Atom
+  atomsConnection(where: AtomWhereInput, orderBy: AtomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AtomConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Subscription {
+  atom(where: AtomSubscriptionWhereInput): AtomSubscriptionPayload
+}

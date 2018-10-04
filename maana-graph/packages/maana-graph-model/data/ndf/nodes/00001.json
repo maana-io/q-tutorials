@@ -1,0 +1,15 @@
+{
+  "valueType": "nodes",
+  "values": [
+    {
+      "_typeName": "Edge",
+      "id": "fg8bxwZvKDcHlVGweAD9rg",
+      "type": "SpecialEdge"
+    },
+    {
+      "_typeName": "Edge",
+      "id": "kDNAlJmRo7lJSpoj20ht3A",
+      "type": "EmptyEdge"
+    }
+  ]
+}

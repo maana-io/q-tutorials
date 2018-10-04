@@ -1,0 +1,839 @@
+# source: http://localhost:8055
+# timestamp: Fri Jul 20 2018 06:47:00 GMT-0700 (PDT)
+
+type AggregateCargo {
+  count: Int!
+}
+
+type AggregatePort {
+  count: Int!
+}
+
+type AggregatePortContingencyPlan {
+  count: Int!
+}
+
+type AggregateVessel {
+  count: Int!
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+type Cargo implements Node {
+  id: ID!
+  name: String
+}
+
+"""A connection to a list of items."""
+type CargoConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CargoEdge]!
+  aggregate: AggregateCargo!
+}
+
+input CargoCreateInput {
+  name: String
+}
+
+"""An edge in a connection."""
+type CargoEdge {
+  """The item at the end of the edge."""
+  node: Cargo!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum CargoOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type CargoPreviousValues {
+  id: ID!
+  name: String
+}
+
+type CargoSubscriptionPayload {
+  mutation: MutationType!
+  node: Cargo
+  updatedFields: [String!]
+  previousValues: CargoPreviousValues
+}
+
+input CargoSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CargoSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CargoSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CargoSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: CargoWhereInput
+}
+
+input CargoUpdateInput {
+  name: String
+}
+
+input CargoWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CargoWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CargoWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CargoWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+}
+
+input CargoWhereUniqueInput {
+  id: ID
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createCargo(data: CargoCreateInput!): Cargo!
+  createPort(data: PortCreateInput!): Port!
+  createPortContingencyPlan(data: PortContingencyPlanCreateInput!): PortContingencyPlan!
+  createVessel(data: VesselCreateInput!): Vessel!
+  updateCargo(data: CargoUpdateInput!, where: CargoWhereUniqueInput!): Cargo
+  updatePort(data: PortUpdateInput!, where: PortWhereUniqueInput!): Port
+  updatePortContingencyPlan(data: PortContingencyPlanUpdateInput!, where: PortContingencyPlanWhereUniqueInput!): PortContingencyPlan
+  updateVessel(data: VesselUpdateInput!, where: VesselWhereUniqueInput!): Vessel
+  deleteCargo(where: CargoWhereUniqueInput!): Cargo
+  deletePort(where: PortWhereUniqueInput!): Port
+  deletePortContingencyPlan(where: PortContingencyPlanWhereUniqueInput!): PortContingencyPlan
+  deleteVessel(where: VesselWhereUniqueInput!): Vessel
+  upsertCargo(where: CargoWhereUniqueInput!, create: CargoCreateInput!, update: CargoUpdateInput!): Cargo!
+  upsertPort(where: PortWhereUniqueInput!, create: PortCreateInput!, update: PortUpdateInput!): Port!
+  upsertPortContingencyPlan(where: PortContingencyPlanWhereUniqueInput!, create: PortContingencyPlanCreateInput!, update: PortContingencyPlanUpdateInput!): PortContingencyPlan!
+  upsertVessel(where: VesselWhereUniqueInput!, create: VesselCreateInput!, update: VesselUpdateInput!): Vessel!
+  updateManyCargoes(data: CargoUpdateInput!, where: CargoWhereInput): BatchPayload!
+  updateManyPorts(data: PortUpdateInput!, where: PortWhereInput): BatchPayload!
+  updateManyPortContingencyPlans(data: PortContingencyPlanUpdateInput!, where: PortContingencyPlanWhereInput): BatchPayload!
+  updateManyVessels(data: VesselUpdateInput!, where: VesselWhereInput): BatchPayload!
+  deleteManyCargoes(where: CargoWhereInput): BatchPayload!
+  deleteManyPorts(where: PortWhereInput): BatchPayload!
+  deleteManyPortContingencyPlans(where: PortContingencyPlanWhereInput): BatchPayload!
+  deleteManyVessels(where: VesselWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Port implements Node {
+  id: ID!
+  name: String
+}
+
+"""A connection to a list of items."""
+type PortConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PortEdge]!
+  aggregate: AggregatePort!
+}
+
+type PortContingencyPlan implements Node {
+  id: ID!
+  name: String
+}
+
+"""A connection to a list of items."""
+type PortContingencyPlanConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PortContingencyPlanEdge]!
+  aggregate: AggregatePortContingencyPlan!
+}
+
+input PortContingencyPlanCreateInput {
+  name: String
+}
+
+"""An edge in a connection."""
+type PortContingencyPlanEdge {
+  """The item at the end of the edge."""
+  node: PortContingencyPlan!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum PortContingencyPlanOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type PortContingencyPlanPreviousValues {
+  id: ID!
+  name: String
+}
+
+type PortContingencyPlanSubscriptionPayload {
+  mutation: MutationType!
+  node: PortContingencyPlan
+  updatedFields: [String!]
+  previousValues: PortContingencyPlanPreviousValues
+}
+
+input PortContingencyPlanSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PortContingencyPlanSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PortContingencyPlanSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PortContingencyPlanSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: PortContingencyPlanWhereInput
+}
+
+input PortContingencyPlanUpdateInput {
+  name: String
+}
+
+input PortContingencyPlanWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PortContingencyPlanWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PortContingencyPlanWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PortContingencyPlanWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+}
+
+input PortContingencyPlanWhereUniqueInput {
+  id: ID
+}
+
+input PortCreateInput {
+  name: String
+}
+
+"""An edge in a connection."""
+type PortEdge {
+  """The item at the end of the edge."""
+  node: Port!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum PortOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type PortPreviousValues {
+  id: ID!
+  name: String
+}
+
+type PortSubscriptionPayload {
+  mutation: MutationType!
+  node: Port
+  updatedFields: [String!]
+  previousValues: PortPreviousValues
+}
+
+input PortSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PortSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PortSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PortSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: PortWhereInput
+}
+
+input PortUpdateInput {
+  name: String
+}
+
+input PortWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PortWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PortWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PortWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+}
+
+input PortWhereUniqueInput {
+  id: ID
+}
+
+type Query {
+  cargoes(where: CargoWhereInput, orderBy: CargoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Cargo]!
+  ports(where: PortWhereInput, orderBy: PortOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Port]!
+  portContingencyPlans(where: PortContingencyPlanWhereInput, orderBy: PortContingencyPlanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PortContingencyPlan]!
+  vessels(where: VesselWhereInput, orderBy: VesselOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vessel]!
+  cargo(where: CargoWhereUniqueInput!): Cargo
+  port(where: PortWhereUniqueInput!): Port
+  portContingencyPlan(where: PortContingencyPlanWhereUniqueInput!): PortContingencyPlan
+  vessel(where: VesselWhereUniqueInput!): Vessel
+  cargoesConnection(where: CargoWhereInput, orderBy: CargoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CargoConnection!
+  portsConnection(where: PortWhereInput, orderBy: PortOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PortConnection!
+  portContingencyPlansConnection(where: PortContingencyPlanWhereInput, orderBy: PortContingencyPlanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PortContingencyPlanConnection!
+  vesselsConnection(where: VesselWhereInput, orderBy: VesselOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VesselConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Subscription {
+  cargo(where: CargoSubscriptionWhereInput): CargoSubscriptionPayload
+  port(where: PortSubscriptionWhereInput): PortSubscriptionPayload
+  portContingencyPlan(where: PortContingencyPlanSubscriptionWhereInput): PortContingencyPlanSubscriptionPayload
+  vessel(where: VesselSubscriptionWhereInput): VesselSubscriptionPayload
+}
+
+type Vessel implements Node {
+  id: ID!
+  name: String
+}
+
+"""A connection to a list of items."""
+type VesselConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [VesselEdge]!
+  aggregate: AggregateVessel!
+}
+
+input VesselCreateInput {
+  name: String
+}
+
+"""An edge in a connection."""
+type VesselEdge {
+  """The item at the end of the edge."""
+  node: Vessel!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum VesselOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type VesselPreviousValues {
+  id: ID!
+  name: String
+}
+
+type VesselSubscriptionPayload {
+  mutation: MutationType!
+  node: Vessel
+  updatedFields: [String!]
+  previousValues: VesselPreviousValues
+}
+
+input VesselSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [VesselSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [VesselSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [VesselSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: VesselWhereInput
+}
+
+input VesselUpdateInput {
+  name: String
+}
+
+input VesselWhereInput {
+  """Logical AND on all given filters."""
+  AND: [VesselWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [VesselWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [VesselWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+}
+
+input VesselWhereUniqueInput {
+  id: ID
+}

@@ -202,7 +202,7 @@ type FieldValue {
   KIND: ID
 
   """List forms"""
-  l_ID: [ID]
+  l_IDENTITY: [ID]
   l_STRING: [String]
   l_INT: [Int]
   l_FLOAT: [Float]
@@ -228,7 +228,7 @@ input FieldValueInput {
   KIND: ID
 
   """List forms"""
-  l_ID: [ID]
+  l_IDENTITY: [ID]
   l_STRING: [String]
   l_INT: [Int]
   l_FLOAT: [Float]

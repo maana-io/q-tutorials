@@ -1,0 +1,4 @@
+type Atom {
+  id: ID! @unique
+}
+

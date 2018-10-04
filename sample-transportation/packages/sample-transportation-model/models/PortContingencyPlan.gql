@@ -1,0 +1,4 @@
+type PortContingencyPlan {
+  id: ID! @unique
+  name: String
+}

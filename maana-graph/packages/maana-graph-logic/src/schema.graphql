@@ -1,0 +1,33 @@
+# import VertexType, VertexSubtype, EdgeType from "./imports/io.maana.graph.model.graphql"
+# import Graph, Vertex, Edge from "./imports/io.maana.graph.model.graphql"
+
+type Query {
+  graphs: [Graph!]!
+  graph(id: ID!): Graph
+  vertex(id: ID!): Vertex
+  edge(id: ID!): Edge
+}
+
+type Mutation {
+  # Create a graph with an optional name
+  createGraph(name: String): Graph
+
+  # Create a vertex in a graph
+  createVertex(
+    graphId: ID!
+    title: String
+    x: Float
+    y: Float
+    type: VertexType
+    subtype: VertexSubtype
+  ): Vertex
+
+  # Create an edge between two vertices in a graph
+  createEdge(
+    graphId: ID!
+    sourceVertexId: ID!
+    targetVertexId: ID!
+    title: String
+    type: EdgeType
+  ): Edge
+}

@@ -1,0 +1,11 @@
+projects:
+  model:
+    schemaPath: pie.model.graphql
+    extensions:
+      endpoints:
+        default: "http://localhost:8052"
+  logic:
+    schemaPath: pie.logic.graphql
+    extensions:
+      endpoints:
+        default: "http://localhost:8053"

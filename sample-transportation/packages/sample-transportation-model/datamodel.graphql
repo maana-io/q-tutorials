@@ -1,0 +1,20 @@
+type Cargo {
+  id: ID! @unique
+  name: String
+}
+
+type Port {
+  id: ID! @unique
+  name: String
+}
+
+type PortContingencyPlan {
+  id: ID! @unique
+  name: String
+}
+
+type Vessel {
+  id: ID! @unique
+  name: String
+}
+

@@ -1,0 +1,11 @@
+projects:
+  model:
+    schemaPath: src/imports/io.maana.graph.model.graphql
+    extensions:
+      endpoints:
+        default: 'http://localhost:8052'
+  logic:
+    schemaPath: src/schema.graphql
+    extensions:
+      endpoints:
+        default: 'http://localhost:8053'

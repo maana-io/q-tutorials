@@ -1,0 +1,8 @@
+[
+  {
+    "id": "test-g00",
+    "name": "Test Graph #00",
+    "vertices": ["test-v00", "test-v01", "test-v02", "test-v03"],
+    "edges": ["test-e00", "test-e01"]
+  }
+]

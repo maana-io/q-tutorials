@@ -1,0 +1,71 @@
+{
+  "valueType": "relations",
+  "values": [
+    [
+      {
+        "_typeName": "Graph",
+        "id": "wuzc3iVSY3ndS6JarBPpCA",
+        "fieldName": "vertices"
+      },
+      {
+        "_typeName": "Vertex",
+        "id": "k/IyXYsd/wMBHTYcS4JtAw"
+      }
+    ],
+    [
+      {
+        "_typeName": "Graph",
+        "id": "wuzc3iVSY3ndS6JarBPpCA",
+        "fieldName": "vertices"
+      },
+      {
+        "_typeName": "Vertex",
+        "id": "haSFJEr/nmg48Wk7wISs+A"
+      }
+    ],
+    [
+      {
+        "_typeName": "Graph",
+        "id": "wuzc3iVSY3ndS6JarBPpCA",
+        "fieldName": "vertices"
+      },
+      {
+        "_typeName": "Vertex",
+        "id": "pr/Ysi8kVlvwaO9cavBwjQ"
+      }
+    ],
+    [
+      {
+        "_typeName": "Graph",
+        "id": "wuzc3iVSY3ndS6JarBPpCA",
+        "fieldName": "vertices"
+      },
+      {
+        "_typeName": "Vertex",
+        "id": "x+qpE/nSyfcZW9gaiLlFqg"
+      }
+    ],
+    [
+      {
+        "_typeName": "Graph",
+        "id": "wuzc3iVSY3ndS6JarBPpCA",
+        "fieldName": "edges"
+      },
+      {
+        "_typeName": "Edge",
+        "id": "fg8bxwZvKDcHlVGweAD9rg"
+      }
+    ],
+    [
+      {
+        "_typeName": "Graph",
+        "id": "wuzc3iVSY3ndS6JarBPpCA",
+        "fieldName": "edges"
+      },
+      {
+        "_typeName": "Edge",
+        "id": "kDNAlJmRo7lJSpoj20ht3A"
+      }
+    ]
+  ]
+}
