@@ -3,14 +3,6 @@
 The Field Classifier Service and Field Classifier Assistant are tools for setting strong types for columns of tabular data inside Maana.  A column of data might contain names of people, but has the column name "contact".  The field classifier can identify recommended classifications for this type of data and then the user can select a type to enforce its classification.  The strongly typed column is then ready to be used in services that only operate on specific types and/or be part of a larger logic and reasoning process.
 
 ## Field Classifier (Assistant) Inside the Platform
-<p><p>
-<img src="scaling.png"
-     alt="Time Scaling Plot"
-     style="height: 50%; width: 50%; align: center" /></p>
-    <em>Figure 1: Maana-Fact-Extract triples extraction tokens per second calculation.</em>
-</p>
-<p>
-
 
 To start with, upload a CSV file, in this case we use [operator](operator.csv).  Load the data into the platform.  Bring the Kind for the operator.csv file into the workspace by clicking the link on the bottom of operator.csv - the Kind will be called "OperatorCSV".  As soon as the CSV file is uploaded the field classifier is kicked off and classifications for each of the columns of the tabular data are produced.  Possible classifications will show up as links in the "OperatorCSV" kind.  Critically, the data has two interesting classifications, "Person" and "Organization" for the fields "contact" and "business". 
 <p><p><img src="upload.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
