@@ -1,0 +1,13 @@
+age,workclass,education,marital-status,race,sex,salary
+39,State-gov,Bachelors,Never-married,White,Male,<=50K
+50,Self-emp-not-inc,Bachelors,Married-civ-spouse,White,Male,<=50K
+38,Private,HS-grad,Divorced,White,Male,<=50K
+53,Private,11th,Married-civ-spouse,Black,Male,<=50K
+28,Private,Bachelors,Married-civ-spouse,Black,Female,<=50K
+37,Private,Masters,Married-civ-spouse,White,Female,<=50K
+49,Private,9th,Married-spouse-absent,Black,Female,<=50K
+52,Self-emp-not-inc,HS-grad,Married-civ-spouse,White,Male,>50K
+31,Private,Masters,Never-married,White,Female,>50K
+42,Private,Bachelors,Married-civ-spouse,White,Male,>50K
+37,Private,Some-college,Married-civ-spouse,Black,Male,>50K
+30,State-gov,Bachelors,Married-civ-spouse,Asian-Pac-Islander,Male,>50K
