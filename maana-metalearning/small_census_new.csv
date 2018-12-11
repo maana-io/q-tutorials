@@ -1,0 +1,4 @@
+age,workclass,education,marital-status,race,sex,salary
+39,State-gov,Bachelors,Never-married,White,Male
+50,Self-emp-not-inc,Bachelors,Married-civ-spouse,White,Male
+38,Private,HS-grad,Divorced,White,Male
