@@ -29,6 +29,36 @@ From the GraphiQL interface, use TrainClassifierKind mutation to train a classif
 In the above mutation, the kindID field is filled in with the id of kind "SmallCensusCSV". The user gives a model name, and identify label field, feature fields, candidate models and candidate preprocessors. The user also specifies to perform 2-fold cross validation for model selection, and perform 4 episodes of hyper-parameter sampling and 2 episodes of hyper-parameter search.
 
 
-To visualize the results, search for kind "Dataset", and drag it to the workspace.
+To visualize the results, search for kind "Dataset", and drag it to the workspace, then click the link at finalModel. The kind MachineLearningModel will show on the canvus. 
 
+<p><p><img src="machinelearning.png" alt="MachineLearningModels", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 4: Trained machine learning models</em>
+</p>
+
+From the dataview panel, it shows each pipeline that has been built and tested, including its model, features, preprocessors, time to learn, accuray, and the stage they are tested. Look for the pipeline where "saved" is "True": this is the final pipeline that is built as the best.
+
+
+<p><p><img src="selectedmodel.png" alt="Selected", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 5: Built model</em>
+</p>
+
+Following the link of features, preprocessor and labels you can see the kind that stores the detailed information:
+
+<p><p><img src="details.png" alt="Details", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 6: Detailed information in Kinds</em>
+</p>
+
+
+<p><p><img src="preprocessor.png" alt="Preprocessor", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 7: Preprocessor information in Kind</em>
+</p>
+
+<p><p><img src="featurizer.png" alt="Featurizer", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 8: Featurizer information in Kind</em>
+</p>
 
