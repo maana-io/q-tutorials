@@ -1,4 +1,4 @@
-# Maana Metalearning Service
+# Maana Metalearning: Build classifier and classify data
 
 Maana metalearning service is an automated machine learning service that builds machine learning pipelines for classification tasks under user's guidance. Given a kind, the user can specify feature fields and a label field, a decision space containing candidate featurizers, preprocessors and models. Metalearning service explores the decision space, builds up and tests pipelines, performs statistical analysis on their performances, and deliever insights to the user on the overall performances of each machine learning components, and the an overall best pipeline. The goal of metalearning service is to facilitate datascientists to quickly profile on data set, test their hypothesis and rapidly build new solutions.
 
