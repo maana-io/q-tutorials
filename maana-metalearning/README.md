@@ -21,17 +21,36 @@ To trigger metalearning service, open the GraphQL interface of metalearning by C
 <em>Figure 2: Open MetaLearning GraphQL interface from Inventory</em>
 </p>
 
-From the GraphiQL interface, use TrainClassifierKind mutation to train a classifier for SmallCensusCSV 
+From the GraphiQL interface, use TrainClassifierKind mutation to train a classifier for SmallCensusCSV
 
 <p><p><img src="train.png" alt="Train", style="height: 100%; width: 100%; align: center"/>
 </p>
 <em>Figure 3: Train Classifier from kind SmallCensusCSV</em>
 </p>
 
+```
+mutation smallcensus {
+  trainClassifierKind(input:{
+    accuracy:0.5,
+    kindId:"KindID",
+    modelName:"SmallCensusModel", # Must be unique, not previously used
+    labelField: "salary",
+    excludeFields: ["id"],
+    featureFields: ["age", "workclass", "education", "maritalStatus", "race", "sex"],
+    featureTypes: ["integer", "categorical", "categorical", "categorical", "categorical", "categorical"],
+    candidateModels: ["random_forest_classifier", "logistic_classifier"],
+    candidatePreprocessors: ["noop", "pca"],
+    folds:2,
+    modelSearchEpisodes:2,
+    modelProfilingEpisodes:4
+  })
+}
+```
+
 In the above mutation, the kindID field is filled in with the id of kind "SmallCensusCSV". The user gives a model name, and identify label field, feature fields, candidate models and candidate preprocessors. The user also specifies to perform 2-fold cross validation for model selection, and perform 4 episodes of hyper-parameter sampling and 2 episodes of hyper-parameter search.
 
 
-To visualize the results, search for kind "Dataset", and drag it to the workspace, then click the link at finalModel. The kind MachineLearningModel will show on the canvus. 
+To visualize the results, search for kind "Dataset", and drag it to the workspace, then click the link at finalModel. The kind MachineLearningModel will show on the canvus.
 
 <p><p><img src="machinelearning.png" alt="MachineLearningModels", style="height: 100%; width: 100%; align: center"/>
 </p>
