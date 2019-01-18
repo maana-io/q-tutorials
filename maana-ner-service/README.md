@@ -1,7 +1,7 @@
-# Maana Named Entity Recognition (NER) graphql service
+# Maana Named Entity Recognition (NER) service
 
 The Maana-NER-service is for identifying entities in text and identifying their location within that text.
-Maana-NET-service using two approaches:
+It using two approaches:
 
 - Stochastic method - Stanford CRF Classifier (Conditional Random Field: https://en.wikipedia.org/wiki/Conditional_random_field) and
 - Deterministic method - Tokens Regex: https://stanfordnlp.github.io/CoreNLP/tokensregex.html
@@ -39,13 +39,110 @@ This service is important as part of a pipeline where
 3.  The entities can be used as part of a pipeline in a larger pattern matching scheme - for example to identify phrases that have a person followed by a date (and then extract additional information using pattern based methods).
 4.  As a first step in an information extraction pipeline to help fill in tables.
 
-## How to use it? Examples of queries:
+## Environment
+
+The library of this service is built in java and uses the maven build tool. We currently use the following versions:
+
+```bash
+Apache Maven 3.5.2 (138edd61fd100ec658bfa2d307c43b76940a5d7d; 2017-10-18T00:58:13-07:00)
+Java version: 1.8.0_121, vendor: Oracle Corporation
+```
+
+The service might have problem with Java 9, so please try to use the same version as specified for development.
+Unlike java, we do not anticipate any problems with using a different maven version. But, using 3.5 is recommended.
+
+## Building the project
+
+you need maven, if you don't have it install it following steps in https://maven.apache.org/install.html.
+If you are in OSX land then you can try installing via Hombrew (http://brewformulas.org/Maven) as follows:
+
+```bash
+brew install maven
+```
+
+you can check if maven is installed correctly on your system as follows:
+
+```bash
+mvn -version
+```
+
+After installing Maven Run this command builds the java and installs the node modules:
+
+```bash
+./install.sh
+```
+
+## Running
+
+cd into the service directory and run this command to start the application
+
+```bash
+npm run disableAuth
+```
+
+This runs the endpoint in Eclipse Jetty webserver on port 9999.
+
+## With Docker
+
+Run the end to end tests with the command
+
+```bash
+docker-compose up --build --exit-code-from e2e
+```
+
+Bring up just the ner service
+
+```bash
+docker-compose up --build app
+```
+
+Run the artillery tests to determing throughput
+
+```bash
+docker-compose up --build performance
+```
+
+## Schema
+
+```javascript
+type Info {
+  id: ID!
+  name: String!
+  description: String
+}
+
+type EntityMention {
+  fromSpan: String!
+  fromOffset: String!
+  entityName: String!
+  surfaceForm: String!
+}
+
+type Query {
+  # information about the service
+  info: Info!
+  # extract entities from the provided source
+  extract(source: String!, modelURL: String): [EntityMention]
+  # extract entities from the many sources
+  extractBatch(sources: [String]!, modelURL: String):[[EntityMention]]
+  # detect if source text is surface form of entity
+  isSurfaceForm(source: String!, entityName: String!, modelURL: String): Boolean!
+  # returns the parsed entity name if the source text is exactly as entity with no additional text to the left or right of the entity
+  parse(source: String!, modelURL: String): String!
+}
+```
+
+## How to use it?
+
+To extract entities from text go to [http://localhost:9999](http://localhost:9999), which brings up the graphiql interface.
+
+## Example of queries
 
 ### Extract
 
 An example of "extract" query to run with default Model. It returns an array of entities.
 
-```
+```javascript
  query Extract {
    extract(sources: ["Reaming down from 6000ft to 8000ft to clear stuck pipe. John, please get that article on www.linkedin.com or https://google.com or 192.67.23.222 from file bla123bla.doc and itisme.jpg to me by 5:00PM on Jul 4th 2018 or 4:00 am on 01/09/12 would be ideal, actually. If you have any questions about \"Maana\" or 'Google' office at \"New York\" you can reach my associate at (012)-345-6789 or (230) 241 2422 or +1(345)876-7554 or associative@mail.com or &lt;abracadabra123@maana.io>. Send me $5,987.56 or £4,123.14 or € 100 by PayPal. My SSN is 456-23-0965 My coordinates are: 47.617640, -122.191905 or 47°37'03.5\"N 122°11'30.9\"W"]) {
     entityName
@@ -56,11 +153,168 @@ An example of "extract" query to run with default Model. It returns an array of 
  }
 ```
 
+and produces the output
+
+<details>
+<summary>
+
+# CLICK ME
+
+</summary>
+<p>
+
+```javascript
+{
+  "data": {
+    "extract": [
+      {
+        "entityName": "Number",
+        "surfaceForm": "6000ft to 8000ft",
+        "fromOffset": "18",
+        "fromSpan": "16"
+      },
+      {
+        "entityName": "Person",
+        "surfaceForm": "John",
+        "fromOffset": "56",
+        "fromSpan": "4"
+      },
+      {
+        "entityName": "URL",
+        "surfaceForm": "www.linkedin.com",
+        "fromOffset": "89",
+        "fromSpan": "16"
+      },
+      {
+        "entityName": "URL",
+        "surfaceForm": "https://google.com",
+        "fromOffset": "109",
+        "fromSpan": "18"
+      },
+      {
+        "entityName": "IpAddress",
+        "surfaceForm": "192.67.23.222",
+        "fromOffset": "131",
+        "fromSpan": "13"
+      },
+      {
+        "entityName": "URL",
+        "surfaceForm": "bla123bla.doc",
+        "fromOffset": "155",
+        "fromSpan": "13"
+      },
+      {
+        "entityName": "URL",
+        "surfaceForm": "itisme.jpg",
+        "fromOffset": "173",
+        "fromSpan": "10"
+      },
+      {
+        "entityName": "TimeKind",
+        "surfaceForm": "5:00PM on",
+        "fromOffset": "193",
+        "fromSpan": "9"
+      },
+      {
+        "entityName": "DateKind",
+        "surfaceForm": "Jul 4th 2018",
+        "fromOffset": "203",
+        "fromSpan": "12"
+      },
+      {
+        "entityName": "TimeKind",
+        "surfaceForm": "4:00 am on 01/09/12",
+        "fromOffset": "219",
+        "fromSpan": "19"
+      },
+      {
+        "entityName": "Organization",
+        "surfaceForm": "Google",
+        "fromOffset": "309",
+        "fromSpan": "6"
+      },
+      {
+        "entityName": "Location",
+        "surfaceForm": "New York",
+        "fromOffset": "328",
+        "fromSpan": "8"
+      },
+      {
+        "entityName": "PhoneNumber",
+        "surfaceForm": "-LRB-012-RRB--345-6789",
+        "fromOffset": "368",
+        "fromSpan": "14"
+      },
+      {
+        "entityName": "PhoneNumber",
+        "surfaceForm": "-LRB-230-RRB- 241 2422",
+        "fromOffset": "386",
+        "fromSpan": "14"
+      },
+      {
+        "entityName": "PhoneNumber",
+        "surfaceForm": "+1-LRB-345-RRB-876-7554",
+        "fromOffset": "404",
+        "fromSpan": "15"
+      },
+      {
+        "entityName": "Email",
+        "surfaceForm": "associative@mail.com",
+        "fromOffset": "423",
+        "fromSpan": "20"
+      },
+      {
+        "entityName": "Currency",
+        "surfaceForm": "$5,987.56",
+        "fromOffset": "485",
+        "fromSpan": "9"
+      },
+      {
+        "entityName": "Currency",
+        "surfaceForm": "#4,123.14",
+        "fromOffset": "498",
+        "fromSpan": "9"
+      },
+      {
+        "entityName": "Currency",
+        "surfaceForm": "$ 100",
+        "fromOffset": "511",
+        "fromSpan": "5"
+      },
+      {
+        "entityName": "Organization",
+        "surfaceForm": "PayPal",
+        "fromOffset": "520",
+        "fromSpan": "6"
+      },
+      {
+        "entityName": "SocialSecurityNumber",
+        "surfaceForm": "456-23-0965",
+        "fromOffset": "538",
+        "fromSpan": "11"
+      },
+      {
+        "entityName": "GeoCoordinate",
+        "surfaceForm": "47.617640, -122.191905",
+        "fromOffset": "570",
+        "fromSpan": "22"
+      },
+      {
+        "entityName": "GeoCoordinate",
+        "surfaceForm": "47°37'03.5``N 122°11'30.9``W",
+        "fromOffset": "596",
+        "fromSpan": "26"
+      }
+    ]
+  }
+}
+```
+
 ### Extract with customer Model or Token-Regex rules
 
 Example of extract query to run with customer model. It returns an array of entities.
 
-```
+```javascript
 query ExtractWithModelOrRegex {
   extract(
     source: "Daily update notification made to BSEE Houma District, Bobby Nelson.",
@@ -80,7 +334,7 @@ There is also a capability to use customer’s Token-Regex rules if specify path
 
 Example of "batch extract" query - it takes a list of source text and returns an array of array of entities, one array for each source.
 
-```
+```javascript
 query BatchExtract {
   extractBatch(
     sources: [
@@ -101,7 +355,7 @@ query BatchExtract {
 
 Example of "is surface form" query - returns true if a particular source is exactly a surface form of "entityName"
 
-```
+```javascript
 query IsSurfaceForm {
   isSurfaceForm (source: "Seattle", entityName: "Location")
 }
@@ -109,7 +363,7 @@ query IsSurfaceForm {
 
 ### Is Surface Form with customer Model
 
-```
+```javascript
 query IsSurfaceFormWithModel {
   isSurfaceForm (
     source: "BOEM",
@@ -126,7 +380,7 @@ Example of parse query:
 - returns the parsed entity name if the source text is exactly as entity with no additional text to the left or right of the entity,
 - otherwise return empty string.
 
-```
+```javascript
 query Parce {
   parse (
     source: "Forrest Gump",
