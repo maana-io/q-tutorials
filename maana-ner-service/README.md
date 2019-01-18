@@ -41,6 +41,10 @@ This service is important as part of a pipeline where
 
 ## Environment
 
+<details>
+<summary>click to expand</summary>
+<p>
+
 The library of this service is built in java and uses the maven build tool. We currently use the following versions:
 
 ```bash
@@ -51,7 +55,14 @@ Java version: 1.8.0_121, vendor: Oracle Corporation
 The service might have problem with Java 9, so please try to use the same version as specified for development.
 Unlike java, we do not anticipate any problems with using a different maven version. But, using 3.5 is recommended.
 
+</p>
+</details>
+
 ## Building the project
+
+<details>
+<summary>click to expand</summary>
+<p>
 
 you need maven, if you don't have it install it following steps in https://maven.apache.org/install.html.
 If you are in OSX land then you can try installing via Hombrew (http://brewformulas.org/Maven) as follows:
@@ -72,7 +83,14 @@ After installing Maven Run this command builds the java and installs the node mo
 ./install.sh
 ```
 
+</p>
+</details>
+
 ## Running
+
+<details>
+<summary>click to expand</summary>
+<p>
 
 cd into the service directory and run this command to start the application
 
@@ -82,7 +100,14 @@ npm run disableAuth
 
 This runs the endpoint in Eclipse Jetty webserver on port 9999.
 
+</p>
+</details>
+
 ## With Docker
+
+<details>
+<summary>click to expand</summary>
+<p>
 
 Run the end to end tests with the command
 
@@ -102,7 +127,14 @@ Run the artillery tests to determing throughput
 docker-compose up --build performance
 ```
 
+</p>
+</details>
+
 ## Schema
+
+<details>
+<summary>click to expand</summary>
+<p>
 
 ```javascript
 type Info {
@@ -132,6 +164,9 @@ type Query {
 }
 ```
 
+</p>
+</details>
+
 ## How to use it?
 
 To extract entities from text go to [http://localhost:9999](http://localhost:9999), which brings up the graphiql interface.
@@ -142,7 +177,7 @@ To extract entities from text go to [http://localhost:9999](http://localhost:999
 
 An example of "extract" query to run with default Model. It returns an array of entities.
 
-```python
+```javascript
  query Extract {
    extract(sources: ["Reaming down from 6000ft to 8000ft to clear stuck pipe. John, please get that article on www.linkedin.com or https://google.com or 192.67.23.222 from file bla123bla.doc and itisme.jpg to me by 5:00PM on Jul 4th 2018 or 4:00 am on 01/09/12 would be ideal, actually. If you have any questions about \"Maana\" or 'Google' office at \"New York\" you can reach my associate at (012)-345-6789 or (230) 241 2422 or +1(345)876-7554 or associative@mail.com or &lt;abracadabra123@maana.io>. Send me $5,987.56 or £4,123.14 or € 100 by PayPal. My SSN is 456-23-0965 My coordinates are: 47.617640, -122.191905 or 47°37'03.5\"N 122°11'30.9\"W"]) {
     entityName
@@ -153,10 +188,8 @@ An example of "extract" query to run with default Model. It returns an array of 
  }
 ```
 
-and produces the output
-
 <details>
-<summary>CLICK ME</summary>
+<summary>and produces the output</summary>
 <p>
 
 ```javascript
