@@ -39,134 +39,6 @@ This service is important as part of a pipeline where
 3.  The entities can be used as part of a pipeline in a larger pattern matching scheme - for example to identify phrases that have a person followed by a date (and then extract additional information using pattern based methods).
 4.  As a first step in an information extraction pipeline to help fill in tables.
 
-## Environment
-
-<details>
-<summary>click to expand</summary>
-<p>
-
-The library of this service is built in java and uses the maven build tool. We currently use the following versions:
-
-```bash
-Apache Maven 3.5.2 (138edd61fd100ec658bfa2d307c43b76940a5d7d; 2017-10-18T00:58:13-07:00)
-Java version: 1.8.0_121, vendor: Oracle Corporation
-```
-
-The service might have problem with Java 9, so please try to use the same version as specified for development.
-Unlike java, we do not anticipate any problems with using a different maven version. But, using 3.5 is recommended.
-
-</p>
-</details>
-
-## Building the project
-
-<details>
-<summary>click to expand</summary>
-<p>
-
-you need maven, if you don't have it install it following steps in https://maven.apache.org/install.html.
-If you are in OSX land then you can try installing via Hombrew (http://brewformulas.org/Maven) as follows:
-
-```bash
-brew install maven
-```
-
-you can check if maven is installed correctly on your system as follows:
-
-```bash
-mvn -version
-```
-
-After installing Maven Run this command builds the java and installs the node modules:
-
-```bash
-./install.sh
-```
-
-</p>
-</details>
-
-## Running
-
-<details>
-<summary>click to expand</summary>
-<p>
-
-cd into the service directory and run this command to start the application
-
-```bash
-npm run disableAuth
-```
-
-This runs the endpoint in Eclipse Jetty webserver on port 9999.
-
-</p>
-</details>
-
-## With Docker
-
-<details>
-<summary>click to expand</summary>
-<p>
-
-Run the end to end tests with the command
-
-```bash
-docker-compose up --build --exit-code-from e2e
-```
-
-Bring up just the ner service
-
-```bash
-docker-compose up --build app
-```
-
-Run the artillery tests to determing throughput
-
-```bash
-docker-compose up --build performance
-```
-
-</p>
-</details>
-
-## Schema
-
-<details>
-<summary>click to expand</summary>
-<p>
-
-```javascript
-type Info {
-  id: ID!
-  name: String!
-  description: String
-}
-
-type EntityMention {
-  fromSpan: String!
-  fromOffset: String!
-  entityName: String!
-  surfaceForm: String!
-}
-
-type Query {
-  # information about the service
-  info: Info!
-  # extract entities from the provided source
-  extract(source: String!, modelURL: String): [EntityMention]
-  # extract entities from the many sources
-  extractBatch(sources: [String]!, modelURL: String):[[EntityMention]]
-  # detect if source text is surface form of entity
-  isSurfaceForm(source: String!, entityName: String!, modelURL: String): Boolean!
-  # returns the parsed entity name if the source text is exactly as entity with no additional text to the left or right of the entity
-  parse(source: String!, modelURL: String): String!
-}
-```
-
-</p>
-</details>
-
 ## How to use it?
 
 To extract entities from text go to [http://localhost:9999](http://localhost:9999), which brings up the graphiql interface.
@@ -175,164 +47,162 @@ To extract entities from text go to [http://localhost:9999](http://localhost:999
 
 ### Extract
 
-An example of "extract" query to run with default Model. It returns an array of entities.
+Examples of "extract" query to run with default Model.
 
-```javascript
- query Extract {
-   extract(sources: ["Reaming down from 6000ft to 8000ft to clear stuck pipe. John, please get that article on www.linkedin.com or https://google.com or 192.67.23.222 from file bla123bla.doc and itisme.jpg to me by 5:00PM on Jul 4th 2018 or 4:00 am on 01/09/12 would be ideal, actually. If you have any questions about \"Maana\" or 'Google' office at \"New York\" you can reach my associate at (012)-345-6789 or (230) 241 2422 or +1(345)876-7554 or associative@mail.com or &lt;abracadabra123@maana.io>. Send me $5,987.56 or £4,123.14 or € 100 by PayPal. My SSN is 456-23-0965 My coordinates are: 47.617640, -122.191905 or 47°37'03.5\"N 122°11'30.9\"W"]) {
+```graphql
+query Extract {
+  extract(
+    sources: [
+      "John, please get that article on www.linkedin.com or https://google.com or 192.67.23.222 and files: bla123bla.doc and itisme.jpg and send to me by 5:00PM on Jul 4th 2018 or 4:00 am on 01/09/12 would be ideal, actually. If you have any questions about \"Microsoft\" or 'Google' office at \"New York\" you can reach my associate at (012)-345-6789 or (230) 241 2422 or +1(345)876-7554 or associative@mail.com or &lt;abracadabra123@maana.io>. Send me $5,987.56 or £4,123.14 or € 100 by PayPal. My SSN is 456-23-0965 My coordinates are: 47.617640, -122.191905 or 47°37'03.5\"N 122°11'30.9\"W"
+    ]
+  ) {
     entityName
     surfaceForm
     fromSpan
     fromOffset
-   }
- }
+  }
+}
 ```
 
 <details>
-<summary>and produces the output</summary>
+<summary>and produces the output (click to expand)</summary>
 <p>
 
-```javascript
+```graphql
 {
   "data": {
     "extract": [
       {
-        "entityName": "Number",
-        "surfaceForm": "6000ft to 8000ft",
-        "fromOffset": "18",
-        "fromSpan": "16"
-      },
-      {
         "entityName": "Person",
         "surfaceForm": "John",
-        "fromOffset": "56",
-        "fromSpan": "4"
+        "fromSpan": "4",
+        "fromOffset": "0"
       },
       {
         "entityName": "URL",
         "surfaceForm": "www.linkedin.com",
-        "fromOffset": "89",
-        "fromSpan": "16"
+        "fromSpan": "16",
+        "fromOffset": "33"
       },
       {
         "entityName": "URL",
         "surfaceForm": "https://google.com",
-        "fromOffset": "109",
-        "fromSpan": "18"
+        "fromSpan": "18",
+        "fromOffset": "53"
       },
       {
         "entityName": "IpAddress",
         "surfaceForm": "192.67.23.222",
-        "fromOffset": "131",
-        "fromSpan": "13"
-      },
-      {
-        "entityName": "URL",
-        "surfaceForm": "bla123bla.doc",
-        "fromOffset": "155",
-        "fromSpan": "13"
-      },
-      {
-        "entityName": "URL",
-        "surfaceForm": "itisme.jpg",
-        "fromOffset": "173",
-        "fromSpan": "10"
+        "fromSpan": "13",
+        "fromOffset": "75"
       },
       {
         "entityName": "TimeKind",
         "surfaceForm": "5:00PM on",
-        "fromOffset": "193",
-        "fromSpan": "9"
+        "fromSpan": "9",
+        "fromOffset": "147"
       },
       {
         "entityName": "DateKind",
         "surfaceForm": "Jul 4th 2018",
-        "fromOffset": "203",
-        "fromSpan": "12"
+        "fromSpan": "12",
+        "fromOffset": "157"
       },
       {
         "entityName": "TimeKind",
-        "surfaceForm": "4:00 am on 01/09/12",
-        "fromOffset": "219",
-        "fromSpan": "19"
+        "surfaceForm": "4:00 am on",
+        "fromSpan": "10",
+        "fromOffset": "173"
+      },
+      {
+        "entityName": "DateKind",
+        "surfaceForm": "01/09/12",
+        "fromSpan": "8",
+        "fromOffset": "184"
+      },
+      {
+        "entityName": "Organization",
+        "surfaceForm": "Microsoft",
+        "fromSpan": "9",
+        "fromOffset": "252"
       },
       {
         "entityName": "Organization",
         "surfaceForm": "Google",
-        "fromOffset": "309",
-        "fromSpan": "6"
+        "fromSpan": "6",
+        "fromOffset": "267"
       },
       {
         "entityName": "Location",
         "surfaceForm": "New York",
-        "fromOffset": "328",
-        "fromSpan": "8"
+        "fromSpan": "8",
+        "fromOffset": "286"
       },
       {
         "entityName": "PhoneNumber",
-        "surfaceForm": "-LRB-012-RRB--345-6789",
-        "fromOffset": "368",
-        "fromSpan": "14"
+        "surfaceForm": "(012)-345-6789",
+        "fromSpan": "14",
+        "fromOffset": "326"
       },
       {
         "entityName": "PhoneNumber",
-        "surfaceForm": "-LRB-230-RRB- 241 2422",
-        "fromOffset": "386",
-        "fromSpan": "14"
+        "surfaceForm": "(230) 241 2422",
+        "fromSpan": "14",
+        "fromOffset": "344"
       },
       {
         "entityName": "PhoneNumber",
-        "surfaceForm": "+1-LRB-345-RRB-876-7554",
-        "fromOffset": "404",
-        "fromSpan": "15"
+        "surfaceForm": "+1(345)876-7554",
+        "fromSpan": "15",
+        "fromOffset": "362"
       },
       {
         "entityName": "Email",
         "surfaceForm": "associative@mail.com",
-        "fromOffset": "423",
-        "fromSpan": "20"
+        "fromSpan": "20",
+        "fromOffset": "381"
       },
       {
         "entityName": "Currency",
         "surfaceForm": "$5,987.56",
-        "fromOffset": "485",
-        "fromSpan": "9"
+        "fromSpan": "9",
+        "fromOffset": "443"
       },
       {
         "entityName": "Currency",
-        "surfaceForm": "#4,123.14",
-        "fromOffset": "498",
-        "fromSpan": "9"
+        "surfaceForm": "£4,123.14",
+        "fromSpan": "9",
+        "fromOffset": "456"
       },
       {
         "entityName": "Currency",
-        "surfaceForm": "$ 100",
-        "fromOffset": "511",
-        "fromSpan": "5"
+        "surfaceForm": "€ 100",
+        "fromSpan": "5",
+        "fromOffset": "469"
       },
       {
         "entityName": "Organization",
         "surfaceForm": "PayPal",
-        "fromOffset": "520",
-        "fromSpan": "6"
+        "fromSpan": "6",
+        "fromOffset": "478"
       },
       {
         "entityName": "SocialSecurityNumber",
         "surfaceForm": "456-23-0965",
-        "fromOffset": "538",
-        "fromSpan": "11"
+        "fromSpan": "11",
+        "fromOffset": "496"
       },
       {
         "entityName": "GeoCoordinate",
         "surfaceForm": "47.617640, -122.191905",
-        "fromOffset": "570",
-        "fromSpan": "22"
+        "fromSpan": "22",
+        "fromOffset": "528"
       },
       {
         "entityName": "GeoCoordinate",
-        "surfaceForm": "47°37'03.5``N 122°11'30.9``W",
-        "fromOffset": "596",
-        "fromSpan": "26"
+        "surfaceForm": "47°37'03.5\"N 122°11'30.9\"W",
+        "fromSpan": "26",
+        "fromOffset": "554"
       }
     ]
   }
@@ -366,13 +236,13 @@ There is also a capability to use customer’s Token-Regex rules if specify path
 
 Example of "batch extract" query - it takes a list of source text and returns an array of array of entities, one array for each source.
 
-```javascript
+```graphql
 query BatchExtract {
   extractBatch(
     sources: [
-      "Daily update notification made to BSEE Houma District, Bobby Nelson.",
+      "Daily update notification made to BSEE Houma District, Bobby Nelson."
       "David Stanley lives in Lake Charles and works for MMS."
-    ],
+    ]
     modelURL: "here/may/be/a/path/or/URL/to/some/awesome/.../crf_model.ser.gz"
   ) {
     fromSpan
@@ -387,19 +257,19 @@ query BatchExtract {
 
 Example of "is surface form" query - returns true if a particular source is exactly a surface form of "entityName"
 
-```javascript
+```graphql
 query IsSurfaceForm {
-  isSurfaceForm (source: "Seattle", entityName: "Location")
+  isSurfaceForm(source: "Seattle", entityName: "Location")
 }
 ```
 
 ### Is Surface Form with customer Model
 
-```javascript
+```graphql
 query IsSurfaceFormWithModel {
-  isSurfaceForm (
-    source: "BOEM",
-    entityName: "Organization",
+  isSurfaceForm(
+    source: "BOEM"
+    entityName: "Organization"
     modelURL: "path/or/URL/to/.../company_crf_model.ser.gz"
   )
 }
@@ -412,12 +282,9 @@ Example of parse query:
 - returns the parsed entity name if the source text is exactly as entity with no additional text to the left or right of the entity,
 - otherwise return empty string.
 
-```javascript
+```graphql
 query Parce {
-  parse (
-    source: "Forrest Gump",
-    modelURL: "path/or/URL/to/crf_model.ser.gz"
-  )
+  parse(source: "Forrest Gump", modelURL: "path/or/URL/to/crf_model.ser.gz")
 }
 ```
 
