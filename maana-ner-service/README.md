@@ -158,7 +158,7 @@ and produces the output
 <details>
 <summary>
 
-# CLICK ME
+#### CLICK ME
 
 </summary>
 <p>
@@ -309,6 +309,9 @@ and produces the output
   }
 }
 ```
+
+</p>
+</details>
 
 ### Extract with customer Model or Token-Regex rules
 
