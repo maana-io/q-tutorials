@@ -39,11 +39,7 @@ This service is important as part of a pipeline where
 3.  The entities can be used as part of a pipeline in a larger pattern matching scheme - for example to identify phrases that have a person followed by a date (and then extract additional information using pattern based methods).
 4.  As a first step in an information extraction pipeline to help fill in tables.
 
-## How to use it?
-
-To extract entities from text go to [http://localhost:9999](http://localhost:9999), which brings up the graphiql interface.
-
-## Example of queries
+## How to use it? Example of queries
 
 ### Extract
 
@@ -72,7 +68,7 @@ query Extract {
 ```
 
 <details>
-<summary>click to expand output results</summary>
+ * <summary>click to expand output results</summary>
 <p>
 
 ```graphql
