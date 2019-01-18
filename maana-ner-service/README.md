@@ -65,7 +65,7 @@ query Extract {
 ```
 
 <details>
-<summary><font face="verdana" color="green">and produces the output (click to expand)</font></summary>
+<summary><span style="color:green">and produces the output (click to expand)</span></summary>
 <p>
 
 ```graphql
