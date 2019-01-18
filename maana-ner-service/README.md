@@ -65,7 +65,7 @@ query Extract {
 ```
 
 <details>
-<summary>and produces the output (click to expand)</summary>
+<summary><font face="verdana" color="green">and produces the output (click to expand)</font></summary>
 <p>
 
 ```graphql
@@ -216,10 +216,10 @@ query Extract {
 
 Example of extract query to run with customer model. It returns an array of entities.
 
-```javascript
+```graphql
 query ExtractWithModelOrRegex {
   extract(
-    source: "Daily update notification made to BSEE Houma District, Bobby Nelson.",
+    source: "Daily update notification made to BSEE Houma District, Bobby Nelson."
     modelURL: "path/or/URL/to/.../crf_model.ser.gz"
   ) {
     fromSpan
