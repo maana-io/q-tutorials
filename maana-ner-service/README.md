@@ -72,7 +72,7 @@ query Extract {
 ```
 
 <details>
-<summary>and produces the output (click to expand)</summary>
+<summary>click to expand output results</summary>
 <p>
 
 ```graphql
@@ -237,6 +237,40 @@ query ExtractWithModelOrRegex {
 }
 ```
 
+<details>
+<summary>click to expand output results</summary>
+<p>
+
+```graphql
+{
+  "data": {
+    "extract": [
+      {
+        "entityName": "Organization",
+        "surfaceForm": "BSEE",
+        "fromSpan": "4",
+        "fromOffset": "34"
+      },
+      {
+        "entityName": "Location",
+        "surfaceForm": "Houma District",
+        "fromSpan": "14",
+        "fromOffset": "39"
+      },
+      {
+        "entityName": "Person",
+        "surfaceForm": "Bobby Nelson",
+        "fromSpan": "12",
+        "fromOffset": "55"
+      }
+    ]
+  }
+}
+```
+
+</p>
+</details>
+
 There is also a capability to use customer’s Token-Regex rules if specify path to Regex.rules in modelURL parameter.
 
 ### Batch Extract
@@ -247,7 +281,7 @@ Example of "batch extract" query - it takes a list of source text and returns an
 query BatchExtract {
   extractBatch(
     sources: [
-      "Daily update notification made to BSEE Houma District, Bobby Nelson."
+      "Received verbal approval from Casey Kavanaugh (BSEE Houma District) on 10/8/12 @ 2:01 pm"
       "David Stanley lives in Lake Charles and works for MMS."
     ]
     modelURL: "here/may/be/a/path/or/URL/to/some/awesome/.../crf_model.ser.gz"
@@ -260,6 +294,74 @@ query BatchExtract {
 }
 ```
 
+<details>
+<summary>click to expand output results</summary>
+<p>
+
+```graphql
+{
+  "data": {
+    "extractBatch": [
+      [
+        {
+          "entityName": "Person",
+          "surfaceForm": "Casey Kavanaugh",
+          "fromSpan": "15",
+          "fromOffset": "30"
+        },
+        {
+          "entityName": "Organization",
+          "surfaceForm": "BSEE",
+          "fromSpan": "4",
+          "fromOffset": "47"
+        },
+        {
+          "entityName": "Location",
+          "surfaceForm": "Houma District",
+          "fromSpan": "14",
+          "fromOffset": "52"
+        },
+        {
+          "entityName": "DateKind",
+          "surfaceForm": "10/8/12",
+          "fromSpan": "7",
+          "fromOffset": "71"
+        },
+        {
+          "entityName": "TimeKind",
+          "surfaceForm": "2:01 pm",
+          "fromSpan": "7",
+          "fromOffset": "81"
+        }
+      ],
+      [
+        {
+          "entityName": "Person",
+          "surfaceForm": "David Stanley",
+          "fromSpan": "13",
+          "fromOffset": "0"
+        },
+        {
+          "entityName": "Location",
+          "surfaceForm": "Lake Charles",
+          "fromSpan": "12",
+          "fromOffset": "23"
+        },
+        {
+          "entityName": "Organization",
+          "surfaceForm": "MMS",
+          "fromSpan": "3",
+          "fromOffset": "50"
+        }
+      ]
+    ]
+  }
+}
+```
+
+</p>
+</details>
+
 ### Is Surface Form
 
 Example of "is surface form" query - returns true if a particular source is exactly a surface form of "entityName"
@@ -269,6 +371,21 @@ query IsSurfaceForm {
   isSurfaceForm(source: "Seattle", entityName: "Location")
 }
 ```
+
+<details>
+<summary>click to expand output results</summary>
+<p>
+
+```graphql
+{
+  "data": {
+    "isSurfaceForm": true
+  }
+}
+```
+
+</p>
+</details>
 
 ### Is Surface Form with customer Model
 
@@ -282,6 +399,21 @@ query IsSurfaceFormWithModel {
 }
 ```
 
+<details>
+<summary>click to expand output results</summary>
+<p>
+
+```graphql
+{
+  "data": {
+    "isSurfaceForm": true
+  }
+}
+```
+
+</p>
+</details>
+
 ### Parse
 
 Example of parse query:
@@ -294,6 +426,45 @@ query Parce {
   parse(source: "Forrest Gump", modelURL: "path/or/URL/to/crf_model.ser.gz")
 }
 ```
+
+<details>
+<summary>click to expand output results</summary>
+<p>
+
+```graphql
+{
+  "data": {
+    "parse": "Forrest Gump"
+  }
+}
+```
+
+</p>
+</details>
+
+```graphql
+query Parce {
+  parse(
+    source: "I visited my friend Forrest Gump"
+    modelURL: "path/or/URL/to/crf_model.ser.gz"
+  )
+}
+```
+
+<details>
+<summary>click to expand output results</summary>
+<p>
+
+```graphql
+{
+  "data": {
+    "parse": ""
+  }
+}
+```
+
+</p>
+</details>
 
 ## Accuracy Measurement
 
