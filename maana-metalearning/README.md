@@ -92,6 +92,15 @@ Using mutation ClassifyInstance, the user can use a trained model to classify in
 <em>Figure 9: Classify instance</em>
 </p>
 
+```
+mutation classify {
+  classifyInstance(input: {
+    trainedModelId: "SmallCensusModel",
+    data:["{\r\n  \"age\": \"39\",\r\n  \"workclass\":\" State-gov\",\r\n  \"fnlwgt\":\" 77516\",\r\n  \"education\":\" Bachelors\",\r\n\t\"educationnum\":\" 13\",\r\n  \"maritalstatus\":\" Never-married\",\r\n  \"occupation\":\" Adm-clerical\",\r\n  \"relationship\":\" Not-in-family\",\r\n  \"race\":\" White\",\r\n  \"sex\":\" Male\",\r\n  \"capitalgain\":\" 2174\",\r\n  \"capitalloss\":\" 0\",\r\n  \"hoursperweek\":\" 40\",\r\n  \"nativecountry\":\" United-States\"\r\n}"]
+  })
+}
+```
+
 ### Classify Kind
 
 Using mutation ClassifyKind, the user can use a trained model to classify a kind and make prediction to be a new column. To do this, drag csv file [small_census_new](small_census_new.csv) to your workspace. This csv file contains all feature fields of smallcensus, but there is no field for salary. After the CSV file is loaded to workspace, click the link to the kind small_census_newcsv and preview the data
@@ -107,6 +116,19 @@ Now use the following mutation
 </p>
 <em>Figure 11: Classify Kind</em>
 </p>
+
+```
+mutation classify
+{
+  classifyKind(input:
+  {
+    trainedModelId:"SmallCensusModel",
+    fromKindId:"<insert kind id>",
+    fromInstanceIdentifierFieldName:"salary"
+  }
+  )
+}
+```
 
 Now go back to the workspace, a new field "salary" is added to small_census_newcsv kind with the classification results
 
