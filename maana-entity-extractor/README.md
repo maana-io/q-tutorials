@@ -1,7 +1,7 @@
 # Maana Entity Extractor
 
 The entity extractor calls the NER service, but allows the user to specify a kind as input.  The results are stored in kinds and links.
-The following mutation uses extractAndLink to both extract, store data and create links, extractAndLink.  First upload a csv file to maana (in this case [DrillingReport.csv](DrillingReport.csv))  Record the kindId for the created kind and we will compute the entities in the "comment" field.  Run the below extraction. 
+The following mutation uses extractAndLink to both extract, store data and create links.  First upload a csv file to maana (in this case [DrillingReport.csv](DrillingReport.csv))  Record the kindId for the created kind and we will compute the entities in the "comment" field.  Run the below extraction. 
 
 ```
 mutation {
