@@ -1,8 +1,8 @@
 # Maana Fact Recognition Bot
-The Fact Recognition Bot uses the Fact Recognition service to extract facts from kinds and store them in Maana.  The simplest way to apply information extraction is to use the mutation extractTriples and apply it to a kindId and a fieldName.
+The Fact Recognition Bot uses the Fact Recognition service to extract facts from kinds and store them in Maana.  The simplest way to apply information extraction is to use the mutation extractTriples and apply it to a kindId and a fieldName.  In this case, lets apply triple extraction to the file [WellRemarks.csv](WellRemarks.csv)
 
 ```graphql
-mutation { extractTriples(kindId : "dc657179-3ad2-4400-a9f9-a93348072daf", fieldName : "Textremark") }
+mutation { extractTriples(kindId : "dc657179-3ad2-4400-a9f9-a93348072daf", fieldName : "COMMENTS") }
 ```
 
 The triples are extracted from the kind specified by 'kindId' in the provided fieldName and then stored in the kind 'PatternMatchResult'
@@ -88,7 +88,7 @@ In the second case instead of an example, mapping and storageKind a "exampleKind
 ```graphql
 extractByExampleKind(kindId: ID, fieldId: ID, exampleKindId: ID, kindName: String, fieldName: String, exampleKindName: String): [ID]
 ```
-In order to experiment with these tools, first upload the file simpleFacts.csv into Maana and store the Id of the associated Kind it creates.  Next, create a kind to store the results in, name this kind "PurchaseEvent" and it should have the schema "{name : "STRING", object : "STRING", price : "STRING", location : "STRING"}. 
+In order to experiment with these tools, first upload the file [simpleFacts.csv](simpleFacts.csv) into Maana and store the Id of the associated Kind it creates.  Next, create a kind to store the results in, name this kind "PurchaseEvent" and it should have the schema "{name : "STRING", object : "STRING", price : "STRING", location : "STRING"}. 
 
 mutation 1
 With those two kinds created we can perform the first query and see the results - below the kindId should be the Id for "SimplefactsCSV" and the storageKindId should be the id for "PurchaseEvent".  In this query, the mapping is specified as an list of name/value graphql objects.
