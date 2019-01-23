@@ -67,8 +67,8 @@ query Extract {
 }
 ```
 
-<details>
- * <summary>click to expand output results</summary>
+<details style="color:green">
+<summary>click to expand output results</summary>
 <p>
 
 ```graphql
@@ -218,12 +218,12 @@ query Extract {
 ### Extract with customer Model or Token-Regex rules
 
 Example of extract query to run with customer model. It returns an array of entities.
+You can drag & drop you crf model file to Maana, copy url, uncomment model URL and paste into query.
 
 ```graphql
 query ExtractWithModelOrRegex {
   extract(
-    source: "Daily update notification made to BSEE Houma District, Bobby Nelson."
-    modelURL: "path/or/URL/to/.../crf_model.ser.gz"
+    source: "Daily update notification made to BSEE Houma District, Bobby Nelson." #, modelURL: "http://.../your_awesome_crf_model.ser.gz"
   ) {
     fromSpan
     fromOffset
@@ -233,7 +233,7 @@ query ExtractWithModelOrRegex {
 }
 ```
 
-<details>
+<details style="color:green">
 <summary>click to expand output results</summary>
 <p>
 
@@ -279,8 +279,7 @@ query BatchExtract {
     sources: [
       "Received verbal approval from Casey Kavanaugh (BSEE Houma District) on 10/8/12 @ 2:01 pm"
       "David Stanley lives in Lake Charles and works for MMS."
-    ]
-    modelURL: "here/may/be/a/path/or/URL/to/some/awesome/.../crf_model.ser.gz"
+    ] #, modelURL: "http://.../your_awesome_crf_model.ser.gz"
   ) {
     fromSpan
     fromOffset
@@ -290,7 +289,7 @@ query BatchExtract {
 }
 ```
 
-<details>
+<details style="color:green">
 <summary>click to expand output results</summary>
 <p>
 
@@ -368,7 +367,7 @@ query IsSurfaceForm {
 }
 ```
 
-<details>
+<details style="color:green">
 <summary>click to expand output results</summary>
 <p>
 
@@ -390,12 +389,12 @@ query IsSurfaceFormWithModel {
   isSurfaceForm(
     source: "BOEM"
     entityName: "Organization"
-    modelURL: "path/or/URL/to/.../company_crf_model.ser.gz"
+    #, modelURL: "http://.../your_awesome_crf_model.ser.gz"
   )
 }
 ```
 
-<details>
+<details style="color:green">
 <summary>click to expand output results</summary>
 <p>
 
@@ -419,11 +418,14 @@ Example of parse query:
 
 ```graphql
 query Parce {
-  parse(source: "Forrest Gump", modelURL: "path/or/URL/to/crf_model.ser.gz")
+  parse(
+    source: "Forrest Gump"
+    #, modelURL: "http://.../your_awesome_crf_model.ser.gz"
+  )
 }
 ```
 
-<details>
+<details style="color:green">
 <summary>click to expand output results</summary>
 <p>
 
@@ -442,12 +444,12 @@ query Parce {
 query Parce {
   parse(
     source: "I visited my friend Forrest Gump"
-    modelURL: "path/or/URL/to/crf_model.ser.gz"
+    #, modelURL: "http://.../your_awesome_crf_model.ser.gz"
   )
 }
 ```
 
-<details>
+<details style="color:green">
 <summary>click to expand output results</summary>
 <p>
 
