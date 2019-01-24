@@ -7,6 +7,10 @@ You may want to use these services if have unstructured text and want to extract
 
 ## How do you run/invoke it?
 extractTriples extracts relations from the given string.  For example "Alex bought a bike" has subject "Alex", object "bike" and action "bought".  The query below extracts the relation "Alex","bought","bike"
+<p><p><img src="ExtractTriplesFunction.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
+</p>
+<em>Figure 4: extractTriples query run in the function graph.</em>
+</p>
 
 ```graphql
 query {
@@ -44,6 +48,10 @@ with result
 }
 ```
 extractByPattern applies a filter on top of extractTriples.  In the example below the patterns list is used to only return triples (subject, action, object) that match the given pattern class.  In the query below  the pattern to match is {predicateLemmas : ["purchase"], subjectEntityPatterns : ["ANY"], objectEntityPatterns : ["ANY"]} which is a filter that will match an action similar to "purchase", in this case "bought" and then match any subject and object. 
+<p><p><img src="ExtractByPattern.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
+</p>
+<em>Figure 4: extractByPattern query run in the function graph.</em>
+</p>
 
 ```graphql
 query {
@@ -94,6 +102,10 @@ with result
 }
 ```
 extractByExample uses an example sentence - computes the various triples within that sentence and then uses that as a pattern.  The pattern is applied to the given "text" and returns matches if they are found.  In the example below, the query will match "John" to "Larry", "went" to "goes", "safeway" ot "gerks", "pizza" to "bike" and "Lynwood" to "Issaquah".
+<p><p><img src="ExtractByExample.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
+</p>
+<em>Figure 4: extractByExample query run in the function graph.</em>
+</p>
 
 ```graphql
 query {
