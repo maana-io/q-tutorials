@@ -1,6 +1,6 @@
-# Maana Field Classifier and Field Classifier Assistant
+# Maana Field Classifier Assistant
 
-The Field Classifier Service and Field Classifier Assistant are tools for setting strong types for columns of tabular data inside Maana.  A column of data might contain names of people, but has the column name "contact".  The field classifier can identify recommended classifications for this type of data and then the user can select a type to enforce its classification.  The strongly typed column is then ready to be used in services that only operate on specific types and/or be part of a larger logic and reasoning process.
+The Field Classifier Service and Field Classifier Assistant are tools for setting strong types for columns of tabular data inside Maana.  A column of data might contain names of people, but has the column name "contact".  The field classifier can identify recommended classifications for this type of data and then the user can select a type to enforce its classification.  The strongly typed column is then ready to be used in services that only operate on specific types and/or be part of a larger logic and reasoning process.  The Field Classifier Assistant provides a user interface to help simplify the user experience of some aspects of the Field Classifier service.
 
 ## Field Classifier (Assistant) Inside the Platform
 
