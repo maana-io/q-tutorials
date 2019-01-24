@@ -486,9 +486,8 @@ Drag & drop 'extract' function. On the canvas you'll see new Kind - Extract func
 
 Click on 'triangle in circle' at the bottom of thin vertical bar on the right (see Figure 3).
 
-Type you text into 'source' field.
-As an option you can define CRF Model by typing modelURL and marked check box.
-But before it you nedd drag & drop your CRF Model to canvas and copy URL (on the right).
+- Type you text into 'source' field.
+- As an option you can define CRF Model by typing modelURL and marked check box. But before it you nedd drag & drop your CRF Model to canvas and copy URL (on the right).
 
 <p><p><img src="source.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
 </p>
@@ -504,12 +503,12 @@ You will see the results (extracted entities) in the bottom section.
 
 ### isSurfaceForm
 
-Drag & drop 'isSurfaceForm' function. On the canvas you'll see new Kind - isSurfaceForm function Kind.
-Click on 'triangle in circle' at the bottom of thin vertical bar on the right.
-Type your entity in 'source' field.
-Type expected entity name in 'entityName' field (see all entity names in paragraph "Detected Entities" in this tutorial above).
-Define 'modelURL' if you want to.
-Click 'RUN' button. See results in the bottom section.
+- Drag & drop 'isSurfaceForm' function. On the canvas you'll see new Kind - isSurfaceForm function Kind.
+- Click on 'triangle in circle' at the bottom of thin vertical bar on the right.
+- Type your entity in 'source' field.
+- Type expected entity name in 'entityName' field (see all entity names in paragraph "Detected Entities" in this tutorial above).
+- Define 'modelURL' if you want to.
+- Click 'RUN' button. See results in the bottom section.
 
 <p><p><img src="isSurfaceForm.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
 </p>
@@ -522,11 +521,11 @@ Click 'RUN' button. See results in the bottom section.
 
 ### parse
 
-Drag & drop 'parse' function. On the canvas you'll see new Kind - parse function Kind.
-Click on 'triangle in circle' at the bottom of thin vertical bar on the right.
-Type your entity in 'source' field.
-Define 'modelURL' if you want to.
-Click 'RUN' button. See results in the bottom section.
+- Drag & drop 'parse' function. On the canvas you'll see new Kind - parse function Kind.
+- Click on 'triangle in circle' at the bottom of thin vertical bar on the right.
+- Type your entity in 'source' field.
+- Define 'modelURL' if you want to.
+- Click 'RUN' button. See results in the bottom section.
 
 <p><p><img src="parse.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
 </p>
