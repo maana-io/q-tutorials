@@ -417,7 +417,7 @@ Example of parse query:
 - otherwise return empty string.
 
 ```graphql
-query Parce {
+query Parse {
   parse(
     source: "Forrest Gump"
     #, modelURL: "http://.../your_awesome_crf_model.ser.gz"
@@ -441,7 +441,7 @@ query Parce {
 </details>
 
 ```graphql
-query Parce {
+query Parse {
   parse(
     source: "I visited my friend Forrest Gump"
     #, modelURL: "http://.../your_awesome_crf_model.ser.gz"
