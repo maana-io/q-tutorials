@@ -464,6 +464,44 @@ query Parce {
 </p>
 </details>
 
+## Using service functions with Maana
+
+Create new Workspace and expand 'Inventory' (bottom left)
+
+<p><p><img src="inventory.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 1: Expend 'Inventory': 'Services' -> 'Maana Natural Language Processing'</em>
+</p>
+
+Then you can drag & drop any service function to you workspace canvas:
+
+### extract
+
+Drag & drop 'extract' function. On the canvas you'll see Extract function Kind.
+
+<p><p><img src="extractKind.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 2: Extract function Kind.</em>
+</p>
+
+Click on 'triangle in circle' at the bottom of thin vertical bar on the right (see Figure 3).
+
+Type you text into 'source' field.
+As an option you can define CRF Model by typing modelURL and marked check box.
+But before it you nedd drag & drop your CRF Model to canvas and copy URL (on the right).
+
+<p><p><img src="source.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 3: To extract entities click 'RUN' button.</em>
+</p>
+
+You will see the results (extracted entities) in the bottom.
+
+<p><p><img src="results1.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 4: Results of extraction (click to expand blue triangles).</em>
+</p>
+
 ## Accuracy Measurement
 
 To measure an accuracy of Maana-NER-service with default Stanford CRF model we used sentences from oil & gas log dataset of "Bureau of Ocean Energy Management" (BOEM): https://www.boem.gov/.
