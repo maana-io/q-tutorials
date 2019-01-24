@@ -119,8 +119,8 @@ mutation e {
 addexampleContainer(input: { example: "Carl bought a fish for 5 dollars at the store.", mapping : "{\"name\" : \"Carl\", \"object\" : \"fish\", \"price\" : \"5 dollars\", \"location\" : \"store\"}", required : ["name","object"], kindId : "2215a0af-99de-49af-8892-a518cb77e17f"})
 }
 ```
-After the instance is created the query can be performed
+After the instance is created the query can be performed.  Upload a new file [otherFacts.csv](otherFacts.csv) and use the kindId generated there, in the mutation below (if you do not use a new kind, the same facts will be extracted and no new entries will be added).
 ```graphql
 mutation { extractByExampleKind(kindId : "bbcb2d1f-1c0c-4d81-adff-39de27d8fc52", exampleKindId : "5f006487-74a5-4797-beba-17d0a5cb5a5e", fieldName : "text" ) }
 ```
-Again, the result will be several entries in the "PurchaseEvent" kind.
+The result will be several new entries in the "PurchaseEvent" kind.
