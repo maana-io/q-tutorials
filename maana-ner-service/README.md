@@ -477,7 +477,7 @@ Then you can drag & drop any service function to you workspace canvas:
 
 ### extract
 
-Drag & drop 'extract' function. On the canvas you'll see Extract function Kind.
+Drag & drop 'extract' function. On the canvas you'll see new Kind - Extract function Kind.
 
 <p><p><img src="extractKind.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
 </p>
@@ -495,95 +495,44 @@ But before it you nedd drag & drop your CRF Model to canvas and copy URL (on the
 <em>Figure 3: To extract entities click 'RUN' button.</em>
 </p>
 
-You will see the results (extracted entities) in the bottom.
+You will see the results (extracted entities) in the bottom section.
 
 <p><p><img src="results1.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
 </p>
 <em>Figure 4: Results of extraction (click to expand blue triangles).</em>
 </p>
 
-## Accuracy Measurement
+### isSurfaceForm
 
-To measure an accuracy of Maana-NER-service with default Stanford CRF model we used sentences from oil & gas log dataset of "Bureau of Ocean Energy Management" (BOEM): https://www.boem.gov/.
+Drag & drop 'isSurfaceForm' function. On the canvas you'll see new Kind - isSurfaceForm function Kind.
+Click on 'triangle in circle' at the bottom of thin vertical bar on the right.
+Type your entity in 'source' field.
+Type expected entity name in 'entityName' field (see all entity names in paragraph "Detected Entities" in this tutorial above).
+Define 'modelURL' if you want to.
+Click 'RUN' button. See results in the bottom section.
 
-### Statistics:
+<p><p><img src="isSurfaceForm.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 5: To detect is it surface form click 'RUN' button.</em>
+</p>
+<p><p><img src="results2.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 6: Results of if 'Microsoft' is surface form of 'Organization' type.</em>
+</p>
 
-- Number of Expected Entities
-- Number of Observed Entities
-- TruePositive = Sum of detected parts (entity may be detected partially) of Expected Entities
-- FalseNegative = Sum of missed parts of Expected Entities
-- FalsePositive = Sum of detected parts of Unexpected Entities
-- Precision = TruePositive / (TruePositive + FalsePositive)
-- Recall = TruePositive / (TruePositive + FalseNegative)
-- Accuracy = F1 = 2 \* Precision \* Recall / (Precision + Recall)
+### parse
 
-### Test Results:
+Drag & drop 'parse' function. On the canvas you'll see new Kind - parse function Kind.
+Click on 'triangle in circle' at the bottom of thin vertical bar on the right.
+Type your entity in 'source' field.
+Define 'modelURL' if you want to.
+Click 'RUN' button. See results in the bottom section.
 
-Results of Accuracy Test on BOEM dataset with 1700 sentences:
-
-| Entity       | expect # | observ # | True+ | False+ | False- | Pre   | Rec   | F1    |
-| ------------ | -------- | -------- | ----- | ------ | ------ | ----- | ----- | ----- |
-| Email        | 267      | 267      | 267   | 0      | 0      | 1.000 | 1.000 | 1.000 |
-| URL          | 7        | 7        | 7     | 0      | 0      | 1.000 | 1.000 | 1.000 |
-| PhoneNumber  | 105      | 104      | 104   | 0      | 1      | 1.000 | 0.990 | 0.995 |
-| TimeKind     | 766      | 780      | 754   | 70     | 12     | 0.915 | 0.984 | 0.948 |
-| DateKind     | 1044     | 1115     | 1024  | 95     | 20     | 0.915 | 0.981 | 0.947 |
-| Person       | 2165     | 2068     | 1963  | 93     | 202    | 0.955 | 0.907 | 0.930 |
-| Location     | 1817     | 1296     | 1102  | 221    | 715    | 0.833 | 0.607 | 0.702 |
-| Organization | 2191     | 937      | 620   | 534    | 1571   | 0.537 | 0.283 | 0.371 |
-| Over All     | 8362     | 9533     | 5842  | 1013   | 2520   | 0.852 | 0.699 | 0.768 |
-
-### Example:
-
-#### Text:
-
-Thanks, Lynard Carter Workover/Completion Engineer U.S. Department of The Interior Bureau of Ocean Energy Management Reg., & Enforcement New Orleans District (504) 734-6746 phone (504) 734-6741 fax Lynard.carter@boemre.gov
-
-#### Expected:
-
-- Person: **Lynard Carter**
-- Organization: **U.S. Department of The Interior Bureau of Ocean Energy Management Reg., & Enforcement**
-- Location: **New Orleans District**
-- PhoneNumber: **(504) 734-6746**
-- PhoneNumber: **(504) 734-6741**
-- Email: **Lynard.carter@boemre.gov**
-
-#### Observed:
-
-- Person: **Lynard Carter**
-- Location: **U.S.**
-- Organization: **Interior Bureau of Ocean Energy Management Reg.**
-- Location: **New Orleans**
-- PhoneNumber: **(504) 734-6746**
-- PhoneNumber: **(504) 734-6741**
-- Email: **Lynard.carter@boemre.gov**
-
-| Entity       | TP    | FN    | FP    | Pre   | Rec   | F1    |
-| ------------ | ----- | ----- | ----- | ----- | ----- | ----- |
-| Person       | 1.000 | 0.000 | 0.000 | 1.000 | 1.000 | 1.000 |
-| Email        | 1.000 | 0.000 | 0.000 | 1.000 | 1.000 | 1.000 |
-| PhoneNumber  | 2.000 | 0.000 | 0.000 | 1.000 | 1.000 | 1.000 |
-| Organization | 0.553 | 0.447 | 0.000 | 1.000 | 0.553 | 0.356 |
-| Location     | 0.550 | 0.450 | 1.000 | 0.350 | 0.550 | 0.214 |
-
-#### Explanation:
-
-#### Organization:
-
-- Expected: **U.S. Department of The Interior Bureau of Ocean Energy Management Reg. , & Enforcement**, offset: 51; span: 85
-- Observed: **Interior Bureau of Ocean Energy Management Reg.**, offset: 74; span: 47
-
-TP = 47/85 = 0.553, FN = 1 - TP = 0.447
-
-#### Location:
-
-- Expected: **New Orleans District**, offset: 137; span: 20
-- Observed: **New Orleans**, offset: 137; span: 11
-
-TP = 11/20 = 0.55, FN = 1 - TP = 0.45
-
-#### Location:
-
-- Observed but not expected: **U.S.**, offset: 51; span: 4
-
-TP = 0, FN = 0, FP = 1
+<p><p><img src="parse.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 7: To parse entity click 'RUN' button.</em>
+</p>
+<p><p><img src="results3.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 8: Results of parsing 'Forrest Gump' entity.</em>
+</p>
