@@ -161,12 +161,13 @@ addexampleContainer(
 }
 ```
 
-After the instance is created the query can be performed
+After the instance is created the following query can be performed:
+Upload a new file [otherFacts.csv](otherFacts.csv) and use the kindId generated there, in the mutation below (if you do not use a new kind, the same facts will be extracted and no new entries will be added).
 
 ```ruby
 mutation {
   extractByExampleKind(
-    kindId : "bbcb2d1f-1c0c-4d81-adff-39de27d8fc52", #your simpleFactscsv Kind ID
+    kindId : "bbcb2d1f-1c0c-4d81-adff-39de27d8fc52", #your otherFactscsv Kind ID
     exampleKindId : "5f006487-74a5-4797-beba-17d0a5cb5a5e", #your exampleContainer Kind ID
     fieldName : "text"
     )
@@ -174,3 +175,4 @@ mutation {
 ```
 
 Again, the result will be several entries in the "PurchaseEvent" kind.
+
