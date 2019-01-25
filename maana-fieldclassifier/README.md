@@ -1,6 +1,6 @@
 # Maana Field Classifier
 
-The Field Classifier service is a tool for classifying fields in tabular data.  It also allows you to query the classifications of those fields and add additional columns to the table with the explicit type (given by the classification).  Explicit types are sometimes needed during function composition to allow data to be used with certain functions.
+The Field Classifier service is a tool for classifying fields in tabular data.  It also allows you to query the classifications of those fields and add additional columns to the table with the explicit type (given by the classification).  Explicit types are sometimes needed during function composition to allow data to be used with certain functions.  The Field Classifier relies on the Maana Natural Language Processing service and can only classify fields with the types defined there.  However, one can manually define their own classification for a column by creating a new kind with the desired name (the name should be the same as the classification) and using the "copyFieldAsKind" function to copy data to that kind (more on that later).
 
 ## Field Classifier Using Function Composition
 
@@ -37,6 +37,7 @@ Finally, on the "operatorcsv" kind, click on the "Organization" link.  This shou
 </p>
 <em>Figure 6:.</em>
 </p>
+The copyFieldAsKind not only works on classifications produces by the classifyFields functions, it also works for a user defined kind, provided that (1) newFieldKindId is used instead of newFieldKind (2) the user defined kind should have a field called "name" and (3) if the kind does not have the same name as one of the possible field classifications then the "forceAll" button should be set to true.
 
 
 
