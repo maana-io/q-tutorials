@@ -1,42 +1,42 @@
-# Maana Field Classifier Assistant
+# Maana Field Classifier
 
-The Field Classifier Service is a tool for classifying fields in tabular data.  It also allows you to query the classifications of those fields and add additional columns to the table with the explicit type (given by the classification).
+The Field Classifier service is a tool for classifying fields in tabular data.  It also allows you to query the classifications of those fields and add additional columns to the table with the explicit type (given by the classification).  Explicit types are sometimes needed during function composition to allow data to be used with certain functions.
 
 ## Field Classifier Using Function Composition
 
-To start with, upload a CSV file, in this case we use [operator](operator.csv).  Load the data into the platform.  Bring the Kind for the operator.csv file into the workspace by clicking the link on the bottom of operator.csv - the Kind will be called "OperatorCSV".  As soon as the CSV file is uploaded the field classifier is kicked off and classifications for each of the columns of the tabular data are produced.  Possible classifications will show up as links in the "OperatorCSV" kind.  Critically, the data has two interesting classifications, "Person" and "Organization" for the fields "contact" and "business". 
-<p><p><img src="upload.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
+To start with, upload a CSV file, in this case we use [operator](operator.csv).
+<p><p><img src="kind.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
 </p>
 <em>Figure 1: View after uploading CSV and Clicking on kind link</em>
 </p>
-
-The field classifier can also be run manually with function composition
-
-
-Make sure the "OperatorCSV" is selected then in the assistants panel, select "Maana Field Classifier", this brings up the user interface for the field classifier.  In the upper left hand corner it should say "OperatorCSV"
-<p><p><img src="fca.png" alt="Field Classifier Assistant", style="height: 100%; width: 100%; align: center"/>
+The first step we'll take is to classify fields in the "operatorcsv" kind.  The fields are automatically run through the "classifyFields" query on upload, so this step is not necessary, but shows how the function works.
+In the services inventory drag the classifyFields function onto the graph from the Field classifier.  Click on the arrow button
+in the right hand panel to open the classifyFields input pane (classifyFields needs to be selected for this to appear).  Fill in
+the input parameter with the kindId from the "operatorcsv" kind and click the "run" button.  The results should be as shown below.
+<p><p><img src="classifyFields.png" alt="Field Classifier Assistant", style="height: 100%; width: 100%; align: center"/>
 </p>
-<em>Figure 2: Field Classifier Assistant applied to OperatorCSV kind</em>
+<em>Figure 2: </em>
 </p>
-
-Scroll down to the fieldId "contact".  To the right there should be a "proposedType" of "Person" along with 2 buttons, "Add All" and "Add Matching".  When you click on one of these buttons it creates a new column of the "OperatorCSV" kind with the name "contactPerson" which is the concatenation of the original field name "contact" and the strong type "Person".
-
-The "Add All" button adds all the data in the "contact" column to the new column "contactPerson".  The "Add Matching" button adds only the data that is classified as type "Person" to the "contactPerson" column - all other non matching records are empty.
-
-There are also additional fields, the "Type" field is the original graphql type - STRING, FLOAT, BOOLEAN etc...  The ProposedType can contain any of the types available as classifications from the field classifier.  The Percent column gives an estimate of the percentage of records that matched a given classification, this is an estimate as only 1000 columns of the original data are used to produce the estimate.
-
-When the "Add Matching" or "Add All" buttons are clicked the data from "contact" say, is added to the "Person" kind inside Maana.  The Ids for those instances are stored in the new "contactPerson" column.  In this way, multiple different kinds can refer to the same "Person", we then have a common location for "Person" data and associations between different data sources.
-<p><p><img src="newColumn.png" alt="New Column", style="height: 25%; width: 25%; align: center"/>
+Next, lets see what the field classifications actually are by dragging the "fieldClassification" function onto the workspace.  Again in the run panel, copy the kind id for "operatorcsv" into the id field and click run.  The field classifications will appear in the bottom panel as shown below.
+<p><p><img src="fieldClassifications.png" alt="New Column", style="height: 100%; width: 100%; align: center"/>
 </p>
 <em>Figure 3: A new column is added to OperatorCSV with Ids to the Person kind.</em>
 </p>
-<p><p><img src="people.png" alt="New People", style="height: 100%; width: 100%; align: center"/>
+Now that the fields are classified we would like to define a field as a particular kind.  Drag the "copyFieldAsKind" function onto the workspace.  The input panel has fields "kindId", "fieldName", "newFieldName", "newFieldKind" and "newFieldKindId".  In this case we use "newFieldKind" and ignore "newFieldKindId".  Use the kindId defined for "operatorcsv", the "fieldName" is one of the existing field names in "operatorcsv".  In this case we choose the field "business", the "newFieldName" is the name of the new field that will be added to the "operatorcsv" kind - set this to "businessOrganization", though it can be anything consisting of alpha numeric characters.  The next field is "newFieldKind", this is the "kind" that you want to classify the data as.  The "newFieldKind" must be the name of a kind that exists in maana, furthermore if the kind is not a "system kind" then one should use newFieldKindId (and use the id of the kind) instead of "newFieldKind".  The final option is a switch, "forceAll".  When forceAll is switched on all the entries from "fieldName" are added to the new column regardless of individual classification.  If "forceAll" is set to false, only those column entries that are classified as the type given in "newFieldKind" or "newFieldKindId" are copied into the new column.  The values entered are shown in the image below - click the run button to see the results.
+<p><p><img src="copyFieldAsKind.png" alt="New People", style="height: 100%; width: 100%; align: center"/>
 </p>
-<em>Figure 4: The Person kind is populated with new entries from the OperatorCSV "contact" field.</em>
+<em>Figure 4: .</em>
 </p>
-
-## Using Strongly Typed Fields as Inputs to Functions
-...  More on this later.
+After running copyFieldAsKind a new column will be added to the kind, the image below shows the new column "businessOrganization" which contains ids which are ids of instances in the kind "Organization" (see image below).
+<p><p><img src="updatedKind.png" alt="New People", style="height: 25%; width: 25%; align: center"/>
+</p>
+<em>Figure 5:.</em>
+</p>
+Finally, on the "operatorcsv" kind, click on the "Organization" link.  This should bring up the organization kind.  You will see a blue line from "businessOperator" to "Organization" and the contents of Organization will be the as those contained in the "business" column (with the caveat that other services may have written to the organization kind as well).
+<p><p><img src="organizationContents.png" alt="New People", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 6:.</em>
+</p>
 
 
 
