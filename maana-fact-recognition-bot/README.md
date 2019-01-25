@@ -1,17 +1,13 @@
 # Maana Fact Recognition Bot
 
-The Fact Recognition Bot uses the Fact Recognition service to extract facts from kinds and store them in Maana. The simplest way to apply information extraction is to use the mutation extractTriples and apply it to a kindId and a fieldName. In this case, lets apply triple extraction to the file [WellRemarks.csv](WellRemarks.csv)
+The Fact Recognition Bot uses the Fact Recognition service to extract facts from kinds and store them in Maana. The simplest way to apply information extraction is to use the mutation extractTriples and apply it to a kindId and a fieldName. In this case, lets apply triple extraction to the file [WellRemarks.csv](WellRemarks.csv) which should be loaded onto the workspace.  A kind will be created named "WellRemarkscsv", copy that kind id.  Drag the extractTriples function from the the Maana Fact Recogntion Bot in the service inventory onto the workspace.  Click the arrow button on the right hand panel and enter the kindId of the "WellRemarkscsv" kind.  Fill out the rest of the fields as shown below, and press the run button.  The result should look like that in the figure below.
 
-```ruby
-mutation {
-  extractTriples(
-    kindId: "dc657179-3ad2-4400-a9f9-a93348072daf"
-    fieldName: "COMMENTS"
-  )
-}
-```
+<p><p><img src="extractTriplesFunction.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
+</p>
+<em>Figure 1: Function executing the extractTriples graphql query</em>
+</p>
 
-The triples are extracted from the kind specified by 'kindId' in the provided fieldName and then stored in the kind 'PatternMatchResult'
+The triples are extracted from the kind specified by 'kindId' in the provided fieldName and then stored in the kind 'PatternMatchResult'.  Search for the kind PatternMatchResult to see the entries from the extraction.
 
 <p><p><img src="extractTriples.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
