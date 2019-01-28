@@ -11,7 +11,7 @@ The triples are extracted from the kind specified by 'kindId' in the provided fi
 
 <p><p><img src="extractTriples.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
-<em>Figure 1: Result shown in the PatternMatchResult kind</em>
+<em>Figure 2: Result shown in the PatternMatchResult kind</em>
 </p>
 
 ### Fact Extraction With Pattern Filter
@@ -28,7 +28,7 @@ The Pattern kind (which can have any name) can be created manually. Add a new ki
 
 <p><p><img src="extractByPattern.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
-<em>Figure 2: The Pattern kind used for filtering triples</em>
+<em>Figure 3: The Pattern kind used for filtering triples</em>
 </p>
 
 You can now use that mutation to create the Pattern instance
@@ -57,15 +57,10 @@ After you have have created the 2 kinds you can run the fact extraction, it's cu
 
 Inside the graphiql for the service use the following mutation (In the mutation below the fieldName is "Text", but that should be the name of the field containing the text you want to extract.) Notice that below, kind ID's are used and not names. "kindId" refers to the ID for "ThisKind" and "patternID" refers to the ID for "Pattern".
 
-```ruby
-mutation {
-  extractByPattern(
-    patternKindId: "2925878d-fd88-4b8e-a9d0-8f1f3c3d9a29"
-    kindId: "7727dbf6-c931-458e-9e32-3fc80211f94e"
-    fieldName: "Text"
-  )
-}
-```
+<p><p><img src="extractByPatternFunction.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
+</p>
+<em>Figure 4: Result of running the extractByPattern function on the "Pattern" and "ThisKind" kinds</em>
+</p>
 
 This will extract facts from the kind "ThisKind" in field "Text" using the patterns defined in "Pattern". The results of the query will be a list of links ids. The extracted facts will be stored in the kind "PatternMatchResults" and links back to "ExtractTestKind" and "TriplePatterns" will also be generated.
 
@@ -74,7 +69,7 @@ The results are stored in the system kind (kind automatically generated at start
 
 <p><p><img src="seeResults.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
-<em>Figure 3: Result shown in the PatternMatchResult kind</em>
+<em>Figure 5: Result shown in the PatternMatchResult kind</em>
 </p>
 
 ### Structure Mapping (Extraction by Example) / Slot Filling
@@ -125,7 +120,7 @@ The result should be several entries in the "PurchaseEvent" kind - as below
 
 <p><p><img src="purchaseEvent.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
-<em>Figure 4: Result shown in the PurchaseEvent kind</em>
+<em>Figure 6: Result shown in the PurchaseEvent kind</em>
 </p>
 
 ### mutation 2
