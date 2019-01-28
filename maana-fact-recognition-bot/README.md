@@ -164,6 +164,14 @@ mutation {
     )
     }
 ```
+<p><p><img src="extractByExampleKindFunction.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
+</p>
+<em>Figure 7: Result after the extractByExampleKind function is run.</em>
+</p>
 
 Again, the result will be several entries in the "PurchaseEvent" kind.
 
+<p><p><img src="extractByExampleKindResult.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
+</p>
+<em>Figure 8: Result shown in the PurchaseEvent kind</em>
+</p>
