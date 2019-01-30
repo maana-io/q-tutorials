@@ -7,7 +7,7 @@ The Maana Physical Quantity service provides extensive capabilities for extracti
 In this example we will create a new function that uses the physical quantity service to parse physical quantities from strings, and perform a dimensionally consistent computation with them.
 
 ### The Problem
-You would like to know the gauge pressure at the bottom of a well, and are given strings containing the atmospheric pressure, the depth of the well, the mud weight and the acceleration due to gravity.  The computation that you would like to perform is described by the following formula:
+You would like to know the absolute pressure at the bottom of a well, and are given strings containing the atmospheric pressure, the depth of the well, the mud weight and the acceleration due to gravity.  The computation that you would like to perform is described by the following formula:
 
 <p><p><img src="Formula.png" alt="Train", style="height: 100%; width: 25%; align: center"/>
 <p><p><img src="Nomenclature.png" alt="Nomenclature", style="height: 100%; width: 50%; align: center"/>
@@ -45,20 +45,20 @@ Before you can perform the arithmetic computations with the physical quantities,
 
 Note that the parse function has optional parameters that allow the user restrict which system of units and physical dimensions are used when parsing.   We will demonstrate the use of these optional parameters in a future tutorial.
 
-Next drag a copy of the "negate" and "add" functions onto the canvas.   Connect the parsed atmospheric pressure to the input of the negate function, and then connect the output of that to the input of the add function.   Finally, connect the output of the add function to the Output of the function.  NOTE: Since the "add" function will have the same unit of measure as its first argument, this ensure that the output will be in the desired unit of measure.   
+Next drag a copy of the "add" function onto the canvas.   Connect the parsed atmospheric pressure to the input of the add function.   Then, connect the output of the add function to the Output of the function.  NOTE: Since the "add" function will have the same unit of measure as its first argument, this ensure that the output will be in the desired unit of measure.   
 
 When you are done, the function graph should look like figure 4:
 
-<p><p><img src="Step-2.png" alt="Negate", style="height: 100%; width: 100%; align: center"/>
+<p><p><img src="Step-2.png" alt="Add", style="height: 100%; width: 100%; align: center"/>
 </p>
-<em>Figure 4: Negate the Atmospheric Pressure.</em>
+<em>Figure 4: Processing the Atmospheric Pressure.</em>
 </p>
 
-To complete the function, you need to multiply the depth, mudWeight and gravitationalAcceleration together, and add this to the negated atmospheric pressure.   Multiplication is performed by the physical quantity's "mul" function.   Drag two copies onto the canvas and connect them as depicted in figure 4.
+To complete the function, you need to multiply the depth, mudWeight and gravitationalAcceleration together, and add this to the atmospheric pressure.   Multiplication is performed by the physical quantity's "mul" function.   Drag two copies onto the canvas and connect them as depicted in figure 4.
 
 <p><p><img src="Step-4.png" alt="Mult", style="height: 100%; width: 100%; align: center"/>
 </p>
-<em>Figure 4: Negate the Atmospheric Pressure.</em>
+<em>Figure 4: Add the Terms Together.</em>
 </p>
 
 
