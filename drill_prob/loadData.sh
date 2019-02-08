@@ -1,5 +1,5 @@
 set -e
-gql mload data/DrillingProblem.csv -p dp
-gql mload data/Location.csv -p dp
-gql mload data/DrillingReport.csv -p dp
-gql mload data/Well.csv -p dp
+gql mload data/DrillingProblem.csv -p db
+gql mload data/Location.csv -p db
+gql mload data/DrillingReport.csv -p db
+gql mload data/Well.csv -p db
