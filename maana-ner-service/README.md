@@ -48,7 +48,7 @@ Examples of "extract" query to run with default Model.
 ```graphql
 query Extract {
   extract(
-    sources: [
+    source: [
       "John, please get that article on www.linkedin.com or https://google.com or 192.67.23.222
       and files: bla123bla.doc and itisme.jpg
       and send to me by 5:00PM on Jul 4th 2018 or 4:00 am on 01/09/12 would be ideal, actually.
