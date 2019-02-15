@@ -162,7 +162,7 @@ gql add-project
 ? Subscription URL (Enter to skip):
 ? Do you want to add other endpoints? No
 
-About to write new configuration to /Users/djoe/maana/q-tutorials/drill_prob/.graphqlconfig:
+About to write new configuration to ~/maana/q-tutorials/drill_prob/.graphqlconfig:
 
 {
   "projects": {
