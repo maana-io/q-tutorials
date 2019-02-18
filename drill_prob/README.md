@@ -156,26 +156,37 @@ Command:
 ```bash
 gql add-project
 ? Enter project name for new project: db
-? Local schema file path: db/schema.graphql
+? Local schema file path: data/schema.graphql
 ? Endpoint URL (Enter to skip): <service url>
 ? Name of this endpoint, for e.g. default, dev, prod: (default)
 ? Subscription URL (Enter to skip):
 ? Do you want to add other endpoints? No
 
-Adding the following endpoints to your config:  db
+About to write new configuration to ~/maana/q-tutorials/drill_prob/.graphqlconfig:
+
+{
+  "projects": {
+    "ckg": {
+      "schemaPath": "ckg.graphql",
+      ...
+    },
+    ...
+  }
+}
+
 ? Is this ok? Yes
 ```
 
 Again, we need to add the authorization header.
 * In Maana Q 3.1.0 or later just run the `gql maddheaders` command
-* In Maana Q 3.5.0 will require adding it manually, check [here](#v3.0.5) for instructions.
+* In Maana Q 3.0.5 will require adding it manually, check [here](#v3.0.5) for instructions.
 
 ## Introspecting the Service
 
 Only a few types were specified for the **domain model**. Maana adds a set of boilerplate types and operations as part of a fully-managed service. The **schema** for this service can be retrieved by:
 
 ```bash
-gql get-schema -p dp
+gql get-schema -p db
 ```
 
 ## Loading Instance Data
@@ -183,10 +194,10 @@ gql get-schema -p dp
 Now that the model has been turned into a service, we can upload instance data to populate ("hydrate") the graph:
 
 ```bash
-gql mload data/DrillingProblem.csv -p dp
-gql mload data/Location.csv -p dp
-gql mload data/DrillingReport.csv -p dp
-gql mload data/Well.csv -p dp
+gql mload data/DrillingProblem.csv -p db
+gql mload data/Location.csv -p db
+gql mload data/DrillingReport.csv -p db
+gql mload data/Well.csv -p db
 ```
 
 For convenience, these steps have been added to a script file: `loadData.sh`
