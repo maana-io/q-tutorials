@@ -24,34 +24,38 @@ In order to use the fact extraction service (information extraction) you need
 
 ### Creating The Patterns Kind
 
-The Pattern kind (which can have any name) can be created manually. Add a new kind to the workspace (name it "Pattern"), edit the schema to include "predicateLemmas" of type String with modifier LIST, "object" of type String with modifier LIST and "subject" of type String with modifier LIST. Now select the base "workspace" in the left hand panel (often called "New Workspace" if you have not named your workspace), this will bring up the the workspace graphiql in the bottom panel. In the right hand panel of graphql select mutation and scroll down until you see the mutation "addPattern" mutation
-
-<p><p><img src="extractByPattern.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
+The Pattern kind (which can have any name) can be created manually. Add a new kind to the workspace (name it "Pattern"), edit the schema to include "predicateLemmas" of type String with modifier LIST, "object" of type String with modifier LIST and "subject" of type String with modifier LIST.  Now in order to add data to your kind you need to name your workspace.  In this example the workspace is named "FR Test Workspace".  You can drag your workspace into the services inventory and use the functions that it creates to add data to the "Patterns" kind.  Once you've named the workspace, search for it in the Search bar.  It will appear under both "workspace" and "services".  Drag this workspace onto the services inventory so that the functions become available.  See Figures 3 and 4 for details.
+<p><p><img src="FRServiceSearch.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
-<em>Figure 3: The Pattern kind used for filtering triples</em>
+<em>Figure 3: Give your workspace a name, in this case it is called "FR Test Kind".  You should now be able to search
+for the workspace and it should appear under the "Services" option.</em>
 </p>
-
-You can now use that mutation to create the Pattern instance
-
-```ruby
-mutation {
-  addPattern(
-    input: { predicateLemmas: ["buy"], subject: ["ANY"], object: ["ANY"] }
-  )
-}
-```
+<p><p><img src="FRServiceFunctions.png" alt="Kind", style="height: 30%; width: 30%; align: center"/>
+</p>
+<em>Figure 4: Drag the "FR Test Kind" service (your workspace service) into the services inventory.  The "FR Test Workspace" should now
+appear in the services inventory and the functions it provides should be available.  There will be a set of functions for every kind in your workspace.</em>
+</p>
+After the service has been added to the services inventory, drag the addPattern function onto the workspace.  In this case set predicateLemmas to "buy" and set subject and object to "ANY" as below.
+<p><p><img src="FRaddPattern.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
+</p>
+<em>Figure 5: Fill in the pattern information for the addPattern information.</em>
+</p>
 
 Remember, to set the predicateLemmas to a relation/relations that you expect to have in your data. "are" for example is a very common relation. Next, upload a csv file where at least one of the fields contains text with relations in it - or you can create a kind manually and add the text "Alex bought a bike".
 
-Next create a kind containing the text you wish to extract - call it "ThisKind". It should have a field called "Text", and should have an instance with the the value "Alex bought a bike".
+Next create a kind containing the text you wish to extract - call it "ThisKind". It should have a field called "Text", and should have an instance with the the value "Alex bought a bike".  Again, this can be accomplished by dragging the "addThisKind" function onto the workspace and filling in the information in the context panel (see below).
 
+<p><p><img src="FRaddThisKind.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
+</p>
+<em>Figure 6: Add text to the "ThisKind" kind with the addThisKind function.</em>
+</p>
 ```ruby
 mutation b {
   addThisKind(input: { Text: "Alex bought a bike" })
 }
 ```
 
-After you have have created the 2 kinds you can run the fact extraction, it's currently run manually.
+After you have have created the 2 kinds you can run the fact recognition bot.
 
 (1) Select the Maana Entity Extractor service
 
@@ -59,7 +63,7 @@ Inside the graphiql for the service use the following mutation (In the mutation 
 
 <p><p><img src="extractByPatternFunction.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
-<em>Figure 4: Result of running the extractByPattern function on the "Pattern" and "ThisKind" kinds</em>
+<em>Figure 7: Result of running the extractByPattern function on the "Pattern" and "ThisKind" kinds</em>
 </p>
 
 This will extract facts from the kind "ThisKind" in field "Text" using the patterns defined in "Pattern". The results of the query will be a list of links ids. The extracted facts will be stored in the kind "PatternMatchResults" and links back to "ExtractTestKind" and "TriplePatterns" will also be generated.
@@ -69,7 +73,7 @@ The results are stored in the system kind (kind automatically generated at start
 
 <p><p><img src="seeResults.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
-<em>Figure 5: Result shown in the PatternMatchResult kind</em>
+<em>Figure 8: Result shown in the PatternMatchResult kind</em>
 </p>
 
 ### Structure Mapping (Extraction by Example) / Slot Filling
@@ -120,7 +124,7 @@ The result should be several entries in the "PurchaseEvent" kind - as below
 
 <p><p><img src="purchaseEvent.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
-<em>Figure 6: Result shown in the PurchaseEvent kind</em>
+<em>Figure 9: Result shown in the PurchaseEvent kind</em>
 </p>
 
 ### mutation 2
@@ -157,12 +161,12 @@ Upload a new file [otherFacts.csv](otherFacts.csv) and use the kindId generated 
 
 <p><p><img src="extractByExampleKindFunction.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
-<em>Figure 7: Result after the extractByExampleKind function is run.</em>
+<em>Figure 10: Result after the extractByExampleKind function is run.</em>
 </p>
 
 Again, the result will be several entries in the "PurchaseEvent" kind.
 
 <p><p><img src="extractByExampleKindResult.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
-<em>Figure 8: Result shown in the PurchaseEvent kind</em>
+<em>Figure 11: Result shown in the PurchaseEvent kind</em>
 </p>
