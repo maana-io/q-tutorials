@@ -36,7 +36,7 @@ mutation smallcensus {
     modelName:"SmallCensusModel", # Must be unique, not previously used
     labelField: "salary",
     excludeFields: ["id"],
-    featureFields: ["age", "workclass", "education", "maritalStatus", "race", "sex"],
+    featureFields: ["age", "workclass", "education", "maritalstatus", "race", "sex"],
     featureTypes: ["integer", "categorical", "categorical", "categorical", "categorical", "categorical"],
     candidateModels: ["random_forest_classifier", "logistic_classifier"],
     candidatePreprocessors: ["noop", "pca"],
