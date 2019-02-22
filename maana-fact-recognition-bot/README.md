@@ -24,18 +24,13 @@ In order to use the fact extraction service (information extraction) you need
 
 ### Creating The Patterns Kind
 
-The Pattern kind (which can have any name) can be created manually. Add a new kind to the workspace (name it "Pattern"), edit the schema to include "predicateLemmas" of type String with modifier LIST, "object" of type String with modifier LIST and "subject" of type String with modifier LIST.  Now in order to add data to your kind you need to name your workspace.  In this example the workspace is named "FR Test Workspace".  You can drag your workspace into the services inventory and use the functions that it creates to add data to the "Patterns" kind.  Once you've named the workspace, search for it in the Search bar.  It will appear under both "workspace" and "services".  Drag this workspace onto the services inventory so that the functions become available.  See Figures 3 and 4 for details.
-<p><p><img src="FRServiceSearch.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
+The Pattern kind (which can have any name) can be created manually. Add a new kind to the workspace (name it "Pattern"), edit the schema to include "predicateLemmas" of type String with modifier LIST, "object" of type String with modifier LIST and "subject" of type String with modifier LIST.  Now in order to add data to your kind you need to name your workspace.  Once the kind is created, functions for the kind should be visible in the service inventory.  Your workspace should look like that below
 </p>
-<em>Figure 3: Give your workspace a name, in this case it is called "FR Test Kind".  You should now be able to search
-for the workspace and it should appear under the "Services" option.</em>
+<p><p><img src="FRServiceFunctions.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
-<p><p><img src="FRServiceFunctions.png" alt="Kind", style="height: 30%; width: 30%; align: center"/>
+<em>Figure 4: There will be a set of functions for every Kind in your workspace.  These functions can be used to manipulate the Kinds.</em>
 </p>
-<em>Figure 4: Drag the "FR Test Kind" service (your workspace service) into the services inventory.  The "FR Test Workspace" should now
-appear in the services inventory and the functions it provides should be available.  There will be a set of functions for every kind in your workspace.</em>
-</p>
-After the service has been added to the services inventory, drag the addPattern function onto the workspace.  In this case set predicateLemmas to "buy" and set subject and object to "ANY" as below.
+Drag the addPattern function onto the workspace.  In this case set predicateLemmas to "buy" and set subject and object to "ANY" as below.
 <p><p><img src="FRaddPattern.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
 <em>Figure 5: Fill in the pattern information for the addPattern information.</em>
@@ -49,15 +44,9 @@ Next create a kind containing the text you wish to extract - call it "ThisKind".
 </p>
 <em>Figure 6: Add text to the "ThisKind" kind with the addThisKind function.</em>
 </p>
-```ruby
-mutation b {
-  addThisKind(input: { Text: "Alex bought a bike" })
-}
-```
 
-After you have have created the 2 kinds you can run the fact recognition bot.
-
-(1) Select the Maana Entity Extractor service
+After you have have created the 2 kinds you can run the fact recognition bot.  First, search for the "Maana Fact Recognition Bot" and drag it to the services inventory.
+Drag the extractByPattern function onto the workspace.
 
 Inside the graphiql for the service use the following mutation (In the mutation below the fieldName is "Text", but that should be the name of the field containing the text you want to extract.) Notice that below, kind ID's are used and not names. "kindId" refers to the ID for "ThisKind" and "patternID" refers to the ID for "Pattern".
 
@@ -100,14 +89,15 @@ extractByExampleKind(kindId: ID, fieldId: ID, exampleKindId: ID, kindName: Strin
 
 In order to experiment with these tools, first upload the file [simpleFacts.csv](simpleFacts.csv) into Maana and store the Id of the associated Kind it creates. Next, create a kind to store the results in, name this kind "PurchaseEvent" and it should have the schema "{name : "STRING", object : "STRING", price : "STRING", location : "STRING"}.
 
-mutation 1
-With those two kinds created we can perform the first query and see the results - below the kindId should be the Id for "SimplefactsCSV" and the storageKindId should be the id for "PurchaseEvent". In this query, the mapping is specified as an list of name/value graphql objects.
+### Mutation 1
 
-```ruby
+Using the first mutation, we can perform the first query and see the results - below the kindId should be the Id for "SimplefactsCSV" and the storageKindId should be the id for "PurchaseEvent". In this query, the mapping is specified as an list of name/value graphql objects.
+
+```graphql
 mutation a {
 extractByExample(
   kindId: "bbcb2d1f-1c0c-4d81-adff-39de27d8fc52", #your SimplefactsCSV Kind Id
-    fieldName : "Text",
+    fieldName : "text",
     mapping : [
       {name : "name", value : "Carl"},
       {name : "object", value : "fish"},
@@ -127,7 +117,7 @@ The result should be several entries in the "PurchaseEvent" kind - as below
 <em>Figure 9: Result shown in the PurchaseEvent kind</em>
 </p>
 
-### mutation 2
+### Mutation 2
 
 In order to perform the second mutation the user needs to create an additional kind to store the example and mapping information. Create a new kind and call it "exampleContainer". The "exampleContainer" should have schema
 
@@ -143,7 +133,7 @@ In order to perform the second mutation the user needs to create an additional k
 
 create an instance of the "exampleContainer" with the following mutation below, where kindId is the id of the purchaseEvent kind.
 
-```ruby
+```graphql
 mutation e {
 addexampleContainer(
   input: {
