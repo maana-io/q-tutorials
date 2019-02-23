@@ -24,7 +24,7 @@ In order to use the fact extraction service (information extraction) you need
 
 ### Creating The Patterns Kind
 
-The Pattern kind (which can have any name) can be created manually. Add a new kind to the workspace (name it "Pattern"), edit the schema to include "predicateLemmas" of type String with modifier LIST, "object" of type String with modifier LIST and "subject" of type String with modifier LIST.  Now in order to add data to your kind you need to name your workspace.  Once the kind is created, functions for the kind should be visible in the service inventory.  Your workspace should look like that below
+The Pattern kind (which can have any name) can be created manually. Add a new kind to the workspace (name it "Pattern"), edit the schema to include "predicateLemmas" of type String with modifier LIST, "object" of type String with modifier LIST and "subject" of type String with modifier LIST.  Once the kind is created, functions for the kind should be visible in the service inventory.  Your workspace should look like that below
 </p>
 <p><p><img src="FRServiceFunctions.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
@@ -48,14 +48,14 @@ Next create a kind containing the text you wish to extract - call it "ThisKind".
 After you have have created the 2 kinds you can run the fact recognition bot.  First, search for the "Maana Fact Recognition Bot" and drag it to the services inventory.
 Drag the extractByPattern function onto the workspace.
 
-Inside the graphiql for the service use the following mutation (In the mutation below the fieldName is "Text", but that should be the name of the field containing the text you want to extract.) Notice that below, kind ID's are used and not names. "kindId" refers to the ID for "ThisKind" and "patternID" refers to the ID for "Pattern".
+Use the extractByPattern function, the fieldName is "Text", but that should be the name of the field containing the text you want to extract.) Notice that below, kind ID's are used and not names. "kindId" refers to the ID for "ThisKind" and "patternID" refers to the ID for "Pattern".
 
 <p><p><img src="extractByPatternFunction.png" alt="Kind", style="height: 80%; width: 80%; align: center"/>
 </p>
 <em>Figure 7: Result of running the extractByPattern function on the "Pattern" and "ThisKind" kinds</em>
 </p>
 
-This will extract facts from the kind "ThisKind" in field "Text" using the patterns defined in "Pattern". The results of the query will be a list of links ids. The extracted facts will be stored in the kind "PatternMatchResults" and links back to "ExtractTestKind" and "TriplePatterns" will also be generated.
+This will extract facts from the kind "ThisKind" in field "Text" using the patterns defined in "Pattern". The results of the query will be a bot action. The extracted facts will be stored in the kind "PatternMatchResults" and links back to "ExtractTestKind" and "TriplePatterns" will also be generated.
 
 How do you see the results?
 The results are stored in the system kind (kind automatically generated at startup) called PatternMatchResult. All patterns are appended to this kind with links back to the original data and to the pattern that was used to extract the data. For this particular case, the result is the following "subject","predicate","object" in the PatternMatchResult Kind
@@ -77,13 +77,13 @@ The example sentence is compared to a data source and results are extracted and 
 
 In the first case the user needs to specify the kindId (the source of the text where data will be extracted from), storageKindId (the location where the extracted data will be stored), the fieldName (the name of the field in kindId to be used), the example sentence (example) and the mapping to tell how the different terms in the example sentence map to the kind.
 
-```ruby
+```graphql
 extractByExample(kindId: ID, fieldId: ID, storageKindId: ID, fieldName: String, storageKindName: String, kindName: String, mapping: [CorrespondenceInput], example: String): [ID]
 ```
 
 In the second case instead of an example, mapping and storageKind a "exampleKind" is provided which contains the same information. The exampleKind contains a list of examples, their mappings and the target kind. The results are stored in their respective kinds.
 
-```ruby
+```graphql
 extractByExampleKind(kindId: ID, fieldId: ID, exampleKindId: ID, kindName: String, fieldName: String, exampleKindName: String): [ID]
 ```
 
