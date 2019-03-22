@@ -1,6 +1,11 @@
 scalar DateTime
 scalar Date
 
+type Info {
+  name: String
+  version: String
+}
+
 type Action {
   id: ID!
   name: String
@@ -17,20 +22,20 @@ type ActionFinancialEstimate {
   id: ID!
   action: Action!
   impact: Float!
-  cost: Float
+  cost: Float!
 }
 
 input ActionInput {
-  id: ID
+  id: ID!
   name: String
   type: String
 }
 
 input ActionFinancialEstimateInput {
-  id: ID
+  id: ID!
   action: ActionInput!
   impact: Float!
-  cost: Float
+  cost: Float!
 }
 
 type Well {
@@ -39,62 +44,55 @@ type Well {
 }
 
 input WellInput {
-  id: ID
+  id: ID!
   name: String
 }
 
 type Opportunity {
-  id: ID
+  id: ID!
   name: String!
-  # CHANGE THIS TO DATETIME
-  createdAt: String
+  createdAt: DateTime!
   actions: [Action!]!
   incrementalRevenue: Float!
-  costReductions: Float!
+  costReduction: Float!
 }
 
 input OpportunityInput {
   id: ID!
   name: String!
-  # CHANGE THIS TO DATETIME
-  createdAt: String
+  createdAt: DateTime!
   actions: [ActionInput!]!
   incrementalRevenue: Float!
-  costReductions: Float!
-}
-
-type Info {
-  name: String
-  version: String
+  costReduction: Float!
 }
 
 type ActionProbability {
-  id: ID
+  id: ID!
   action: Action
   probability: Float!
 }
 
 input ActionProbabilityInput {
-  id: ID
+  id: ID!
   action: ActionInput
   probability: Float!
 }
 
 input ConstraintInput {
-  id: ID
+  id: ID!
   budget: Float!
   manHours: Float!
 }
 
 type Metrics {
-  id: ID
+  id: ID!
   waterCut: Float!
   GOR: Float!
   oilRate: Float!
 }
 
 input MetricsInput {
-  id: ID
+  id: ID!
   waterCut: Float!
   GOR: Float!
   oilRate: Float!
@@ -104,28 +102,28 @@ type Query {
   info: Info
 
   ##Getters
-  wellPredictatedRate(well: WellInput!): Metrics!
-  wellMeasuredRate(well: WellInput!): Metrics!
+  wellPredictatedMetrics(well: WellInput!): Metrics!
+  wellMeasuredMetrics(well: WellInput!): Metrics!
   getWellAnomalyProbability(well: WellInput!): Float!
 
   discoverIntervention(
-    predictedRate: MetricsInput!
-    measuredRate: MetricsInput!
-  ): ActionProbability
+    predictedMetrics: MetricsInput!
+    measuredMetrics: MetricsInput!
+  ): ActionProbability!
   shouldTestWell(
     healthIndex: Float!
     lastTestDate: Date!
     wellAnomalyProbability: Float!
-  ): ActionProbability
+  ): ActionProbability!
   getWellLastTestDate(well: WellInput!): Date!
   applyConstraints(
     opportunities: [OpportunityInput!]!
     constraints: [ConstraintInput!]!
   ): [Opportunity!]!
   combineActionImpacts(
-    costReductions: [ActionFinancialEstimateInput]
-    revenueGains: [ActionFinancialEstimateInput]
-  ): Opportunity
+    costReduction: [ActionFinancialEstimateInput!]!
+    revenueGains: [ActionFinancialEstimateInput!]!
+  ): Opportunity!
 
   calculateCostSavingsOfSkippingATest(
     measuredMetrics: MetricsInput!
@@ -134,14 +132,17 @@ type Query {
   ): Float!
 
   calculateInterventionRevenueGain(
-    well: WellInput!
+    oilPrice: Float!
+    interventionCost: Float!
+    measuredMetrics: MetricsInput!
     action: ActionInput
-    cost: Float!
   ): ActionFinancialEstimate
   calculateHealthIndex(
     predictedMetrics: MetricsInput!
     measuredMetrics: MetricsInput!
   ): Float!
+
+  calculateInterventionCost(well: WellInput!, action: ActionInput): Float!
 
   ##Helpers
   projectAction(actionProbability: ActionProbabilityInput!): Action
@@ -155,4 +156,6 @@ type Query {
     cost: Float!
   ): ActionFinancialEstimate
   invertFloat(value: Float!): Float!
+
+  getCurrentOilPrice: Float
 }
