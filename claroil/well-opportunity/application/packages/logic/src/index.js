@@ -34,6 +34,7 @@ const resolvers = {
 
     shouldTestWell(parent, { healthIndex, lastTestDate }) {
       return {
+        id: 'hey',
         action: {
           id: 'action',
           name: 'actionName',

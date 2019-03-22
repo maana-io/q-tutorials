@@ -35,16 +35,16 @@ input ActionFinancialEstimateInput {
 
 type Well {
   id: ID!
-  name: String!
+  name: String
 }
 
 input WellInput {
-  id: ID!
-  name: String!
+  id: ID
+  name: String
 }
 
 type Opportunity {
-  id: ID!
+  id: ID
   name: String!
   # CHANGE THIS TO DATETIME
   createdAt: String
@@ -81,7 +81,7 @@ input ActionProbabilityInput {
 }
 
 input ConstraintInput {
-  id: ID!
+  id: ID
   budget: Float!
   manHours: Float!
 }
@@ -102,8 +102,12 @@ type Query {
   getWellAnomalyProbability(well: WellInput): Float!
 
   discoverIntervention(predictedRate: Float!, measuredRate: Float!): Action
-  shouldTestWell(healthIndex: Float, lastTestDate: Date!): ActionProbability
-  getWellLastTestDate(well: WellInput): Date!
+  shouldTestWell(
+    healthIndex: Float!
+    lastTestDate: Date!
+    wellAnomalyProbability: Float!
+  ): ActionProbability
+  getWellLastTestDate(well: WellInput!): Date!
   applyConstraints(
     opportunities: [OpportunityInput!]!
     constraints: [ConstraintInput!]!
