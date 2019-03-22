@@ -1,0 +1,134 @@
+scalar DateTime
+scalar Date
+
+type Action {
+  id: ID!
+  name: String
+  type: String
+}
+
+type ActionProbabiliy {
+  id: ID!
+  action: Action!
+  probability: Float!
+}
+
+type ActionFinancialEstimate {
+  id: ID!
+  action: Action!
+  impact: Float!
+  cost: Float
+}
+
+input ActionInput {
+  id: ID!
+  name: String
+  type: String
+}
+
+input ActionFinancialEstimateInput {
+  id: ID!
+  action: ActionInput!
+  impact: Float!
+  cost: Float
+}
+
+type Well {
+  id: ID!
+  name: String!
+}
+
+input WellInput {
+  id: ID!
+  name: String!
+}
+
+type Opportunity {
+  id: ID!
+  name: String!
+  # CHANGE THIS TO DATETIME
+  createdAt: String
+  actions: [Action!]!
+  incrementalRevenue: Float!
+  costReductions: Float!
+}
+
+input OpportunityInput {
+  id: ID!
+  name: String!
+  # CHANGE THIS TO DATETIME
+  createdAt: String
+  actions: [ActionInput!]!
+  incrementalRevenue: Float!
+  costReductions: Float!
+}
+
+type Info {
+  name: String
+  version: String
+}
+
+type ActionProbability {
+  id: ID!
+  action: Action
+  probability: Float!
+}
+
+input ActionProbabilityInput {
+  id: ID
+  action: ActionInput
+  probability: Float!
+}
+
+input ConstraintInput {
+  id: ID!
+  budget: Float!
+  manHours: Float!
+}
+
+input MetricsInput {
+  id: ID
+  waterCut: Float!
+  GOR: Float!
+  oilRate: Float!
+}
+
+type Query {
+  info: Info
+
+  ##Getters
+  wellPredictatedRate(well: WellInput): Float!
+  wellMeasuredRate(well: WellInput): Float!
+  getWellAnomalyProbability(well: WellInput): Float!
+
+  discoverIntervention(predictedRate: Float!, measuredRate: Float!): Action
+  shouldTestWell(healthIndex: Float, lastTestDate: Date!): ActionProbability
+  getWellLastTestDate(well: WellInput): Date!
+  applyConstraints(
+    opportunities: [OpportunityInput!]!
+    constraints: [ConstraintInput!]!
+  ): [Opportunity!]!
+  combineActionImpacts(
+    costReductions: [ActionFinancialEstimateInput]
+    revenueGains: [ActionFinancialEstimateInput]
+  ): Opportunity
+
+  calculateCostSavingsOfSkippingATest(
+    measuredMetrics: MetricsInput!
+    probabilityOfAnomaly: Float!
+    oilPrice: Float!
+  ): Float!
+
+  ##Helpers
+  projectAction(actionProbability: ActionProbabilityInput!): Action
+  projectProbability(actionProbability: ActionProbabilityInput!): Float!
+  wrapActionFinancialEstimate(
+    actionEstimate: ActionFinancialEstimateInput!
+  ): [ActionFinancialEstimate!]!
+  makeFinancialEstimate(
+    action: ActionInput
+    impact: Float!
+    cost: Float!
+  ): ActionFinancialEstimate
+  invertFloat(value: Float!): Float!
+}
