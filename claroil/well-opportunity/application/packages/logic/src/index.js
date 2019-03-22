@@ -4,10 +4,6 @@ const { MockList } = require('graphql-tools')
 const faker = require('faker')
 
 const resolvers = {
-  Action: () => ({
-    id: faker.random.uuid(),
-    name: 'Acit'
-  }),
   Query: {
     info: () => ({
       name: 'ClairOil Well Optimization Demo',
