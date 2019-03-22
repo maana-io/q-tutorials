@@ -20,7 +20,7 @@ type ActionProbabiliy {
 
 type ActionFinancialEstimate {
   id: ID!
-  action: Action!
+  action: Action
   impact: Float!
   cost: Float!
 }
@@ -33,7 +33,7 @@ input ActionInput {
 
 input ActionFinancialEstimateInput {
   id: ID!
-  action: ActionInput!
+  action: ActionInput
   impact: Float!
   cost: Float!
 }

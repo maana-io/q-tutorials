@@ -77,20 +77,31 @@ const resolvers = {
       }
     },
 
-    shouldTestWell(parent, { healthIndex, lastTestDate }) {
+    shouldTestWell(
+      parent,
+      { healthIndex, lastTestDate, wellAnomalyProbability }
+    ) {
       let today = '03/03/2019'
       let testGap = 30
 
       let defaultAnomaly = 0.2 //TODO: Pass this value in
-      let shouldTestConfidence =
+      let probability =
         healthIndex >= 0.8
           ? true
           : healthIndex >= 0.5 && healthIndex < 0.8
           ? defaultAnomaly
           : 1
-      shouldTestConfidence = testGap > 60 ? 1 : shouldTestConfidence
+      probability = testGap > 60 ? 1 : probability
 
-      return shouldTestConfidence
+      return {
+        id: 'some_id',
+        action: {
+          id: 'action',
+          name: 'SKIP_TEST',
+          type: 'COST_SAVING'
+        },
+        probability: 0.9
+      }
     },
 
     //TODO
