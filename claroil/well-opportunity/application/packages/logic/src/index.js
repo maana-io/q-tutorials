@@ -14,10 +14,20 @@ const resolvers = {
       version: '0.0.1'
     }),
     wellPredictatedRate(parent, { well }) {
-      return Math.random() * 10
+      return {
+        id: 'bla',
+        waterCut: Math.random() * 10,
+        GOR: Math.random() * 10,
+        oilRate: Math.random() * 10
+      }
     },
     wellMeasuredRate(parent, { well }) {
-      return Math.random() * 10
+      return {
+        id: 'bla',
+        waterCut: Math.random() * 10,
+        GOR: Math.random() * 10,
+        oilRate: Math.random() * 10
+      }
     },
 
     getWellAnomalyProbability(parent, { well }) {
@@ -26,9 +36,13 @@ const resolvers = {
 
     discoverIntervention(parent, { predictedRate, measuredRate }) {
       return {
-        id: 'action',
-        name: 'actionName',
-        type: 'costSaving'
+        id: 'hey',
+        action: {
+          id: 'action',
+          name: 'actionName',
+          type: 'costSaving'
+        },
+        probability: 0.9
       }
     },
 
@@ -48,7 +62,46 @@ const resolvers = {
       return '02/02/2019'
     },
     applyConstraints(parent, { opportunities, constraints }) {
-      return [opportunities[0], opportunities[1]]
+      return [
+        {
+          id: faker.random.uuid(),
+          name: 'op',
+          createAt: faker.date.recent(),
+          actions: [
+            {
+              id: 'action',
+              name: 'actionName',
+              type: 'costSaving'
+            },
+            {
+              id: 'action',
+              name: 'actionName',
+              type: 'costSaving'
+            }
+          ],
+          incrementalRevenue: Math.random() * 10000,
+          costReductions: Math.random() * 1000
+        },
+        {
+          id: faker.random.uuid(),
+          name: 'op',
+          createAt: faker.date.recent(),
+          actions: [
+            {
+              id: 'action',
+              name: 'actionName',
+              type: 'costSaving'
+            },
+            {
+              id: 'action',
+              name: 'actionName',
+              type: 'costSaving'
+            }
+          ],
+          incrementalRevenue: Math.random() * 10000,
+          costReductions: Math.random() * 1000
+        }
+      ]
     },
 
     combineActionImpacts(parent, { costReductions, revenueGains }) {
@@ -56,7 +109,18 @@ const resolvers = {
         id: faker.random.uuid(),
         name: 'op',
         createAt: faker.date.recent(),
-        actions: () => new MockList([2, 6]),
+        actions: [
+          {
+            id: 'action',
+            name: 'actionName',
+            type: 'costSaving'
+          },
+          {
+            id: 'action',
+            name: 'actionName',
+            type: 'costSaving'
+          }
+        ],
         incrementalRevenue: Math.random() * 10000,
         costReductions: Math.random() * 1000
       }
@@ -68,16 +132,38 @@ const resolvers = {
     ) {
       return Math.random() * 1000
     },
+
+    calculateInterventionRevenueGain(parent, { well, action, cost }) {
+      return {
+        id: 'hey',
+        action: {
+          id: 'action',
+          name: 'actionName',
+          type: 'costSaving'
+        },
+        impact: Math.random() * 10000,
+        cost: Math.random() * 10000
+      }
+    },
+    calculateHealthIndex(parent, { predictedMetrics, measuredMetrics }) {
+      return Math.random() * 10
+    },
+
     projectAction(parent, { actionProbability }) {
       let { action } = actionProbability
-      return action ? action : null
+      console.log('action', action)
+      action.id = 'bla'
+      return action
     },
     projectProbability(parent, { actionProbability }) {
       let { probability } = actionProbability
-      return probability ? probability : null
+      return probability
     },
 
     wrapActionFinancialEstimate(parent, { actionEstimate }) {
+      let { action } = actionEstimate
+      action.id = 'bla'
+      actionEstimate.action = action
       return [actionEstimate]
     },
 
