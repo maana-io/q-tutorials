@@ -61,6 +61,7 @@ type Opportunity {
   incrementalRevenue: Float!
   costReduction: Float!
   cost: Float!
+  well: Well!
 }
 
 input OpportunityInput {
@@ -71,6 +72,7 @@ input OpportunityInput {
   incrementalRevenue: Float!
   costReduction: Float!
   cost: Float!
+  well: WellInput!
 }
 
 type ActionProbability {
@@ -134,6 +136,7 @@ type Query {
     constraints: ConstraintInput!
   ): [Opportunity!]!
   combineActionImpacts(
+    well: WellInput!
     costReduction: [ActionFinancialEstimateInput!]!
     revenueGains: [ActionFinancialEstimateInput!]!
   ): Opportunity!

@@ -98,7 +98,26 @@ const resolvers = {
     },
 
     getWellAnomalyProbability(parent, { well }) {
-      return 1
+      let res = await CKGClient.query({
+        query: gql`
+          {
+            allInterventionConstraints {
+              well
+              probabilityOfAnomalcyPercent
+            }
+          }
+        `
+      })
+
+      let { allInterventionConstraints } = res.data
+
+      let singleWell = _.take(
+        allInterventionConstraints.filter(x => x.well === well.name),
+        1
+      )
+
+      let result = singleWell[0].probabilityOfAnomalcyPercent / 100
+      return result  
     },
 
     discoverIntervention(parent, { predictedMetrics, measuredMetrics }) {
@@ -123,21 +142,21 @@ const resolvers = {
       if (waterCutGap > 0.07) {
         action = {
           id: 'WATER_SHUT_OFF',
-          name: 'WATER_SHUT_OFF',
+          name: 'Water Shutoff',
           type: 'REVENUE_GAIN'
         }
       }
       if (oilRateGap > 0.08) {
         action = {
           id: 'HYDRAULIC_FRACTURING',
-          name: 'HYDRAULIC_FRACTURING',
+          name: 'Hydraulic Fracturing',
           type: 'REVENUE_GAIN'
         }
       }
       if (oilRateGap > 0.05 && oilRateGap < 0.08) {
         action = {
           id: 'ACIDIZING',
-          name: 'ACIDIZING',
+          name: 'Acidizing',
           type: 'REVENUE_GAIN'
         }
       }
@@ -169,16 +188,31 @@ const resolvers = {
         id: faker.random.uuid(),
         action: {
           id: 'SKIP_TEST',
-          name: 'SKIP_TEST',
+          name: 'Skip test',
           type: 'COST_SAVING'
         },
         probability
       }
     },
-
-    //TODO:
+    
     getWellLastTestDate(parent, { well }) {
-      return '02/02/2019'
+      let res = await CKGClient.query({
+        query: gql`
+          {
+            allMeasuredMetrics {
+              well
+              dayOfProduction
+            }
+          }
+        `
+      })
+
+      let { allMeasuredMetrics } = res.data            
+      let singleMeasurement = _.take(allMeasuredMetrics, 1)[0]
+      let { dayOfProduction } = singleMeasurement
+
+      return dayOfProduction
+      
     },
 
     applyConstraints(parent, { opportunities, constraints }) {
@@ -205,7 +239,7 @@ const resolvers = {
       return filteredOpporunities
     },
 
-    combineActionImpacts(parent, { costReduction, revenueGains }) {
+    combineActionImpacts(parent, { well, costReduction, revenueGains }) {
       let incrementalRevenueSum = revenueGains.reduce(
         (accumulator, actionFinancialEstimate) => {
           let { impact } = actionFinancialEstimate
@@ -228,12 +262,11 @@ const resolvers = {
           return accumulator + cost
         },
         0
-      )
-
-      console.log(costReduction, revenueGains)
+      )      
 
       return {
         id: faker.random.uuid(),
+        well,
         name: 'opportunity-' + faker.random.uuid(),
         createdAt: new Date(),
         actions: [
@@ -306,12 +339,54 @@ const resolvers = {
     },
 
     calculateInterventionCost(parent, { well, action }) {
-      return 5000
+      let wellInterventionType = action.name
+
+      let res = await CKGClient.query({
+        query: gql`
+          {
+            allInterventionConstraints {
+              well
+              wellInterventionType
+              interventionCurrencyCost
+            }
+          }
+        `
+      })
+
+      let { allInterventionConstraints } = res.data
+      let singleIntervention = _.take(
+        allInterventionConstraints.filter(x => (x.well === well.name && x.wellInterventionType === wellInterventionType)),
+        1
+      )
+
+      let result = singleIntervention[0].interventionCurrencyCost
+      return result
+    },
+    calculateTestCost(parent, { well, action }) {
+      let wellInterventionType = action.name
+
+      let res = await CKGClient.query({
+        query: gql`
+          {
+            allInterventionConstraints {
+              well
+              wellInterventionType
+              interventionCurrencyCost
+            }
+          }
+        `
+      })
+
+      let { allInterventionConstraints } = res.data
+      let singleIntervention = _.take(
+        allInterventionConstraints.filter(x => (x.well === well.name && x.wellInterventionType === wellInterventionType)),
+        1
+      )
+
+      let result = singleIntervention[0].testCurrencyCost
+      return result
     },
 
-    calculateTestCost(parent, { well, action }) {
-      return 2000
-    },
     projectAction(parent, { actionProbability }) {
       let { action } = actionProbability
       action.id = action.id ? action.id : faker.random.uuid()
@@ -322,7 +397,6 @@ const resolvers = {
       let { probability } = actionProbability
       return probability
     },
-
     wrapActionFinancialEstimate(parent, { actionEstimate }) {
       let { action } = actionEstimate
       action.id = action.id ? action.id : faker.random.uuid()
