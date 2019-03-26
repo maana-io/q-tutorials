@@ -1,0 +1,83 @@
+query applyConstraints {
+  applyConstraints(
+    opportunities: [
+      {
+        id: "some_id"
+        cost: 1
+        name: "one"
+        actions: [
+          { id: "a", name: "ACID" }
+          { id: "a", name: "BLA" }
+          { id: "a", name: "BLOOP" }
+          { id: "a", name: "ACID" }
+          { id: "a", name: "SKIP_TEST" }
+        ]
+        createdAt: "2019-03-25T16:58:24.928Z"
+        incrementalRevenue: 10
+        costReduction: 0
+      }
+      {
+        id: "some_id"
+        cost: 1
+        name: "two"
+        actions: [
+          { id: "a", name: "ACID" }
+          { id: "a", name: "BLA" }
+          { id: "a", name: "BLOOP" }
+          { id: "a", name: "ACID" }
+          { id: "a", name: "SKIP_TEST" }
+        ]
+        createdAt: "2019-03-25T16:58:24.928Z"
+        incrementalRevenue: 0
+        costReduction: 23200
+      }
+      {
+        id: "some_id"
+        cost: 1
+        name: "three"
+        actions: [
+          { id: "a", name: "ACID" }
+          { id: "a", name: "BLA" }
+          { id: "a", name: "BLOOP" }
+          { id: "a", name: "ACID" }
+          { id: "a", name: "SKIP_TEST" }
+        ]
+        createdAt: "2019-03-25T16:58:24.928Z"
+        incrementalRevenue: 100
+        costReduction: 23200
+      }
+    ]
+    constraints: { id: "1", budget: 2, manHours: 100 }
+  ) {
+    cost
+    name
+  }
+}
+query combinedActionImpacts {
+  combineActionImpacts(
+    costReduction: [
+      { id: "a", action: { id: "a", name: "ACID" }, impact: 10000, cost: 100 }
+      { id: "a", action: { id: "a", name: "BLA" }, impact: 3000, cost: 100 }
+      { id: "a", action: { id: "a", name: "BLOOP" }, impact: 200, cost: 100 }
+      { id: "a", action: { id: "a", name: "ACID" }, impact: 10000, cost: 100 }
+    ]
+    revenueGains: [
+      {
+        id: "a"
+        action: { id: "a", name: "SKIP_TEST" }
+        impact: -10000
+        cost: 0
+      }
+    ]
+  ) {
+    cost
+    name
+    actions {
+      id
+      name
+    }
+    createdAt
+    incrementalRevenue
+    costReduction
+  }
+}

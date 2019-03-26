@@ -7,8 +7,15 @@
     "prisma": "prisma"
   },
   "dependencies": {
+    "apollo-cache-inmemory": "^1.5.1",
+    "apollo-client": "^2.5.1",
+    "apollo-link-context": "^1.0.17",
+    "apollo-link-http": "^1.5.14",
+    "dotenv": "^7.0.0",
     "faker": "^4.1.0",
+    "graphql-tag": "^2.10.1",
     "graphql-yoga": "1.15.1",
+    "lodash": "^4.17.11",
     "prisma-binding": "2.1.3"
   },
   "devDependencies": {

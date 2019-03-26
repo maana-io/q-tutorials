@@ -40,12 +40,17 @@ input ActionFinancialEstimateInput {
 
 type Well {
   id: ID!
-  name: String
+  name: String!
 }
 
 input WellInput {
   id: ID!
   name: String
+}
+
+input WellByNameInput {
+  id: ID
+  name: String!
 }
 
 type Opportunity {
@@ -55,6 +60,7 @@ type Opportunity {
   actions: [Action!]!
   incrementalRevenue: Float!
   costReduction: Float!
+  cost: Float!
 }
 
 input OpportunityInput {
@@ -64,6 +70,7 @@ input OpportunityInput {
   actions: [ActionInput!]!
   incrementalRevenue: Float!
   costReduction: Float!
+  cost: Float!
 }
 
 type ActionProbability {
@@ -79,6 +86,12 @@ input ActionProbabilityInput {
 }
 
 input ConstraintInput {
+  id: ID!
+  budget: Float!
+  manHours: Float!
+}
+
+type Constraint {
   id: ID!
   budget: Float!
   manHours: Float!
@@ -102,9 +115,9 @@ type Query {
   info: Info
 
   ##Getters
-  wellPredictatedMetrics(well: WellInput!): Metrics!
-  wellMeasuredMetrics(well: WellInput!): Metrics!
-  getWellAnomalyProbability(well: WellInput!): Float!
+  wellPredictatedMetrics(well: WellByNameInput!): Metrics!
+  wellMeasuredMetrics(well: WellByNameInput!): Metrics!
+  getWellAnomalyProbability(well: WellByNameInput!): Float!
 
   discoverIntervention(
     predictedMetrics: MetricsInput!
@@ -118,7 +131,7 @@ type Query {
   getWellLastTestDate(well: WellInput!): Date!
   applyConstraints(
     opportunities: [OpportunityInput!]!
-    constraints: [ConstraintInput!]!
+    constraints: ConstraintInput!
   ): [Opportunity!]!
   combineActionImpacts(
     costReduction: [ActionFinancialEstimateInput!]!
@@ -136,13 +149,17 @@ type Query {
     interventionCost: Float!
     measuredMetrics: MetricsInput!
     action: ActionInput
-  ): ActionFinancialEstimate
+  ): ActionFinancialEstimate!
   calculateHealthIndex(
     predictedMetrics: MetricsInput!
     measuredMetrics: MetricsInput!
   ): Float!
 
   calculateInterventionCost(well: WellInput!, action: ActionInput): Float!
+  calculateTestCost(well: WellInput!, action: ActionInput): Float!
+
+  allWells: [Well]!
+  getDefaultConstraints: Constraint!
 
   ##Helpers
   projectAction(actionProbability: ActionProbabilityInput!): Action
@@ -154,8 +171,8 @@ type Query {
     action: ActionInput
     impact: Float!
     cost: Float!
-  ): ActionFinancialEstimate
+  ): ActionFinancialEstimate!
   invertFloat(value: Float!): Float!
 
-  getCurrentOilPrice: Float
+  getCurrentOilPrice: Float!
 }

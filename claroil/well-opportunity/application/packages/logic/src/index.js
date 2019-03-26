@@ -1,36 +1,104 @@
+require('dotenv').config()
+
 const { GraphQLServer } = require('graphql-yoga')
 const { Prisma } = require('prisma-binding')
 const faker = require('faker')
+const gql = require('graphql-tag')
+
+const { CKGClient } = require('./ckgClient')
+
+const _ = require('lodash')
+
+// console.log('client', Client)
 
 const resolvers = {
   Query: {
-    info: () => ({
-      name: 'ClairOil Well Optimization Demo',
-      version: '0.0.1'
-    }),
-
-    //TODO
-    wellPredictatedMetrics(parent, { well }) {
+    info: async () => {
       return {
-        id: 'some_id',
-        waterCut: Math.random() * 10,
-        GOR: Math.random() * 10,
-        oilRate: Math.random() * 10
+        name: 'ClairOil Well Optimization Demo',
+        version: '0.0.3'
       }
     },
 
-    //TODO
-    wellMeasuredMetrics(parent, { well }) {
+    async allWells(parent) {
+      let res = await CKGClient.query({
+        query: gql`
+          {
+            allMeasuredMetrics {
+              well
+            }
+          }
+        `
+      })
+
+      let { allMeasuredMetrics } = res.data
+
+      let allWells = allMeasuredMetrics.map(x => {
+        return {
+          id: faker.random.uuid(),
+          name: x.well
+        }
+      })
+
+      return _.take(_.uniqBy(allWells, 'name'), 15)
+    },
+
+    getDefaultConstraints() {
       return {
-        id: 'some_id',
-        waterCut: Math.random() * 10,
-        GOR: Math.random() * 10,
-        oilRate: Math.random() * 10
+        id: faker.random.uuid(),
+        budget: 1000000,
+        manHours: 10000
       }
+    },
+
+    async wellPredictatedMetrics(parent, { well }) {
+      let res = await CKGClient.query({
+        query: gql`
+          {
+            allPredictedMetrics {
+              id
+              oilRate
+              waterCut
+              GOR
+              well
+            }
+          }
+        `
+      })
+
+      let { allPredictedMetrics } = res.data
+      let byWell = _.take(
+        allPredictedMetrics.filter(x => x.well === well.name),
+        1
+      )
+      return byWell[0]
+    },
+
+    async wellMeasuredMetrics(parent, { well }) {
+      let res = await CKGClient.query({
+        query: gql`
+          {
+            allMeasuredMetrics {
+              id
+              oilRate
+              waterCut
+              GOR
+              well
+            }
+          }
+        `
+      })
+
+      let { allMeasuredMetrics } = res.data
+      let byWell = _.take(
+        allMeasuredMetrics.filter(x => x.well === well.name),
+        1
+      )
+      return byWell[0]
     },
 
     getWellAnomalyProbability(parent, { well }) {
-      return Math.random() * 10
+      return 1
     },
 
     discoverIntervention(parent, { predictedMetrics, measuredMetrics }) {
@@ -44,34 +112,38 @@ const resolvers = {
       let measuredOilRate = measuredMetrics.oilRate
 
       let oilRateGap =
-        (100 * (predictedOilRate - measuredOilRate)) / predictedOilRate
+        predictedOilRate !== 0
+          ? (100 * (predictedOilRate - measuredOilRate)) / predictedOilRate
+          : 0
 
-      let action = {}
+      let action = {
+        id: faker.random.uuid()
+      }
 
       if (waterCutGap > 0.07) {
         action = {
-          id: 'action',
+          id: 'WATER_SHUT_OFF',
           name: 'WATER_SHUT_OFF',
           type: 'REVENUE_GAIN'
         }
       }
       if (oilRateGap > 0.08) {
         action = {
-          id: 'action',
+          id: 'HYDRAULIC_FRACTURING',
           name: 'HYDRAULIC_FRACTURING',
           type: 'REVENUE_GAIN'
         }
       }
       if (oilRateGap > 0.05 && oilRateGap < 0.08) {
         action = {
-          id: 'action',
+          id: 'ACIDIZING',
           name: 'ACIDIZING',
           type: 'REVENUE_GAIN'
         }
       }
 
       return {
-        id: 'some_id',
+        id: faker.random.uuid(),
         action,
         probability: 0.9
       }
@@ -79,9 +151,9 @@ const resolvers = {
 
     shouldTestWell(
       parent,
-      { healthIndex, lastTestDate, wellAnomalyProbability }
+      { healthIndex, lastTestDay, wellAnomalyProbability }
     ) {
-      let today = '03/03/2019'
+      let today = 1200
       let testGap = 30
 
       let defaultAnomaly = 0.2 //TODO: Pass this value in
@@ -94,88 +166,83 @@ const resolvers = {
       probability = testGap > 60 ? 1 : probability
 
       return {
-        id: 'some_id',
+        id: faker.random.uuid(),
         action: {
-          id: 'action',
+          id: 'SKIP_TEST',
           name: 'SKIP_TEST',
           type: 'COST_SAVING'
         },
-        probability: 0.9
+        probability
       }
     },
 
-    //TODO
+    //TODO:
     getWellLastTestDate(parent, { well }) {
       return '02/02/2019'
     },
 
-    //TODO
     applyConstraints(parent, { opportunities, constraints }) {
-      return [
-        {
-          id: 'some_id',
-          name: 'op',
-          createdAt: '02/02/2019',
-          actions: [
-            {
-              id: 'action',
-              name: 'actionName',
-              type: 'costSaving'
-            },
-            {
-              id: 'action',
-              name: 'actionName',
-              type: 'costSaving'
-            }
-          ],
-          incrementalRevenue: Math.random() * 10000,
-          costReduction: Math.random() * 1000
-        },
-        {
-          id: 'some_id',
-          name: 'op',
-          createdAt: '02/02/2019',
-          actions: [
-            {
-              id: 'action',
-              name: 'actionName',
-              type: 'costSaving'
-            },
-            {
-              id: 'action',
-              name: 'actionName',
-              type: 'costSaving'
-            }
-          ],
-          incrementalRevenue: Math.random() * 10000,
-          costReduction: Math.random() * 1000
+      let { budget } = constraints
+
+      let orderedOpportunityByRevenueGain = _.orderBy(
+        opportunities,
+        ['incrementalRevenue', 'costReduction', 'cost'],
+        ['desc', 'desc', 'asc']
+      )
+
+      let filteredOpporunities = orderedOpportunityByRevenueGain.filter(
+        entry => {
+          if (budget > 0) {
+            let { cost } = entry
+            budget = budget - cost
+            return true
+          } else {
+            return false
+          }
         }
-      ]
+      )
+
+      return filteredOpporunities
     },
 
-    //TODO
     combineActionImpacts(parent, { costReduction, revenueGains }) {
-      let incrementalRevenue = 0
-      let costReduction = 0
+      let incrementalRevenueSum = revenueGains.reduce(
+        (accumulator, actionFinancialEstimate) => {
+          let { impact } = actionFinancialEstimate
+          return accumulator + impact
+        },
+        0
+      )
+
+      let costReductionSum = costReduction.reduce(
+        (accumulator, actionFinancialEstimate) => {
+          let { impact } = actionFinancialEstimate
+          return accumulator + impact
+        },
+        0
+      )
+
+      let cost = [...costReduction, ...revenueGains].reduce(
+        (accumulator, actionFinancialEstimate) => {
+          let { cost } = actionFinancialEstimate
+          return accumulator + cost
+        },
+        0
+      )
+
+      console.log(costReduction, revenueGains)
 
       return {
-        id: 'some_id',
-        name: 'op',
-        createdAt: '02/02/2019',
+        id: faker.random.uuid(),
+        name: 'opportunity-' + faker.random.uuid(),
+        createdAt: new Date(),
         actions: [
-          {
-            id: 'action',
-            name: 'actionName',
-            type: 'costSaving'
-          },
-          {
-            id: 'action',
-            name: 'actionName',
-            type: 'costSaving'
-          }
+          ...costReduction.map(x => x.action),
+          ...revenueGains.map(x => x.action)
         ],
-        incrementalRevenue: Math.random() * 10000,
-        costReduction: Math.random() * 1000
+        incrementalRevenue: incrementalRevenueSum,
+        costReduction: costReductionSum,
+        cost
       }
     },
 
@@ -197,7 +264,7 @@ const resolvers = {
         measuredMetrics.oilRate * oilPrice * 180 * rateOfIncrease
 
       return {
-        id: 'some_id',
+        id: faker.random.uuid(),
         action,
         impact: revenueIncrease,
         cost: interventionCost
@@ -209,19 +276,27 @@ const resolvers = {
       let predictedWatercut = predictedMetrics.waterCut
       let measuredWatercut = measuredMetrics.waterCut
       let waterCutHealthIndex =
-        1 - Math.abs((predictedWatercut - measuredWatercut) / predictedWatercut)
+        predictedWatercut !== 0
+          ? 1 -
+            Math.abs((predictedWatercut - measuredWatercut) / predictedWatercut)
+          : 0
 
       //GOR
       let predictedGOR = predictedMetrics.GOR
       let measuredGOR = measuredMetrics.GOR
       let GORHealthIndex =
-        1 - Math.abs((predictedGOR - measuredGOR) / predictedGOR)
+        predictedGOR !== 0
+          ? 1 - Math.abs((predictedGOR - measuredGOR) / predictedGOR)
+          : 0
 
       //OilRate
       let predictedOilRate = predictedMetrics.oilRate
       let measuredOilRate = measuredMetrics.oilRate
       let oilRateHealthIndex =
-        1 - Math.abs((predictedOilRate - measuredOilRate) / predictedOilRate)
+        predictedOilRate !== 0
+          ? 1 -
+            Math.abs((predictedOilRate - measuredOilRate) / predictedOilRate)
+          : 0
 
       return (
         (1 / 3) * waterCutHealthIndex +
@@ -234,9 +309,12 @@ const resolvers = {
       return 5000
     },
 
+    calculateTestCost(parent, { well, action }) {
+      return 2000
+    },
     projectAction(parent, { actionProbability }) {
       let { action } = actionProbability
-      action.id = 'some_id'
+      action.id = action.id ? action.id : faker.random.uuid()
       return action
     },
 
@@ -247,14 +325,14 @@ const resolvers = {
 
     wrapActionFinancialEstimate(parent, { actionEstimate }) {
       let { action } = actionEstimate
-      action.id = 'some_id'
+      action.id = action.id ? action.id : faker.random.uuid()
       actionEstimate.action = action
       return [actionEstimate]
     },
 
     makeFinancialEstimate(parent, { action, impact, cost }) {
       return {
-        id: 'some_id',
+        id: faker.random.uuid(),
         action,
         impact,
         cost
@@ -266,7 +344,7 @@ const resolvers = {
     },
 
     getCurrentOilPrice() {
-      return Math.random() * 100
+      return 10
     }
   }
 }
