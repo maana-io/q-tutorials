@@ -97,7 +97,7 @@ const resolvers = {
       return byWell[0]
     },
 
-    getWellAnomalyProbability(parent, { well }) {
+    async getWellAnomalyProbability(parent, { well }) {
       let res = await CKGClient.query({
         query: gql`
           {
@@ -117,7 +117,7 @@ const resolvers = {
       )
 
       let result = singleWell[0].probabilityOfAnomalcyPercent / 100
-      return result  
+      return result
     },
 
     discoverIntervention(parent, { predictedMetrics, measuredMetrics }) {
@@ -194,8 +194,8 @@ const resolvers = {
         probability
       }
     },
-    
-    getWellLastTestDate(parent, { well }) {
+
+    async getWellLastTestDate(parent, { well }) {
       let res = await CKGClient.query({
         query: gql`
           {
@@ -207,12 +207,11 @@ const resolvers = {
         `
       })
 
-      let { allMeasuredMetrics } = res.data            
+      let { allMeasuredMetrics } = res.data
       let singleMeasurement = _.take(allMeasuredMetrics, 1)[0]
       let { dayOfProduction } = singleMeasurement
 
       return dayOfProduction
-      
     },
 
     applyConstraints(parent, { opportunities, constraints }) {
@@ -262,7 +261,7 @@ const resolvers = {
           return accumulator + cost
         },
         0
-      )      
+      )
 
       return {
         id: faker.random.uuid(),
@@ -338,7 +337,7 @@ const resolvers = {
       )
     },
 
-    calculateInterventionCost(parent, { well, action }) {
+    async calculateInterventionCost(parent, { well, action }) {
       let wellInterventionType = action.name
 
       let res = await CKGClient.query({
@@ -355,14 +354,18 @@ const resolvers = {
 
       let { allInterventionConstraints } = res.data
       let singleIntervention = _.take(
-        allInterventionConstraints.filter(x => (x.well === well.name && x.wellInterventionType === wellInterventionType)),
+        allInterventionConstraints.filter(
+          x =>
+            x.well === well.name &&
+            x.wellInterventionType === wellInterventionType
+        ),
         1
       )
 
       let result = singleIntervention[0].interventionCurrencyCost
       return result
     },
-    calculateTestCost(parent, { well, action }) {
+    async calculateTestCost(parent, { well, action }) {
       let wellInterventionType = action.name
 
       let res = await CKGClient.query({
@@ -379,7 +382,11 @@ const resolvers = {
 
       let { allInterventionConstraints } = res.data
       let singleIntervention = _.take(
-        allInterventionConstraints.filter(x => (x.well === well.name && x.wellInterventionType === wellInterventionType)),
+        allInterventionConstraints.filter(
+          x =>
+            x.well === well.name &&
+            x.wellInterventionType === wellInterventionType
+        ),
         1
       )
 
