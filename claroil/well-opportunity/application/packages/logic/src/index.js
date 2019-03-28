@@ -97,12 +97,13 @@ const resolvers = {
       return byWell[0]
     },
 
-    async getWellAnomalyProbability(parent, { well }) {
+    async getWellAnomalyProbability(parent, { well, action }) {
       let res = await CKGClient.query({
         query: gql`
           {
             allInterventionConstraints {
               well
+              wellInterventionType
               probabilityOfAnomalcyPercent
             }
           }
@@ -111,16 +112,22 @@ const resolvers = {
 
       let { allInterventionConstraints } = res.data
 
-      let singleWell = _.take(
-        allInterventionConstraints.filter(x => x.well === well.name),
+      let singleWellIntervention = _.take(
+        allInterventionConstraints.filter(x => x.well === well.name).filter(x => x.wellInterventionType === action.name),
         1
       )
 
-      let result = singleWell[0].probabilityOfAnomalcyPercent / 100
+      let result = singleWellIntervention[0].probabilityOfAnomalcyPercent / 100
       return result
     },
 
-    discoverIntervention(parent, { predictedMetrics, measuredMetrics }) {
+    async discoverIntervention(parent, { predictedMetrics, measuredMetrics }) {
+      //well
+      let well = {
+        id: faker.random.uuid()
+        name = predictedMetrics.well
+      }
+
       //Watercut
       let predictedWatercut = predictedMetrics.waterCut
       let measuredWatercut = measuredMetrics.waterCut
@@ -139,13 +146,6 @@ const resolvers = {
         id: faker.random.uuid()
       }
 
-      if (waterCutGap > 0.07) {
-        action = {
-          id: 'WATER_SHUT_OFF',
-          name: 'Water Shutoff',
-          type: 'REVENUE_GAIN'
-        }
-      }
       if (oilRateGap > 0.08) {
         action = {
           id: 'HYDRAULIC_FRACTURING',
@@ -153,7 +153,8 @@ const resolvers = {
           type: 'REVENUE_GAIN'
         }
       }
-      if (oilRateGap > 0.05 && oilRateGap < 0.08) {
+
+      if (oilRateGap > 0.05 && oilRateGap <= 0.08) {
         action = {
           id: 'ACIDIZING',
           name: 'Acidizing',
@@ -161,10 +162,20 @@ const resolvers = {
         }
       }
 
+      if (waterCutGap > 0.07) {
+        action = {
+          id: 'WATER_SHUT_OFF',
+          name: 'Water Shutoff',
+          type: 'REVENUE_GAIN'
+        }
+      }
+
+      let anomalyProb = getWellAnomalyProbability(parent, {well, action})
+
       return {
         id: faker.random.uuid(),
         action,
-        probability: 0.9
+        probability: anomalyProb
       }
     },
 
