@@ -217,16 +217,18 @@ const resolvers = {
     applyConstraints(parent, { opportunities, constraints }) {
       let { budget } = constraints
 
+      _.forEach(opportunities, function(op) { op.sumBen = op.incrementalRevenue + op.costReduction;});
       let orderedOpportunityByRevenueGain = _.orderBy(
         opportunities,
-        ['incrementalRevenue', 'costReduction', 'cost'],
-        ['desc', 'desc', 'asc']
+        ['sumBen', 'cost'],
+        ['desc', 'asc']
       )
+      _.forEach(orderedOpportunityByRevenueGain, function(op) { delete op.sumBen;});
 
       let filteredOpporunities = orderedOpportunityByRevenueGain.filter(
         entry => {
-          if (budget > 0) {
-            let { cost } = entry
+          let { cost } = entry
+          if (budget - cost >= 0) {
             budget = budget - cost
             return true
           } else {
