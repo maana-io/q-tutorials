@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 const { GraphQLServer } = require('graphql-yoga')
-//const { Prisma } = require('prisma-binding')
+const { Prisma } = require('prisma-binding')
 const faker = require('faker')
 const gql = require('graphql-tag')
 
@@ -15,7 +15,7 @@ const resolvers = {
   Query: {
     info: async () => {
       return {
-        name: 'ClairOil Well Optimization Demo',
+        name: 'ClarOil Well Optimization Demo',
         version: '0.0.5'
       }
     },
