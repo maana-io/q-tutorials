@@ -119,18 +119,18 @@ const resolvers = {
           ? (100 * (predictedOilRate - measuredOilRate)) / predictedOilRate
           : 0
 
-      let actionId = 'NO_INTERVENTION'
+      let actionId = 'No Intervention'
 
       if (oilRateGap > 0.08) {
-        actionId = 'HYDRAULIC_FRACTURING'
+        actionId = 'Hydraulic Fracturing'
       }
 
       if (oilRateGap > 0.05 && oilRateGap <= 0.08) {
-        actionId = 'ACIDIZING'
+        actionId = 'Acidizing'
       }
 
       if (waterCutGap > 0.07) {
-        actionId = 'WATER_SHUT_OFF'
+        actionId = 'Water Shutoff'
       }
 
       let singleAction = await actionById(parent, {actionId})
@@ -146,12 +146,12 @@ const resolvers = {
       //SKIP_TEST_RISKY: anomaly prob = 1
       let actionId =
         testGap > 60
-          ? 'SKIP_TEST_RISKY'
+          ? 'Risky To Skip Test'
           :  healthIndex >= 0.8
-          ? 'SKIP_TEST_SAFE'
+          ? 'Safe To Skip Test'
           : healthIndex >= 0.5 && healthIndex < 0.8
-          ? 'SKIP_TEST_OK'
-          : 'SKIP_TEST_RISKY'
+          ? 'OK To Skip Test'
+          : 'Risky To Skip Test'
       let singleAction = await actionById(parent, {actionId})
 
       return singleAction
