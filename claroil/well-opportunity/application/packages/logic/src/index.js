@@ -28,12 +28,14 @@ const resolvers = {
               id
               name
               predictedMetrics {
+                 id
                  waterCut
                  GOR
                  oilRate
                  date
               }
               measuredMetrics {
+                 id
                  waterCut
                  GOR
                  oilRate
@@ -73,8 +75,8 @@ const resolvers = {
           {
             allActionOutcomes {
               id
-              action { id }
-              well { id }
+              action { id name type}
+              well { id name predictedMetrics {id waterCut GOR oilRate date} measuredMetrics {id waterCut GOR oilRate date}}
               probabilityOfAnomaly
               cost
               manHours
