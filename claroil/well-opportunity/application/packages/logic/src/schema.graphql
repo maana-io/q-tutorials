@@ -156,6 +156,10 @@ type Query {
     constraints: ConstraintInput!
   ): [Opportunity!]!
 
+  actionById(
+    actionId: String!
+  ): Action!
+
   combineActionImpacts(
     well: WellInput!
     costReduction: [ActionFinancialEstimateInput!]!
