@@ -24,11 +24,12 @@ const resolvers = {
     },
 
     async allActiveWells(parent) {
+      console.log('begin allActiveWells')
       let res = await CKGClient.query({
         query: gql`
           {
             wells (ids:[
-                "Pu-01","Pu-02","Pu-03","Pu-04","Pu-05",
+                "Pu-02","Pu-03","Pu-04","Pu-05",
                 "Co-01","Co-02",
                 "Ga-01","Ga-02","Ga-03","Ga-04",
                 "Cr-01","Cr-02",
@@ -36,20 +37,6 @@ const resolvers = {
               ]) {
               id
               name
-              predictedMetrics {
-                 id
-                 waterCut
-                 GOR
-                 oilRate
-                 date
-              }
-              measuredMetrics {
-                 id
-                 waterCut
-                 GOR
-                 oilRate
-                 date
-              }
             }
           }
         `
@@ -57,67 +44,80 @@ const resolvers = {
 
       let { wells } = res.data
 
+      console.log('end allActiveWells:', wells)
+
       return wells
     },
 
-    async activeWellByID(parent, {wellId}){
+    async wellPredictedMetrics(parent, { well, date }) {
+      console.log('begin wellPredictedMetrics', well, date)
+
       let res = await CKGClient.query({
         query: gql`
           {
-            allWells {
+            allMetricss  {
               id
-              name
-              predictedMetrics {
-                 id
-                 waterCut
-                 GOR
-                 oilRate
-                 date
-              }
-              measuredMetrics {
-                 id
-                 waterCut
-                 GOR
-                 oilRate
-                 date
-              }
+              well {id name}
+              date
+              type
+              waterCut
+              GOR
+              oilRate
             }
           }
         `
       })
 
-      let { allWells } = res.data
-      let well = _.take(allWells.filter(x => x.id === wellId), 1)
-
-      return well[0]
-    },
-
-    async wellPredictedMetrics(parent, { well, date }) {
-      let allPredictedMetrics = well.predictedMetrics
-      let byDate = _.take(
-        allPredictedMetrics.filter(x => x.date === date),
-        1
-      )
-      return byDate[0]
+      let { allMetricss } = res.data
+      let filteredMetrics = allMetricss.filter(x => x.date === date && x.well.id === well.id && x.type === 'predicted')
+      let len = filteredMetrics.length
+      let metric = {id: 1, well, date, type: 'predicted', waterCut: 1, GOR: 1, oilRate: 1}
+      if (len > 0){
+         metric = _.take(filteredMetrics, 1)[0]
+      }
+      console.log('end wellPredictedMetrics', metric)
+      return metric
     },
 
     async wellMeasuredMetrics(parent, { well, date }) {
-      let allMeasuredMetrics = well.measuredMetrics
-      let byDate = _.take(
-        allMeasuredMetrics.filter(x => x.date === date),
-        1
-      )
-      return byDate[0]
+      console.log('begin wellMeasuredMetrics', well, date)
+      let res = await CKGClient.query({
+        query: gql`
+          {
+            allMetricss  {
+              id
+              well {id name}
+              date
+              type
+              waterCut
+              GOR
+              oilRate
+            }
+          }
+        `
+      })
+
+      let { allMetricss } = res.data
+
+      let filteredMetrics = allMetricss.filter(x => x.date === date && x.well.id === well.id && x.type === 'measured')
+      let len = filteredMetrics.length
+      let metric = {id: 1, well, date, type: 'measured', waterCut: 1, GOR: 1, oilRate: 1}
+      if (len > 0){
+         metric = _.take(filteredMetrics, 1)[0]
+      }
+      console.log('end wellMeasuredMetrics', metric)
+      return metric
     },
 
     async wellActionOutcome(parent, { well, action }) {
+      console.log('begin wellActionOutcome', well, action)
       let res = await CKGClient.query({
         query: gql`
           {
             allActionOutcomes {
               id
               action { id name type}
-              well { id name predictedMetrics {id waterCut GOR oilRate date} measuredMetrics {id waterCut GOR oilRate date}}
+              well { id name }
               probabilityOfAnomaly
               cost
               manHours
@@ -128,26 +128,21 @@ const resolvers = {
       })
 
       let { allActionOutcomes } = res.data
-
-      let singleActionOutcome = _.take(
-        allActionOutcomes.filter(x => x.well.id === well.id && x.action.id === action.id),
-        1
-      )[0]
-
-      let { id, probabilityOfAnomaly, cost, manHours, increaseInOilRate } = singleActionOutcome
-
-      return {
-        id,
-        action,
-        well,
-        probabilityOfAnomaly,
-        cost,
-        manHours,
-        increaseInOilRate
+      let filteredOutcome = allActionOutcomes.filter(x => x.well.id === well.id && x.action.id === action.id)
+      let len = filteredOutcome.length
+      let singleActionOutcome =  {id: 1, action, well, probabilityOfAnomaly: 0, cost: 0, manHours: 0, increaseInOilRate: 0}
+      if (len > 0) {
+        singleActionOutcome = _.take(filteredOutcome, 1)[0]
       }
+
+      console.log('end wellActionOutcome', singleActionOutcome)
+
+      return singleActionOutcome
     },
 
     async discoverIntervention(parent, { predictedMetrics, measuredMetrics }) {
+      console.log('begin discoverIntervention', predictedMetrics, measuredMetrics)
+
       //Watercut
       let predictedWatercut = predictedMetrics.waterCut
       let measuredWatercut = measuredMetrics.waterCut
@@ -192,11 +187,14 @@ const resolvers = {
              type: 'Revenue Increase'
           }
       }
+      console.log('end discoverIntervention', action)
 
       return action
     },
 
     async shouldTestWell(parent, { healthIndex, lastTestDay, today }) {
+      console.log('begin shouldTestWell', healthIndex, lastTestDay, today)
+
       let testGap = today - lastTestDay
 
       //SKIP_TEST_SAFE: anomaly prob = 0
@@ -210,34 +208,55 @@ const resolvers = {
           : healthIndex >= 0.5 && healthIndex < 0.8
           ? 'OK To Skip Test'
           : 'Risky To Skip Test'
+          
       let action = {
         id: actionId,
         name: actionId,
         type: 'Cost Reduction'
       }
+      console.log('end shouldTestWell', action)
 
       return action
     },
 
 
     async wellLastTestDate(parent, { well, today }) {
-      let pastMeasuredMetrics = well.measuredMetrics.filter( entry => {
-          let { date } = entry
-          if (date <= today) {
-            return true
-          } else {
-            return false
+      console.log('begin wellLastTestDate', well, today)
+
+      let res = await CKGClient.query({
+        query: gql`
+          {
+            allMetricss  {
+              well {id}
+              date
+              type
+              waterCut
+              GOR
+              oilRate
+            }
           }
+        `
       })
-      let orderedMeasuredMetrics  = _.orderBy(pastMeasuredMetrics, ["date"], ["desc"])
-      let singleMeasurement = _.take(orderedMeasuredMetrics, 1)[0]
-      let { date } = singleMeasurement
+
+      let { allMetricss } = res.data
+      let pastMeasuredMetrics = allMetricss.filter(x => x.date <= today && x.well.id === well.id && x.type === 'measured')
+      let len = pastMeasuredMetrics.length
+      let date = 0
+      if (len > 0){
+          let orderedMeasuredMetrics  = _.orderBy(pastMeasuredMetrics, ["date"], ["desc"])
+          let singleMeasurement = _.take(orderedMeasuredMetrics, 1)[0]
+          date  = singleMeasurement.date
+      }
+
+      console.log('end wellLastTestDate', date)
 
       return date
     },
 
 
     async healthIndex(parent, { predictedMetrics, measuredMetrics }) {
+       console.log('begin healthIndex', predictedMetrics, measuredMetrics)
+
       //Watercut
       let predictedWatercut = predictedMetrics.waterCut
       let measuredWatercut = measuredMetrics.waterCut
@@ -264,15 +283,18 @@ const resolvers = {
             Math.abs((predictedOilRate - measuredOilRate) / predictedOilRate)
           : 0
 
-      return (
-        (1 / 3) * waterCutHealthIndex +
-        (1 / 3) * GORHealthIndex +
-        (1 / 3) * oilRateHealthIndex
-      )
+       hidx = (1 / 3) * waterCutHealthIndex +
+                      (1 / 3) * GORHealthIndex +
+                      (1 / 3) * oilRateHealthIndex
+       console.log('end healthIndex', hidx)
+
+      return hidx
     },
 
 
     async applyConstraints(parent, { opportunities, constraints }) {
+      console.log('begin applyConstraints', opportunities, constraints)
+
       let totalBudget = constraints.budget
       let totalManHours = constraints.manHours
 
@@ -297,11 +319,12 @@ const resolvers = {
           }
         }
       )
-
+      console.log('end applyConstraints', filteredOpporunities)
       return filteredOpporunities
     },
 
     async combineActionImpacts(parent, { well, costReduction, revenueGains }) {
+      console.log('begin combineActionImpacts', well, costReduction, revenueGains)
       let incrementalRevenueSum = revenueGains.reduce(
         (accumulator, actionFinancialEstimate) => {
           let { impact } = actionFinancialEstimate
@@ -333,6 +356,7 @@ const resolvers = {
         },
         0
       )
+      console.log('end combineActionImpacts')
 
       return {
         id: faker.random.uuid(),
@@ -351,8 +375,11 @@ const resolvers = {
     },
 
     async interventionRevenueGain(parent,{ oilPrice, measuredMetrics, actionOutcome }) {
+      console.log('begin interventionRevenueGain', oilPrice, measuredMetrics, actionOutcome)
+
       let { increaseInOilRate, cost, manHours } = actionOutcome
       let revenueIncrease = measuredMetrics.oilRate * oilPrice * 180 * increaseInOilRate
+      console.log('end interventionRevenueGain', revenueIncrease)
 
       return [{
         id: faker.random.uuid(),
@@ -365,10 +392,13 @@ const resolvers = {
     },
 
     async skippingTestCostReduction(parent, { oilPrice, measuredMetrics, actionOutcome }) {
+      console.log('begin skippingTestCostReduction', oilPrice, measuredMetrics, actionOutcome)
+
       let probabilityOfAnomaly = actionOutcome.probabilityOfAnomaly / 100
       let potentialCostOfSkippikingATest = measuredMetrics.oilRate * probabilityOfAnomaly * oilPrice * 60
       let costReduction = actionOutcome.cost
       let manHours = actionOutcome.manHours
+      console.log('end skippingTestCostReduction', potentialCostOfSkippikingATest)
 
       return [{
         id: faker.random.uuid(),
@@ -381,10 +411,13 @@ const resolvers = {
     },
 
     currentOilPrice() {
+      console.log('in currentOilPrice')
+
       return 10
     },
 
     todayDate() {
+      console.log('in todayDate')
       return 1222
     },
 

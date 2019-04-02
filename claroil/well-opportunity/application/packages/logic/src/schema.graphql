@@ -60,15 +60,11 @@ input ActionFinancialEstimateInput {
 type Well {
   id: ID!
   name: String!
-  predictedMetrics: [Metrics!]!
-  measuredMetrics: [Metrics!]!
 }
 
 input WellInput {
   id: ID!
   name: String!
-  predictedMetrics: [MetricsInput!]!
-  measuredMetrics: [MetricsInput!]!
 }
 
 type Opportunity {
@@ -110,25 +106,28 @@ input ConstraintInput {
 
 type Metrics {
   id: ID!
+  well: Well!
+  date: Int!
+  type: String!
   waterCut: Float!
   GOR: Float!
   oilRate: Float!
-  date: Int!
 }
 
 input MetricsInput {
   id: ID!
+  well: WellInput!
+  date: Int!
+  type: String!
   waterCut: Float!
   GOR: Float!
   oilRate: Float!
-  date: Int!
 }
 
 type Query {
   info: Info
 
   allActiveWells: [Well!]!
-  activeWellByID(wellId: String!): Well!
 
   wellPredictedMetrics(well: WellInput!, date: Int!): Metrics!
   wellMeasuredMetrics(well: WellInput!, date: Int!): Metrics!

@@ -11,31 +11,17 @@
 
 {
   wellLastTestDate(
-    well:{id: "Co-01", name:"Co-01",
-          predictedMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
-          measuredMetrics: [
-            {id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111},
-            {id: 2, waterCut: 9, GOR: 8, oilRate:7, date: 1211},
-            {id: 3, waterCut: 9, GOR: 8, oilRate:7, date: 1311},
-          ]
-        },
+    well:{id: "Co-01", name:"Co-01"},
     today: 1222
   )
 }
 
 {
    wellMeasuredMetrics(
-    well:{id: "Co-01", name:"Co-01",
-          predictedMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
-          measuredMetrics: [
-            {id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111},
-            {id: 2, waterCut: 9, GOR: 8, oilRate:7, date: 1211},
-            {id: 3, waterCut: 9, GOR: 8, oilRate:7, date: 1311},
-          ]
-        },
+    well:{id: "Co-01", name:"Co-01"},
     date: 1111
   ){
-    id waterCut GOR oilRate date
+    id well {id name} date type waterCut GOR oilRate
   }
 }
 
@@ -44,18 +30,6 @@ query getAllWells {
   allActiveWells {
     id
     name
-    predictedMetrics {
-      waterCut
-      GOR
-      oilRate
-      date
-    }
-    measuredMetrics {
-      waterCut
-      GOR
-      oilRate
-      date
-    }
   }
 }
 
@@ -73,7 +47,7 @@ query getAllWells {
 
 {
   discoverIntervention(
-    predictedMetrics: {id: 1, waterCut: 9, GOR: 18, oilRate:27, date: 1111},
+    predictedMetrics: {id: 1, waterCut: 9, GOR: 18, oilRate:27, date: 1111, well {id: 1, name: '1'}, type: '' },
     measuredMetrics: {id: 2, waterCut: 9, GOR: 38, oilRate:16, date: 1111}
   ){
     id name type
