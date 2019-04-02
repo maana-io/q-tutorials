@@ -1,10 +1,13 @@
 # Maana Field Classifier
 
-The Field Classifier service is a tool for classifying fields in tabular data.  It also allows you to query the classifications of those fields and add additional columns to the table with the explicit type (given by the classification).  Explicit types are sometimes needed during function composition to allow data to be used with certain functions.  The Field Classifier relies on the Maana Natural Language Processing service and can only classify fields with the types defined there.  However, one can manually define their own classification for a column by creating a new kind with the desired name (the name should be the same as the classification) and using the "copyFieldAsKind" function to copy data to that kind (more on that later).
+The Field Classifier service is a tool for classifying fields in tabular data. It also allows you to query the classifications of those fields and add additional columns to the table with the explicit type (given by the classification). Explicit types are sometimes needed during function composition to allow data to be used with certain functions. The Field Classifier relies on the Maana Natural Language Processing service and can only classify fields with the types defined there. However, one can manually define their own classification for a column by creating a new kind with the desired name (the name should be the same as the classification) and using the "copyFieldAsKind" function to copy data to that kind (more on that later).
 
 ## Field Classifier Using Function Composition
 
 To start with, upload a CSV file, in this case we use [operator](operator.csv).
+
+**NOTE** After each of these steps, you may have to refresh your browser to see the changes (if you do not have "Subscribe to Links" toggled in the top right account menu).
+
 <p><p><img src="kind.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
 </p>
 <em>Figure 1: View after uploading CSV and Clicking on kind link</em>
@@ -22,12 +25,12 @@ Next, lets see what the field classifications actually are by dragging the "fiel
 </p>
 <em>Figure 3: A new column is added to OperatorCSV with Ids to the Person kind.</em>
 </p>
-Now that the fields are classified we would like to define a field as a particular kind.  Drag the "copyFieldAsKind" function onto the workspace.  The input panel has fields "kindId", "fieldName", "newFieldName", "newFieldKind" and "newFieldKindId".  In this case we use "newFieldKind" and ignore "newFieldKindId".  Use the kindId defined for "operatorcsv", the "fieldName" is one of the existing field names in "operatorcsv".  In this case we choose the field "business", the "newFieldName" is the name of the new field that will be added to the "operatorcsv" kind - set this to "businessOrganization", though it can be anything consisting of alpha numeric characters.  The next field is "newFieldKind", this is the "kind" that you want to classify the data as.  The "newFieldKind" must be the name of a kind that exists in maana, furthermore if the kind is not a "system kind" then one should use newFieldKindId (and use the id of the kind) instead of "newFieldKind".  The final option is a switch, "forceAll".  When forceAll is switched on all the entries from "fieldName" are added to the new column regardless of individual classification.  If "forceAll" is set to false, only those column entries that are classified as the type given in "newFieldKind" or "newFieldKindId" are copied into the new column.  The values entered are shown in the image below - click the run button to see the results.
+Now that the fields are classified we would like to define a field as a particular kind.  Drag the "copyFieldAsKind" function onto the workspace.  The input panel has fields "kindId", "fieldName", "newFieldName", "newFieldKind" and "newFieldKindId".  In this case we use "newFieldKind" and ignore "newFieldKindId".  Use the kindId defined for "operatorcsv", the "fieldName" is one of the existing field names in "operatorcsv".  In this case we choose the field "business", the "newFieldName" is the name of the new field that will be added to the "operatorcsv" kind - set this to "businessOrganization", though it can be anything consisting of alpha numeric characters.  The next field is "newFieldKind", this is the "kind" that you want to classify the data as.  The "newFieldKind" must be the name of a kind that exists in maana, furthermore if the kind is not a "system kind" then one should use newFieldKindId (and use the id of the kind) instead of "newFieldKind".  The final option is a switch, "forceAll".  When forceAll is switched on all the entries from "fieldName" are added to the new column regardless of individual classification.  If "forceAll" is set to false, only those column entries that are classified as the type given in "newFieldKind" or "newFieldKindId" are copied into the new column.  The values entered are shown in the image below - click the run button to see the result (which is a botAction indicating the status of the mutation). 
 <p><p><img src="copyFieldAsKind.png" alt="New People", style="height: 100%; width: 100%; align: center"/>
 </p>
 <em>Figure 4: .</em>
 </p>
-After running copyFieldAsKind a new column will be added to the kind, the image below shows the new column "businessOrganization" which contains ids which are ids of instances in the kind "Organization" (see image below).
+After running copyFieldAsKind and waiting for the Bot Action to complete, a new column will be added to the kind, the image below shows the new column "businessOrganization" which contains ids which are ids of instances in the kind "Organization" (see image below).
 <p><p><img src="updatedKind.png" alt="New People", style="height: 25%; width: 25%; align: center"/>
 </p>
 <em>Figure 5:.</em>
@@ -38,6 +41,3 @@ Finally, on the "operatorcsv" kind, click on the "Organization" link.  This shou
 <em>Figure 6:.</em>
 </p>
 The copyFieldAsKind not only works on classifications produces by the classifyFields functions, it also works for a user defined kind, provided that (1) newFieldKindId is used instead of newFieldKind (2) the user defined kind should have a field called "name" and (3) if the kind does not have the same name as one of the possible field classifications then the "forceAll" button should be set to true.
-
-
-
