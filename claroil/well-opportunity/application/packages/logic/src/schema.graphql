@@ -4,6 +4,7 @@ scalar Date
 type Info {
   name: String
   version: String
+  dm_url: String
 }
 
 type Action {
@@ -127,6 +128,7 @@ type Query {
   info: Info
 
   allActiveWells: [Well!]!
+  activeWellByID(wellId: String!): Well!
 
   wellPredictedMetrics(well: WellInput!, date: Int!): Metrics!
   wellMeasuredMetrics(well: WellInput!, date: Int!): Metrics!
@@ -155,10 +157,6 @@ type Query {
     opportunities: [OpportunityInput!]!
     constraints: ConstraintInput!
   ): [Opportunity!]!
-
-  actionById(
-    actionId: String!
-  ): Action!
 
   combineActionImpacts(
     well: WellInput!

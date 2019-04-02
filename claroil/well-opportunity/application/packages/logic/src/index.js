@@ -11,16 +11,56 @@ const _ = require('lodash')
 
 // console.log('client', Client)
 
+const REMOTE_KSVC_ENDPOINT_URL = process.env.REMOTE_KSVC_ENDPOINT_URL
+
 const resolvers = {
   Query: {
     info: async () => {
       return {
         name: 'ClarOil Well Optimization Demo',
-        version: '0.0.5'
+        version: '0.0.5',
+        dm_url: REMOTE_KSVC_ENDPOINT_URL
       }
     },
 
     async allActiveWells(parent) {
+      let res = await CKGClient.query({
+        query: gql`
+          {
+            wells (ids:[
+                "Pu-01","Pu-02","Pu-03","Pu-04","Pu-05",
+                "Co-01","Co-02",
+                "Ga-01","Ga-02","Ga-03","Ga-04",
+                "Cr-01","Cr-02",
+                "Pd-01","Pd-02"
+              ]) {
+              id
+              name
+              predictedMetrics {
+                 id
+                 waterCut
+                 GOR
+                 oilRate
+                 date
+              }
+              measuredMetrics {
+                 id
+                 waterCut
+                 GOR
+                 oilRate
+                 date
+              }
+            }
+          }
+        `
+      })
+
+      let { wells } = res.data
+
+      return wells
+    },
+
+    async activeWellByID(parent, {wellId}){
       let res = await CKGClient.query({
         query: gql`
           {
@@ -47,8 +87,9 @@ const resolvers = {
       })
 
       let { allWells } = res.data
+      let well = _.take(allWells.filter(x => x.id === wellId), 1)
 
-      return allWells
+      return well[0]
     },
 
     async wellPredictedMetrics(parent, { well, date }) {
@@ -121,23 +162,38 @@ const resolvers = {
           ? (100 * (predictedOilRate - measuredOilRate)) / predictedOilRate
           : 0
 
-      let actionId = 'No Intervention'
+      let action = {
+         id: 'No Intervention',
+         name: 'No Intervention',
+         type: 'Revenue Increase'
+      }
+
 
       if (oilRateGap > 0.08) {
-        actionId = 'Hydraulic Fracturing'
+        action = {
+             id: 'Hydraulic Fracturing',
+             name: 'Hydraulic Fracturing',
+             type: 'Revenue Increase'
+          }
       }
 
       if (oilRateGap > 0.05 && oilRateGap <= 0.08) {
-        actionId = 'Acidizing'
+        action = {
+             id: 'Acidizing',
+             name: 'Acidizing',
+             type: 'Revenue Increase'
+          }
       }
 
       if (waterCutGap > 0.07) {
-        actionId = 'Water Shutoff'
+        action = {
+             id: 'Water Shutoff',
+             name: 'Water Shutoff',
+             type: 'Revenue Increase'
+          }
       }
 
-      let singleAction = await actionById(parent, {actionId})
-
-      return singleAction
+      return action
     },
 
     async shouldTestWell(parent, { healthIndex, lastTestDay, today }) {
@@ -154,9 +210,13 @@ const resolvers = {
           : healthIndex >= 0.5 && healthIndex < 0.8
           ? 'OK To Skip Test'
           : 'Risky To Skip Test'
-      let singleAction = await actionById(parent, {actionId})
+      let action = {
+        id: actionId,
+        name: actionId,
+        type: 'Cost Reduction'
+      }
 
-      return singleAction
+      return action
     },
 
 
@@ -239,29 +299,6 @@ const resolvers = {
       )
 
       return filteredOpporunities
-    },
-
-    async actionById(parent, { actionId }) {
-      let res = await CKGClient.query({
-        query: gql`
-          {
-            allActions {
-              id
-              name
-              type
-            }
-          }
-        `
-      })
-
-      let { allActions } = res.data
-
-      let singleAction = _.take(
-        allActions.filter(x => x.id === actionId),
-        1
-      )[0]
-
-      return singleAction
     },
 
     async combineActionImpacts(parent, { well, costReduction, revenueGains }) {
@@ -348,7 +385,7 @@ const resolvers = {
     },
 
     todayDate() {
-      return 1111
+      return 1222
     },
 
 
