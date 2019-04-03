@@ -1,5 +1,5 @@
 {
-  "name": "q-demo-clairoil-helpers",
+  "name": "q-demo-claroil-helpers",
   "scripts": {
     "start": "node src/index.js",
     "dev": "npm-run-all --parallel start playground",
