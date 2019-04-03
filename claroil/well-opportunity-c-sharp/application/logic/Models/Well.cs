@@ -6,7 +6,5 @@ namespace netBox.Models
     {
         public string id { get; set; }
         public string name { get; set; }
-        public Metrics predictedMetrics { get; set; }
-        public Metrics measuredMetrics { get; set; }
     }
 }

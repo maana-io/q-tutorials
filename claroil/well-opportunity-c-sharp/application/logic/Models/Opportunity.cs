@@ -13,5 +13,7 @@ namespace netBox.Models
         public float costReduction { get; set; }
         public float cost { get; set; }
         public Well well { get; set; }
+        public float manHours { get; set; }
+
     }
 }

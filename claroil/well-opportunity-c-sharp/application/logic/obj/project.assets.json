@@ -13332,11 +13332,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "\\\\Mac\\Home\\Documents\\well-opportunity-c-sharp\\claroil\\well-opportunity-c-sharp\\application\\packages\\logic\\netBox.csproj",
+      "projectUniqueName": "\\\\Mac\\Home\\Documents\\well-opportunity-c-sharp\\claroil\\well-opportunity-c-sharp\\application\\logic\\netBox.csproj",
       "projectName": "netBox",
-      "projectPath": "\\\\Mac\\Home\\Documents\\well-opportunity-c-sharp\\claroil\\well-opportunity-c-sharp\\application\\packages\\logic\\netBox.csproj",
+      "projectPath": "\\\\Mac\\Home\\Documents\\well-opportunity-c-sharp\\claroil\\well-opportunity-c-sharp\\application\\logic\\netBox.csproj",
       "packagesPath": "C:\\Users\\jamescrosetto\\.nuget\\packages\\",
-      "outputPath": "\\\\Mac\\Home\\Documents\\well-opportunity-c-sharp\\claroil\\well-opportunity-c-sharp\\application\\packages\\logic\\obj\\",
+      "outputPath": "\\\\Mac\\Home\\Documents\\well-opportunity-c-sharp\\claroil\\well-opportunity-c-sharp\\application\\logic\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

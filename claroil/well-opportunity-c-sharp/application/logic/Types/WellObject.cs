@@ -20,10 +20,6 @@ namespace netBox.Types
                 .Description("The unique identifier of the Well.");
             this.Field(x => x.name, type: typeof(NonNullGraphType<StringGraphType>))
                 .Description("The name of the Well.");
-            this.Field(x => x.predictedMetrics, type: typeof(NonNullGraphType<ListGraphType<NonNullGraphType<MetricsObject>>>))
-                .Description("The predicted metrics of the Well.");
-            this.Field(x => x.measuredMetrics, type: typeof(NonNullGraphType<ListGraphType<NonNullGraphType<MetricsObject>>>))
-                .Description("The measured metrics of the Well.");
         }
     }
 }
