@@ -1,83 +1,402 @@
-query applyConstraints {
+###
+### Service functions
+###
+{
+  todayDate
+}
+
+{
+  currentOilPrice
+}
+
+{
+  wellLastTestDate(
+    well:{id: "Co-01", name:"Co-01"},
+    today: 1222
+  )
+}
+
+{
+   wellMeasuredMetrics(
+    well:{id: "Co-01", name:"Co-01"},
+    date: 1111
+  ){
+    id well {id name} date type waterCut GOR oilRate
+  }
+}
+
+
+{
+  allActiveWells {
+    id
+    name
+  }
+}
+
+{
+   shouldTestWell(
+    healthIndex: 78,
+    lastTestDay: 1100,
+    today: 1178
+  )
+  {
+    id name type
+  }
+}
+
+
+{
+  discoverIntervention(
+    predictedMetrics: {
+      id: 1, waterCut: 9, GOR: 18, oilRate:27, date: 1111,
+      well: {id: 1, name: "1"}, type: "" },
+    measuredMetrics:
+      {id: 2, waterCut: 9, GOR: 38, oilRate:16, date: 1111,
+      well:{id: 1, name:"2"}, type :""}
+  ){
+    id name type
+  }
+}
+
+{
+   healthIndex (
+    predictedMetrics: {
+      id: 1,
+      waterCut: 78,
+      GOR: 0.12,
+      oilRate:0.89,
+      date: 1122,
+      well:{id:1, name:"1"},
+      type:""
+    },
+    measuredMetrics: {
+      id: 2,
+      waterCut: 88,
+      GOR: 0.22,
+      oilRate:0.58 ,
+      date: 1122,
+      well:{id:1, name:"1"},
+      type:""
+    }
+  )
+
+}
+
+
+{
+  wellActionOutcome(
+    well:{id: "Co-01", name:"Co-01"},
+    action: {id: "Acidizing", name:"does not matter", type: "neither"}
+  ){
+    id
+    action {id name type}
+    well {id name}
+    cost
+    manHours
+    increaseInOilRate
+    probabilityOfAnomaly
+  }
+}
+
+{
+  skippingTestCostReduction(
+    oilPrice: 1000,
+    measuredMetrics: {id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111,
+    type:"",
+      well:{
+        id: "Co-01", name:"Co-01"}
+    },
+    actionOutcome: {
+      id: "Co-01-Acidizing",
+      action: {
+        id: "Safe To Skip Test",
+        name: "does not matter",
+        type: "neither"
+      },
+      well: {
+        id: "Co-01",
+        name: "Co-01",
+      },
+      cost: 75000,
+      manHours: 0,
+      increaseInOilRate: 5,
+      probabilityOfAnomaly: 4
+    }
+  ){
+    id
+    action {id type}
+    well {name}
+    impact
+    cost
+    manHours
+  }
+}
+
+{
+ interventionRevenueGain(
+  oilPrice: 12,
+  measuredMetrics: {id: 1, waterCut: 9, GOR: 8, oilRate:17, date: 1111,
+  type: "",
+      well: {
+        id: "Co-01",
+        name: "Co-01",
+      },
+  },
+    actionOutcome: {
+      id: "Co-01-Acidizing",
+      action: {
+        id: "Acidizing",
+        name: "does not matter",
+        type: "does not matter"
+      },
+      well: {
+        id: "Co-01",
+        name: "Co-01",
+      },
+      cost: 75000,
+      manHours: 1800,
+      increaseInOilRate: 5,
+      probabilityOfAnomaly: 4
+    }
+){
+    id
+    action {id type}
+    well {name}
+    impact
+    cost
+    manHours
+   }
+}
+
+
+{
+  combineActionImpacts(
+    well:{id: "Co-01", name:"Co-01",
+        },
+    costReduction:[{
+      id: 1,
+      well:{id: "Co-01", name:"Co-01",
+        },
+      action: {id: "Safe To Skip Test", name:"does not matter", type: "neither"},
+      impact:17000,
+      cost: 5700,
+      manHours: 100
+    }],
+    revenueGains: [{
+      id: 2,
+      well:{id: "Co-01", name:"Co-01",
+        },
+      action: {id: "Acidizing", name:"does not matter", type: "neither"},
+      impact:6000,
+      cost: 700,
+      manHours: 12
+
+    }]
+  ){
+    id name actions {id type}
+    incrementalRevenue
+    costReduction
+    cost
+    well {name}
+    manHours
+  }
+}
+
+
+{
   applyConstraints(
     opportunities: [
       {
-        id: "some_id"
-        cost: 1
-        name: "one"
-        actions: [
-          { id: "a", name: "ACID" }
-          { id: "a", name: "BLA" }
-          { id: "a", name: "BLOOP" }
-          { id: "a", name: "ACID" }
-          { id: "a", name: "SKIP_TEST" }
-        ]
-        createdAt: "2019-03-25T16:58:24.928Z"
-        incrementalRevenue: 10
-        costReduction: 0
-      }
+        id: 1,
+        name:"opp 1",
+        createdAt: "2019-04-01T11:00:00.Z100",
+        actions:[{id: 1, name:"Acidizing", type:"Revenue Increase"}],
+        incrementalRevenue: 5000,
+        costReduction:0,
+        cost: 2000,
+        well:{id: "Co-01", name:"Co-01",
+        },
+        manHours: 20
+      },
       {
-        id: "some_id"
-        cost: 1
-        name: "two"
-        actions: [
-          { id: "a", name: "ACID" }
-          { id: "a", name: "BLA" }
-          { id: "a", name: "BLOOP" }
-          { id: "a", name: "ACID" }
-          { id: "a", name: "SKIP_TEST" }
-        ]
-        createdAt: "2019-03-25T16:58:24.928Z"
-        incrementalRevenue: 0
-        costReduction: 23200
-      }
+        id: 2,
+        name:"opp 2",
+        createdAt: "2019-04-01T11:00:00.Z100",
+        actions:[{id: 2, name:"Fracturizing", type:"Revenue Increase"}],
+        incrementalRevenue: 8000,
+        costReduction:0,
+        cost: 6000,
+        well:{id: "Pu-02", name:"Pu-02",
+        },
+        manHours: 120
+      },
       {
-        id: "some_id"
-        cost: 1
-        name: "three"
-        actions: [
-          { id: "a", name: "ACID" }
-          { id: "a", name: "BLA" }
-          { id: "a", name: "BLOOP" }
-          { id: "a", name: "ACID" }
-          { id: "a", name: "SKIP_TEST" }
-        ]
-        createdAt: "2019-03-25T16:58:24.928Z"
-        incrementalRevenue: 100
-        costReduction: 23200
-      }
-    ]
-    constraints: { id: "1", budget: 2, manHours: 100 }
-  ) {
-    cost
-    name
-  }
-}
-query combinedActionImpacts {
-  combineActionImpacts(
-    costReduction: [
-      { id: "a", action: { id: "a", name: "ACID" }, impact: 10000, cost: 100 }
-      { id: "a", action: { id: "a", name: "BLA" }, impact: 3000, cost: 100 }
-      { id: "a", action: { id: "a", name: "BLOOP" }, impact: 200, cost: 100 }
-      { id: "a", action: { id: "a", name: "ACID" }, impact: 10000, cost: 100 }
-    ]
-    revenueGains: [
-      {
-        id: "a"
-        action: { id: "a", name: "SKIP_TEST" }
-        impact: -10000
-        cost: 0
-      }
-    ]
-  ) {
-    cost
-    name
-    actions {
-      id
-      name
+        id: 3,
+        name:"opp 3",
+        createdAt: "2019-04-01T11:00:00.Z100",
+        actions:[{id: 3, name:"Water Shutoff", type:"Revenue Increase"}],
+        incrementalRevenue: 15000,
+        costReduction:0,
+        cost: 12000,
+        well:{id: "Cr-01", name:"Cr-01",
+        },
+        manHours: 220
+      },
+    ],
+    constraints: {
+      id: 1,
+      budget: 15000,
+      manHours: 300
     }
-    createdAt
+  ){
+    id name actions { name type}
+    well { name }
     incrementalRevenue
     costReduction
+    cost
+    manHours
   }
 }
+
+
+###
+### Wired functions
+###
+
+{
+  wellPredictedMetrics(well:{id:"Co-01", name:"Co-01"}){
+   id well {id name} date type waterCut GOR oilRate
+  }
+
+  wellMeasuredMetrics(well:{id:"Co-01", name:"Co-01"}){
+   id well {id name} date type waterCut GOR oilRate
+  }
+
+  wellHealthIndex(
+    predictedMetrics:{
+      id: "1",
+      well: {
+        id: "Co-01",
+        name: "Co-01"
+      },
+      date: 1173,
+      type: "predicted",
+      waterCut: 1,
+      GOR: 1,
+      oilRate: 1 },
+    measuredMetrics: {
+      id: "Co-01-1173-meas",
+      well: {
+        id: "Co-01",
+        name: "Co-01"
+      },
+      date: 1173,
+      type: "measured",
+      waterCut: 26.796,
+      GOR: 989.88,
+      oilRate: 21.647
+    }
+  )
+}
+
+{
+  discoverWellCostReduction(well:{id:"Co-01", name:"Co-01"}){
+   id action {id type} well {id name}
+    impact cost  manHours
+  }
+}
+
+
+{
+  discoverWellRevenueGains(well:{id:"Co-01", name:"Co-01"}){
+   id action {id type} well {id name}
+    impact cost  manHours
+  }
+}
+
+{
+ discoverWellOpportunity(
+    well:{id: "Co-01", name:"Co-01"}
+){
+  id name createdAt actions {id type}
+  incrementalRevenue
+  costReduction
+  cost
+  well {name}
+  manHours
+}
+}
+
+
+
+{
+ discoverAllWellOpportunities(
+    wells:[
+      {id: "Co-01", name:"Co-01",
+      },
+      {id: "Co-02", name:"Co-02",
+      },
+       {id: "Cr-01", name:"Cr-01",
+      },
+   ]
+){
+  id name createdAt actions {id type}
+  incrementalRevenue
+  costReduction
+  cost
+  well {name}
+  manHours
+}
+}
+
+
+{
+ recommendOpportunities(
+    wells:[
+      {id: "Co-01", name:"Co-01",
+      },
+      {id: "Co-02", name:"Co-02",
+      },
+       {id: "Cr-01", name:"Cr-01",
+      },
+    ],
+  constraint:{
+      id: 1
+      budget:150000
+      manHours: 500
+    }
+){
+  id name createdAt actions {id type}
+  incrementalRevenue
+  costReduction
+  cost
+  well {name}
+  manHours
+}
+}
+
+
+query mainPQ {
+  givenConstraintWhatAreOpportunities(
+    constraint:{
+      id: 1
+      budget:1000000
+      manHours: 10000
+    }
+  ) 
+  {
+    name
+    actions {
+      name
+      type
+    }
+    incrementalRevenue
+    costReduction
+    cost
+    manHours
+    well {
+      name
+    }
+  }
+}
+
