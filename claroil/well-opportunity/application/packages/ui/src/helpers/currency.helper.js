@@ -11,8 +11,10 @@ export function formatCurrency(value) {
     formattedVal = `$${(value / 1e3).toFixed(2)}K`;
   } else if (intPart.length >= 6 && intPart.length < 9) {
     formattedVal = `$${(value / 1e6).toFixed(2)}M`;
-  } else {
+  } else if (intPart.length > 9) {
     formattedVal = `$${(value / 1e9).toFixed(2)}B`;
+  } else {
+    formattedVal = `$${value.toFixed(2)}`
   }
 
   return formattedVal;
