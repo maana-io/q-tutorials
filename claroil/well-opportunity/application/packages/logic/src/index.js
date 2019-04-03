@@ -29,7 +29,7 @@ const resolvers = {
         query: gql`
           {
             wells (ids:[
-                "Pu-02","Pu-03","Pu-04","Pu-05",
+                "Pu-01","Pu-02","Pu-03","Pu-04","Pu-05",
                 "Co-01","Co-02",
                 "Ga-01","Ga-02","Ga-03","Ga-04",
                 "Cr-01","Cr-02",
