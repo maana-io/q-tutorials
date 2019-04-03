@@ -1,0 +1,23 @@
+.cip {
+  text-align: center;
+  padding: 1rem 0.5rem;
+}
+
+.cip > h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.cip__data {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chart-container {
+  margin: 0 2rem;
+  text-align: center;
+}
+
+.chart-container h2 {
+  margin-bottom: 2rem;
+}
