@@ -26,7 +26,7 @@
 }
 
 
-query getAllWells {
+{
   allActiveWells {
     id
     name
@@ -47,13 +47,16 @@ query getAllWells {
 
 {
   discoverIntervention(
-    predictedMetrics: {id: 1, waterCut: 9, GOR: 18, oilRate:27, date: 1111, well {id: 1, name: '1'}, type: '' },
-    measuredMetrics: {id: 2, waterCut: 9, GOR: 38, oilRate:16, date: 1111}
+    predictedMetrics: {
+      id: 1, waterCut: 9, GOR: 18, oilRate:27, date: 1111,
+      well: {id: 1, name: "1"}, type: "" },
+    measuredMetrics:
+      {id: 2, waterCut: 9, GOR: 38, oilRate:16, date: 1111,
+      well:{id: 1, name:"2"}, type :""}
   ){
     id name type
   }
 }
-
 
 {
    healthIndex (
@@ -62,25 +65,27 @@ query getAllWells {
       waterCut: 78,
       GOR: 0.12,
       oilRate:0.89,
-      date: 1122
+      date: 1122,
+      well:{id:1, name:"1"},
+      type:""
     },
     measuredMetrics: {
       id: 2,
       waterCut: 88,
       GOR: 0.22,
       oilRate:0.58 ,
-      date: 1122
+      date: 1122,
+      well:{id:1, name:"1"},
+      type:""
     }
   )
 
 }
 
+
 {
   wellActionOutcome(
-    well:{id: "Co-01", name:"Co-01",
-          predictedMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
-          measuredMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
-        },
+    well:{id: "Co-01", name:"Co-01"},
     action: {id: "Acidizing", name:"does not matter", type: "neither"}
   ){
     id
@@ -96,7 +101,11 @@ query getAllWells {
 {
   skippingTestCostReduction(
     oilPrice: 1000,
-    measuredMetrics: {id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111},
+    measuredMetrics: {id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111,
+    type:"",
+      well:{
+        id: "Co-01", name:"Co-01"}
+    },
     actionOutcome: {
       id: "Co-01-Acidizing",
       action: {
@@ -107,8 +116,6 @@ query getAllWells {
       well: {
         id: "Co-01",
         name: "Co-01",
-        predictedMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
-        measuredMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
       },
       cost: 75000,
       manHours: 0,
@@ -128,7 +135,13 @@ query getAllWells {
 {
  interventionRevenueGain(
   oilPrice: 12,
-  measuredMetrics: {id: 1, waterCut: 9, GOR: 8, oilRate:17, date: 1111},
+  measuredMetrics: {id: 1, waterCut: 9, GOR: 8, oilRate:17, date: 1111,
+  type: "",
+      well: {
+        id: "Co-01",
+        name: "Co-01",
+      },
+  },
     actionOutcome: {
       id: "Co-01-Acidizing",
       action: {
@@ -139,8 +152,6 @@ query getAllWells {
       well: {
         id: "Co-01",
         name: "Co-01",
-        predictedMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
-        measuredMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
       },
       cost: 75000,
       manHours: 1800,
@@ -157,17 +168,14 @@ query getAllWells {
    }
 }
 
+
 {
   combineActionImpacts(
     well:{id: "Co-01", name:"Co-01",
-          predictedMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
-          measuredMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
         },
     costReduction:[{
       id: 1,
       well:{id: "Co-01", name:"Co-01",
-          predictedMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
-          measuredMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
         },
       action: {id: "Safe To Skip Test", name:"does not matter", type: "neither"},
       impact:17000,
@@ -177,8 +185,6 @@ query getAllWells {
     revenueGains: [{
       id: 2,
       well:{id: "Co-01", name:"Co-01",
-          predictedMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
-          measuredMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
         },
       action: {id: "Acidizing", name:"does not matter", type: "neither"},
       impact:6000,
@@ -209,8 +215,6 @@ query getAllWells {
         costReduction:0,
         cost: 2000,
         well:{id: "Co-01", name:"Co-01",
-          predictedMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
-          measuredMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}]
         },
         manHours: 20
       },
@@ -223,8 +227,6 @@ query getAllWells {
         costReduction:0,
         cost: 6000,
         well:{id: "Pu-02", name:"Pu-02",
-          predictedMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
-          measuredMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}]
         },
         manHours: 120
       },
@@ -237,8 +239,6 @@ query getAllWells {
         costReduction:0,
         cost: 12000,
         well:{id: "Cr-01", name:"Cr-01",
-          predictedMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
-          measuredMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}]
         },
         manHours: 220
       },
@@ -258,60 +258,65 @@ query getAllWells {
   }
 }
 
+
 ###
 ### Wired functions
 ###
+
 {
- discoverWellCostReductions(
-    well:{id: "Co-01", name:"Co-01",
-          measuredMetrics: [{id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111}],
-          predictedMetrics: [
-            {id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111},
-            {id: 2, waterCut: 9, GOR: 8, oilRate:7, date: 1211},
-            {id: 3, waterCut: 9, GOR: 8, oilRate:7, date: 1311},
-          ]
-        }
-){
-  id
-  action {id type}
-  well {name}
-  impact
-  cost
-  manHours
+  wellPredictedMetrics(well:{id:"Co-01", name:"Co-01"}){
+   id well {id name} date type waterCut GOR oilRate
+  }
+
+  wellMeasuredMetrics(well:{id:"Co-01", name:"Co-01"}){
+   id well {id name} date type waterCut GOR oilRate
+  }
+
+  wellHealthIndex(
+    predictedMetrics:{
+      id: "1",
+      well: {
+        id: "Co-01",
+        name: "Co-01"
+      },
+      date: 1173,
+      type: "predicted",
+      waterCut: 1,
+      GOR: 1,
+      oilRate: 1 },
+    measuredMetrics: {
+      id: "Co-01-1173-meas",
+      well: {
+        id: "Co-01",
+        name: "Co-01"
+      },
+      date: 1173,
+      type: "measured",
+      waterCut: 26.796,
+      GOR: 989.88,
+      oilRate: 21.647
+    }
+  )
 }
+
+{
+  discoverWellCostReduction(well:{id:"Co-01", name:"Co-01"}){
+   id action {id type} well {id name}
+    impact cost  manHours
+  }
 }
 
 
 {
- discoverWellRevenueGains(
-    well:{id: "Co-01", name:"Co-01",
-          measuredMetrics: [{id: 1, waterCut: 19, GOR: 8, oilRate:7, date: 1111}],
-          predictedMetrics: [
-            {id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111},
-            {id: 2, waterCut: 9, GOR: 8, oilRate:7, date: 1211},
-            {id: 3, waterCut: 9, GOR: 8, oilRate:7, date: 1311},
-          ]
-        }
-){
-  id
-  action {id type}
-  well {name}
-  impact
-  cost
-  manHours
-}
+  discoverWellRevenueGains(well:{id:"Co-01", name:"Co-01"}){
+   id action {id type} well {id name}
+    impact cost  manHours
+  }
 }
 
 {
- discoverWellOpportunities(
-    well:{id: "Co-01", name:"Co-01",
-          measuredMetrics: [{id: 1, waterCut: 19, GOR: 8, oilRate:7, date: 1111}],
-          predictedMetrics: [
-            {id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111},
-            {id: 2, waterCut: 9, GOR: 8, oilRate:7, date: 1211},
-            {id: 3, waterCut: 9, GOR: 8, oilRate:7, date: 1311},
-          ]
-        }
+ discoverWellOpportunity(
+    well:{id: "Co-01", name:"Co-01"}
 ){
   id name createdAt actions {id type}
   incrementalRevenue
@@ -322,32 +327,16 @@ query getAllWells {
 }
 }
 
+
+
 {
  discoverAllWellOpportunities(
     wells:[
       {id: "Co-01", name:"Co-01",
-          measuredMetrics: [{id: 1, waterCut: 19, GOR: 8, oilRate:7, date: 1111}],
-          predictedMetrics: [
-            {id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111},
-            {id: 2, waterCut: 9, GOR: 8, oilRate:7, date: 1211},
-            {id: 3, waterCut: 9, GOR: 8, oilRate:7, date: 1311},
-          ]
       },
       {id: "Co-02", name:"Co-02",
-          measuredMetrics: [{id: 1, waterCut: 19, GOR: 8, oilRate:7, date: 1111}],
-          predictedMetrics: [
-            {id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111},
-            {id: 2, waterCut: 9, GOR: 8, oilRate:7, date: 1211},
-            {id: 3, waterCut: 9, GOR: 8, oilRate:7, date: 1311},
-          ]
       },
        {id: "Cr-01", name:"Cr-01",
-          measuredMetrics: [{id: 1, waterCut: 19, GOR: 8, oilRate:7, date: 1111}],
-          predictedMetrics: [
-            {id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111},
-            {id: 2, waterCut: 9, GOR: 8, oilRate:7, date: 1211},
-            {id: 3, waterCut: 9, GOR: 8, oilRate:7, date: 1311},
-          ]
       },
    ]
 ){
@@ -360,32 +349,15 @@ query getAllWells {
 }
 }
 
+
 {
  recommendOpportunities(
     wells:[
       {id: "Co-01", name:"Co-01",
-          measuredMetrics: [{id: 1, waterCut: 19, GOR: 8, oilRate:7, date: 1111}],
-          predictedMetrics: [
-            {id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111},
-            {id: 2, waterCut: 9, GOR: 8, oilRate:7, date: 1211},
-            {id: 3, waterCut: 9, GOR: 8, oilRate:7, date: 1311},
-          ]
       },
       {id: "Co-02", name:"Co-02",
-          measuredMetrics: [{id: 1, waterCut: 19, GOR: 8, oilRate:7, date: 1111}],
-          predictedMetrics: [
-            {id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111},
-            {id: 2, waterCut: 9, GOR: 8, oilRate:7, date: 1211},
-            {id: 3, waterCut: 9, GOR: 8, oilRate:7, date: 1311},
-          ]
       },
        {id: "Cr-01", name:"Cr-01",
-          measuredMetrics: [{id: 1, waterCut: 19, GOR: 8, oilRate:7, date: 1111}],
-          predictedMetrics: [
-            {id: 1, waterCut: 9, GOR: 8, oilRate:7, date: 1111},
-            {id: 2, waterCut: 9, GOR: 8, oilRate:7, date: 1211},
-            {id: 3, waterCut: 9, GOR: 8, oilRate:7, date: 1311},
-          ]
       },
     ],
   constraint:{
@@ -408,8 +380,8 @@ query mainPQ {
   givenConstraintWhatAreOpportunities(
     constraint:{
       id: 1
-      budget:100000
-      manHours: 100
+      budget:1000000
+      manHours: 10000
     }
   ) 
   {
