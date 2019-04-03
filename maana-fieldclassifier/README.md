@@ -19,7 +19,7 @@ the input parameter with the kindId from the "operatorcsv" kind and click the "r
 <em>Figure 2: classifyFields returns a Bot Action</em>
 </p>
 
-**NOTE** If you do not have "Subscribe to Links" toggled in the top right account menu, you must refresh the browswer to see the added links.
+**NOTE** If you do not have "Subscribe to Links" toggled in the top right account menu, you must refresh the browser to see the added links.
 
 Next, lets see what the field classifications actually are by dragging the "fieldClassification" function onto the workspace. Again in the run panel, copy the kind id for "operatorcsv" into the id field and click run. The field classifications will appear in the bottom panel as shown below.
 
@@ -32,7 +32,7 @@ Now that the fields are classified we would like to define a field as a particul
 </p>
 <em>Figure 4: Input arguments and returned Bot Action for copyFieldAsKind .</em>
 </p>
-After running copyFieldAsKind and waiting for the Bot Action to complete, refresh the browswer. A new column will be added to the kind, the image below shows the new column "businessOrganization" which contains ids which are ids of instances in the kind "Organization" (see image below).
+After running copyFieldAsKind and waiting for the Bot Action to complete, refresh the browser. A new column will be added to the kind, the image below shows the new column "businessOrganization" which contains ids which are ids of instances in the kind "Organization" (see image below).
 <p><p><img src="updatedKind.png" alt="New People", style="height: 25%; width: 25%; align: center"/>
 </p>
 <em>Figure 5: copyFieldAsKind added a field to the kind, linking to instances of the Organization Kind.</em>
@@ -40,6 +40,6 @@ After running copyFieldAsKind and waiting for the Bot Action to complete, refres
 Finally, on the "operatorcsv" kind, click on the "Organization" link.  This should bring up the organization kind.  You will see a blue line from "businessOperator" to "Organization" and the contents of Organization will be the as those contained in the "business" column (with the caveat that other services may have written to the organization kind as well).
 <p><p><img src="organizationContents.png" alt="New People", style="height: 100%; width: 100%; align: center"/>
 </p>
-<em>Figure 6: Displying the Organization Kind and its links to operatorcsv Kind.</em>
+<em>Figure 6: Displaying the Organization Kind and its links to operatorcsv Kind.</em>
 </p>
 The copyFieldAsKind not only works on classifications produces by the classifyFields functions, it also works for a user defined kind, provided that (1) newFieldKindId is used instead of newFieldKind (2) the user defined kind should have a field called "name" and (3) if the kind does not have the same name as one of the possible field classifications then the "forceAll" button should be set to true.
