@@ -28,7 +28,7 @@ const Opportunities = props => {
           {props.data.map((row, i) => (
             <tr key={row.id}>
               <td>{row.well.name}</td>
-              <td className="opportunities__recommendation">{row.action.id}</td>
+              <td className="opportunities__recommendation">{row.action.name}</td>
               <td className="opportunities__cost-profit">
                 {formatCurrency(
                   isRevenue ? row.incrementalRevenue : row.costReduction
