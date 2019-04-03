@@ -34,26 +34,28 @@ class App extends Component {
   }
 
   handleConstraintsUpdate = constraints => {
-    this.setState({ isLoading: true, errorMessage: null }, async () => {
-      try {
-        const { data } = await this.props.client.query({
-          query: GET_OPPORTUNITIES,
-          variables: {
-            constraint: {
-              id: 1,
-              budget: constraints.budget,
-              manHours: constraints.manHours,
+    if (constraints.budget && constraints.manHours) {
+      this.setState({ isLoading: true, errorMessage: null }, async () => {
+        try {
+          const { data } = await this.props.client.query({
+            query: GET_OPPORTUNITIES,
+            variables: {
+              constraint: {
+                id: 1,
+                budget: constraints.budget,
+                manHours: constraints.manHours,
+              },
             },
-          },
-        })
-        this.setState({
-          opportunities: data.givenConstraintWhatAreOpportunities,
-          isLoading: false,
-        })
-      } catch (e) {
-        this.setState({ isLoading: false, errors: this.getApolloErrors(e) })
-      }
-    })
+          })
+          this.setState({
+            opportunities: data.givenConstraintWhatAreOpportunities,
+            isLoading: false,
+          })
+        } catch (e) {
+          this.setState({ isLoading: false, errors: this.getApolloErrors(e) })
+        }
+      })
+    }
   }
 
   render() {
