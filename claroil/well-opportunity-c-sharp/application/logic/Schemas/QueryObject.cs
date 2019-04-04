@@ -1,40 +1,40 @@
 namespace netBox.Schemas
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Boxed.AspNetCore;
-    using GraphQL.Builders;
-    using GraphQL.Types;
-    using GraphQL.Types.Relay.DataObjects;
-    using netBox.Models;
-    using netBox.Repositories;
-    using netBox.Types;
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Threading;
+  using System.Threading.Tasks;
+  using Boxed.AspNetCore;
+  using GraphQL.Builders;
+  using GraphQL.Types;
+  using GraphQL.Types.Relay.DataObjects;
+  using netBox.Models;
+  using netBox.Repositories;
+  using netBox.Types;
 
-    /// <summary>
-    /// All queries defined in the schema used to retrieve data.
-    /// </summary>
-    /// <example>
-    /// The is an example query to get all active wells.
-    /// <c>
-    /// query allActiveWells {
-    ///   wells
-    ///   {
-    ///     id
-    ///     name
-    ///   }
-    /// }
-    /// </c>
-    /// </example>
-    public class QueryObject : ObjectGraphType<object>
+  /// <summary>
+  /// All queries defined in the schema used to retrieve data.
+  /// </summary>
+  /// <example>
+  /// The is an example query to get all active wells.
+  /// <c>
+  /// query allActiveWells {
+  ///   wells
+  ///   {
+  ///     id
+  ///     name
+  ///   }
+  /// }
+  /// </c>
+  /// </example>
+  public class QueryObject : ObjectGraphType<object>
+  {
+    private const int MaxPageSize = 10;
+
+    public QueryObject(
+        IWellRepository wellRepository)
     {
-        private const int MaxPageSize = 10;
-
-        public QueryObject(
-            IWellRepository wellRepository)
-        {
       this.Name = "Query";
       this.Description = "The query type, represents all of the entry points into our object graph.";
 
@@ -53,7 +53,8 @@ namespace netBox.Schemas
               {
                 Name = "well",
                 Description = "The well for which to get the metrics.",
-              }, new QueryArgument<NonNullGraphType<IntGraphType>>(){
+              }, new QueryArgument<NonNullGraphType<IntGraphType>>()
+              {
                 Name = "date",
                 Description = "The date of the metrics to get."
               }),
@@ -67,13 +68,15 @@ namespace netBox.Schemas
         "wellMeasuredMetrics",
         "Get a Well's measured metrics.",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<WellObject>>() {
+          new QueryArgument<NonNullGraphType<WellObject>>()
+          {
             Name = "well",
             Description = "The well for which to get the metrics.",
           },
-          new QueryArgument<NonNullGraphType<IntGraphType>>() {
-              Name = "date",
-              Description = "The date of the metrics to get.",
+          new QueryArgument<NonNullGraphType<IntGraphType>>()
+          {
+            Name = "date",
+            Description = "The date of the metrics to get.",
           }
         ),
         resolve: context => wellRepository.WellMeasuredMetrics(
@@ -87,11 +90,13 @@ namespace netBox.Schemas
         "wellActionOutcome",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<WellObject>>() {
+          new QueryArgument<NonNullGraphType<WellObject>>()
+          {
             Name = "well",
             Description = "The well for which to get the metrics.",
           },
-          new QueryArgument<NonNullGraphType<ActionObject>>() {
+          new QueryArgument<NonNullGraphType<ActionObject>>()
+          {
             Name = "action",
             Description = "",
           }
@@ -107,11 +112,13 @@ namespace netBox.Schemas
         "discoverIntervention",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<MetricsObject>>() {
+          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          {
             Name = "predictedMetrics",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<MetricsObject>>() {
+          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          {
             Name = "measuredMetrics",
             Description = "",
           }
@@ -127,15 +134,18 @@ namespace netBox.Schemas
         "shouldTestWell",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<FloatGraphType>>() {
+          new QueryArgument<NonNullGraphType<FloatGraphType>>()
+          {
             Name = "healthIndex",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<IntGraphType>>() {
+          new QueryArgument<NonNullGraphType<IntGraphType>>()
+          {
             Name = "lastTestDay",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<IntGraphType>>() {
+          new QueryArgument<NonNullGraphType<IntGraphType>>()
+          {
             Name = "today",
             Description = "",
           }
@@ -152,11 +162,13 @@ namespace netBox.Schemas
         "healthIndex",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<MetricsObject>>() {
+          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          {
             Name = "predictedMetrics",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<MetricsObject>>() {
+          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          {
             Name = "measuredMetrics",
             Description = "",
           }
@@ -172,11 +184,13 @@ namespace netBox.Schemas
         "wellLastTestDate",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<WellObject>>() {
+          new QueryArgument<NonNullGraphType<WellObject>>()
+          {
             Name = "well",
             Description = "The well for which to get the metrics.",
           },
-          new QueryArgument<NonNullGraphType<IntGraphType>>() {
+          new QueryArgument<NonNullGraphType<IntGraphType>>()
+          {
             Name = "today",
             Description = "",
           }
@@ -200,11 +214,13 @@ namespace netBox.Schemas
         "applyConstraints",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<OpportunityObject>>>>() {
+          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<OpportunityObject>>>>()
+          {
             Name = "opportunities",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<ConstraintObject>>() {
+          new QueryArgument<NonNullGraphType<ConstraintObject>>()
+          {
             Name = "constraints",
             Description = "",
           }
@@ -220,15 +236,18 @@ namespace netBox.Schemas
         "combineActionImpacts",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<WellObject>>() {
+          new QueryArgument<NonNullGraphType<WellObject>>()
+          {
             Name = "well",
             Description = "The well for which to get the metrics.",
           },
-          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>>() {
+          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>>()
+          {
             Name = "costReduction",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>>() {
+          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>>()
+          {
             Name = "revenueGains",
             Description = "",
           }
@@ -245,15 +264,18 @@ namespace netBox.Schemas
         "interventionRevenueGain",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<FloatGraphType>>() {
+          new QueryArgument<NonNullGraphType<FloatGraphType>>()
+          {
             Name = "oilPrice",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<MetricsObject>>() {
+          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          {
             Name = "measuredMetrics",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<ActionOutcomeObject>>() {
+          new QueryArgument<NonNullGraphType<ActionOutcomeObject>>()
+          {
             Name = "actionOutcome",
             Description = "",
           }
@@ -270,15 +292,18 @@ namespace netBox.Schemas
         "skippingTestCostReduction",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<FloatGraphType>>() {
+          new QueryArgument<NonNullGraphType<FloatGraphType>>()
+          {
             Name = "oilPrice",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<MetricsObject>>() {
+          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          {
             Name = "measuredMetrics",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<ActionOutcomeObject>>() {
+          new QueryArgument<NonNullGraphType<ActionOutcomeObject>>()
+          {
             Name = "actionOutcome",
             Description = "",
           }
@@ -299,18 +324,18 @@ namespace netBox.Schemas
         )
       );
 
-            // Just include static info for info query in this case as it's not hitting the dummy repository/database.
-            this.Field<InfoObject>(
-                "info",
-                resolve: context =>
-                {
-                    return new Info
-                    {
-                        Name = "ClarOil Well Optimization Demo",
-                        Version = "0.0.5"
+      // Just include static info for info query in this case as it's not hitting the dummy repository/database.
+      this.Field<InfoObject>(
+          "info",
+          resolve: context =>
+          {
+            return new Info
+            {
+              Name = "ClarOil Well Optimization Demo",
+              Version = "0.0.5"
 
-                    };
-                });
-        }
+            };
+          });
     }
+  }
 }
