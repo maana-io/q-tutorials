@@ -283,7 +283,7 @@ namespace netBox.Schemas
         resolve: context => wellRepository.InterventionRevenueGain(
           context.GetArgument<double>("oilPrice"),
           context.GetArgument<Metrics>("measuredMetrics"),
-          context.GetArgument<ActionOutcome>("revenueGains"),
+          context.GetArgument<ActionOutcome>("actionOutcome"),
           context.CancellationToken
         )
       );
@@ -311,7 +311,7 @@ namespace netBox.Schemas
         resolve: context => wellRepository.SkippingTestCostReduction(
           context.GetArgument<double>("oilPrice"),
           context.GetArgument<Metrics>("measuredMetrics"),
-          context.GetArgument<ActionOutcome>("revenueGains"),
+          context.GetArgument<ActionOutcome>("actionOutcome"),
           context.CancellationToken
         )
       );
