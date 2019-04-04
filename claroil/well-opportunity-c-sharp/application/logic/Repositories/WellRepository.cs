@@ -73,76 +73,213 @@ namespace netBox.Repositories
       return metric;
     }
 
-    public async Task<Metrics> WellMeasuredMetrics(Well well, int date, CancellationToken cancellationToken)
+    public Task<Metrics> WellMeasuredMetrics(Well well, int date, CancellationToken cancellationToken)
     {
       // TODO: Implement
-      return new Metrics();
+      return Task.FromResult(new Metrics());
     }
 
-    public async Task<ActionOutcome> WellActionOutcome(Well well, Models.Action action, CancellationToken cancellationToken)
+    public Task<ActionOutcome> WellActionOutcome(Well well, Models.Action action, CancellationToken cancellationToken)
     {
       // TODO: Implement
-      return new ActionOutcome();
+      return Task.FromResult(new ActionOutcome());
     }
 
-    public async Task<Models.Action> DiscoverIntervention(Metrics predictedMetrics, Metrics measuredMetrics, CancellationToken cancellationToken)
+    public Task<Models.Action> DiscoverIntervention(Metrics predictedMetrics, Metrics measuredMetrics, CancellationToken cancellationToken)
     {
       // TODO: Implement
-      return new Models.Action();
+      return Task.FromResult(new Models.Action());
     }
 
-    public async Task<Models.Action> ShouldTestWell(float healthIndex, int lastTestDay, int today, CancellationToken cancellationToken)
+    public Task<Models.Action> ShouldTestWell(float healthIndex, int lastTestDay, int today, CancellationToken cancellationToken)
     {
       // TODO: Implement
-      return new Models.Action();
+      return Task.FromResult(new Models.Action());
     }
 
-    public async Task<float> HealthIndex(Metrics predictedMetrics, Metrics measuredMetrics, CancellationToken cancellationToken)
+    public float HealthIndex(Metrics predictedMetrics, Metrics measuredMetrics, CancellationToken cancellationToken)
     {
-      // TODO: Implement
-      return 0.0F;
+      //Watercut
+      var predictedWatercut = predictedMetrics.waterCut;
+      var measuredWatercut = measuredMetrics.waterCut;
+      var waterCutHealthIndex =
+        predictedWatercut != 0
+          ? 1 -
+            Math.Abs((predictedWatercut - measuredWatercut) / predictedWatercut)
+          : 0;
+
+      //GOR
+      var predictedGOR = predictedMetrics.GOR;
+      var measuredGOR = measuredMetrics.GOR;
+      var GORHealthIndex =
+        predictedGOR != 0
+          ? 1 - Math.Abs((predictedGOR - measuredGOR) / predictedGOR)
+          : 0;
+
+      //OilRate
+      var predictedOilRate = predictedMetrics.oilRate;
+      var measuredOilRate = measuredMetrics.oilRate;
+      var oilRateHealthIndex =
+        predictedOilRate != 0
+          ? 1 -
+            Math.Abs((predictedOilRate - measuredOilRate) / predictedOilRate)
+          : 0;
+
+      var hidx = (1 / 3) * waterCutHealthIndex +
+                     (1 / 3) * GORHealthIndex +
+                     (1 / 3) * oilRateHealthIndex;
+
+      return hidx;
     }
 
     public async Task<int> WellLastTestDate(Well well, int today, CancellationToken cancellationToken)
     {
-      // TODO: Implement
-      return 0;
+      var allMetricssRequest = new GraphQLRequest();
+      allMetricssRequest.Query = @"{
+        allMetricss {
+          well {id}
+          date
+          type
+          waterCut
+          GOR
+          oilRate
+        }
+      }";
+
+      var response = await Database.GraphQLClient.PostAsync(allMetricssRequest);
+      var allMetrics = response.GetDataFieldAs<List<Metrics>>("allMetricss");
+
+      var pastMeasuredMetrics = allMetrics.Where(x => x.date <= today && x.well.id == well.id && x.type == "measured");
+      var len = pastMeasuredMetrics.Count();
+      var date = 0;
+
+      if (len > 0)
+      {
+        var orderedMeasuredMetrics = pastMeasuredMetrics.OrderByDescending(x => x.date);
+        var singleMeasurement = orderedMeasuredMetrics.First();
+        date = singleMeasurement.date;
+      }
+
+      return date;
     }
 
-    public async Task<int> TodayDate(CancellationToken cancellationToken)
+    public int TodayDate(CancellationToken cancellationToken)
     {
-      // TODO: Implement
-      return 0;
+      return 1222;
     }
 
-    public async Task<List<Opportunity>> ApplyConstraints(List<Opportunity> opportunities, Constraint constraints, CancellationToken cancellationToken)
+    public List<Opportunity> ApplyConstraints(List<Opportunity> opportunities, Constraint constraints, CancellationToken cancellationToken)
     {
-      // TODO: Implement
-      return new List<Opportunity>();
+      var totalBudget = constraints.budget;
+      var totalManHours = constraints.manHours;
+
+      var sortedOpportunities = opportunities.OrderBy(op => op.cost).OrderByDescending(op => op.incrementalRevenue + op.costReduction);
+      var filteredOpportunities = sortedOpportunities.Where(entry =>
+      {
+        var cost = entry.cost;
+        var manHours = entry.manHours;
+
+        if ((totalBudget - cost >= 0) && (totalManHours - manHours >= 0))
+        {
+          totalBudget = totalBudget - cost;
+          totalManHours = totalManHours - manHours;
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+      });
+
+      return filteredOpportunities.ToList();
     }
 
-    public async Task<Opportunity> CombineActionImpacts(Well well, List<ActionFinancialEstimate> costReduction, List<ActionFinancialEstimate> revenueGains, CancellationToken cancellationToken)
+    public Opportunity CombineActionImpacts(Well well, List<ActionFinancialEstimate> costReduction, List<ActionFinancialEstimate> revenueGains, CancellationToken cancellationToken)
     {
+      var incrementalRevenueSum = revenueGains.Aggregate(0F, (accumulator, actionFinancialEstimate) =>
+      {
+        var impact = actionFinancialEstimate.impact;
+        return accumulator + impact;
+      });
+
+      var costReductionSum = costReduction.Aggregate(0F, (accumulator, actionFinancialEstimate) =>
+      {
+        var impact = actionFinancialEstimate.impact;
+        return accumulator + impact;
+      });
+
+      var combinedLists = costReduction.Concat(revenueGains);
+
+      var costSum = combinedLists.Aggregate(0F, (accumulator, actionFinancialEstimate) =>
+      {
+        var cost = actionFinancialEstimate.cost;
+        return accumulator + cost;
+      });
+
+      var manHoursSum = combinedLists.Aggregate(0F, (accumulator, actionFinancialEstimate) =>
+      {
+        var manHours = actionFinancialEstimate.manHours;
+        return accumulator + manHours;
+      });
+
       // TODO: Implement
-      return new Opportunity();
+      return new Opportunity
+      {
+        id = new Guid().ToString(),
+        well = well,
+        name = "Opportunity for " + well.name,
+        createdAt = new DateTime(),
+        actions = combinedLists.Select(x => x.action).ToList(),
+        incrementalRevenue = incrementalRevenueSum,
+        costReduction = costReductionSum,
+        cost = costSum,
+        manHours = manHoursSum
+      };
     }
 
-    public async Task<List<ActionFinancialEstimate>> InterventionRevenueGain(float oilPrice, Metrics measuredMetrics, ActionOutcome actionOutcome, CancellationToken cancellationToken)
+    public List<ActionFinancialEstimate> InterventionRevenueGain(float oilPrice, Metrics measuredMetrics, ActionOutcome actionOutcome, CancellationToken cancellationToken)
     {
-      // TODO: Implement
-      return new List<ActionFinancialEstimate>();
+      var increaseInOilRate = actionOutcome.increaseInOilRate;
+      var cost = actionOutcome.cost;
+      var manHours = actionOutcome.manHours;
+      var revenueIncrease = measuredMetrics.oilRate * oilPrice * 180 * increaseInOilRate;
+
+      var afe = new ActionFinancialEstimate
+      {
+        id = new Guid().ToString(),
+        action = actionOutcome.action,
+        well = actionOutcome.well,
+        impact = revenueIncrease,
+        cost = cost,
+        manHours = manHours
+      };
+
+      return new List<ActionFinancialEstimate>() { afe };
     }
 
-    public async Task<List<ActionFinancialEstimate>> SkippingTestCostReduction(float oilPrice, Metrics measuredMetrics, ActionOutcome actionOutcome, CancellationToken cancellationToken)
+    public List<ActionFinancialEstimate> SkippingTestCostReduction(float oilPrice, Metrics measuredMetrics, ActionOutcome actionOutcome, CancellationToken cancellationToken)
     {
-      // TODO: Implement
-      return new List<ActionFinancialEstimate>();
+      var probabilityOfAnomaly = actionOutcome.probabilityOfAnomaly / 100;
+      var potentialCostOfSkippikingATest = measuredMetrics.oilRate * probabilityOfAnomaly * oilPrice * 60;
+      var costReduction = actionOutcome.cost;
+      var manHours = actionOutcome.manHours;
+
+      var afe = new ActionFinancialEstimate
+      {
+        id = new Guid().ToString(),
+        action = actionOutcome.action,
+        well = actionOutcome.well,
+        impact = costReduction,
+        cost = potentialCostOfSkippikingATest,
+        manHours = manHours
+      };
+
+      return new List<ActionFinancialEstimate> { afe };
     }
 
-    public async Task<float> CurrentOilPrice(CancellationToken cancellationToken)
+    public float CurrentOilPrice(CancellationToken cancellationToken)
     {
-      // TODO: Implement
-      return 0.0F;
+      return 10.0F;
     }
   }
 }

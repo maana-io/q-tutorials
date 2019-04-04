@@ -158,7 +158,7 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<FloatGraphType>, float>(
+      this.Field<NonNullGraphType<FloatGraphType>>(
         "healthIndex",
         "",
         arguments: new QueryArguments(
@@ -202,7 +202,7 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<IntGraphType>, int>(
+      this.Field<NonNullGraphType<IntGraphType>>(
         "todayDate",
         "",
         resolve: context => wellRepository.TodayDate(
@@ -210,7 +210,7 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<ListGraphType<NonNullGraphType<OpportunityObject>>>, List<Opportunity>>(
+      this.Field<NonNullGraphType<ListGraphType<NonNullGraphType<OpportunityObject>>>>(
         "applyConstraints",
         "",
         arguments: new QueryArguments(
@@ -232,7 +232,7 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<OpportunityObject>, Opportunity>(
+      this.Field<NonNullGraphType<OpportunityObject>>(
         "combineActionImpacts",
         "",
         arguments: new QueryArguments(
@@ -260,7 +260,7 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>, List<ActionFinancialEstimate>>(
+      this.Field<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>>(
         "interventionRevenueGain",
         "",
         arguments: new QueryArguments(
@@ -288,7 +288,7 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>, List<ActionFinancialEstimate>>(
+      this.Field<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>>(
         "skippingTestCostReduction",
         "",
         arguments: new QueryArguments(
@@ -316,7 +316,7 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<FloatGraphType>, float>(
+      this.Field<NonNullGraphType<FloatGraphType>>(
         "currentOilPrice",
         "",
         resolve: context => wellRepository.CurrentOilPrice(
