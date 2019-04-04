@@ -95,7 +95,7 @@ namespace netBox.Schemas
             Name = "well",
             Description = "The well for which to get the metrics.",
           },
-          new QueryArgument<NonNullGraphType<ActionObject>>()
+          new QueryArgument<NonNullGraphType<ActionInputObject>>()
           {
             Name = "action",
             Description = "",
@@ -112,12 +112,12 @@ namespace netBox.Schemas
         "discoverIntervention",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          new QueryArgument<NonNullGraphType<MetricsInputObject>>()
           {
             Name = "predictedMetrics",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          new QueryArgument<NonNullGraphType<MetricsInputObject>>()
           {
             Name = "measuredMetrics",
             Description = "",
@@ -162,12 +162,12 @@ namespace netBox.Schemas
         "healthIndex",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          new QueryArgument<NonNullGraphType<MetricsInputObject>>()
           {
             Name = "predictedMetrics",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          new QueryArgument<NonNullGraphType<MetricsInputObject>>()
           {
             Name = "measuredMetrics",
             Description = "",
@@ -214,12 +214,12 @@ namespace netBox.Schemas
         "applyConstraints",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<OpportunityObject>>>>()
+          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<OpportunityInputObject>>>>()
           {
             Name = "opportunities",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<ConstraintObject>>()
+          new QueryArgument<NonNullGraphType<ConstraintInputObject>>()
           {
             Name = "constraints",
             Description = "",
@@ -241,12 +241,12 @@ namespace netBox.Schemas
             Name = "well",
             Description = "The well for which to get the metrics.",
           },
-          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>>()
+          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateInputObject>>>>()
           {
             Name = "costReduction",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>>()
+          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateInputObject>>>>()
           {
             Name = "revenueGains",
             Description = "",
@@ -269,12 +269,12 @@ namespace netBox.Schemas
             Name = "oilPrice",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          new QueryArgument<NonNullGraphType<MetricsInputObject>>()
           {
             Name = "measuredMetrics",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<ActionOutcomeObject>>()
+          new QueryArgument<NonNullGraphType<ActionOutcomeInputObject>>()
           {
             Name = "actionOutcome",
             Description = "",
@@ -297,12 +297,12 @@ namespace netBox.Schemas
             Name = "oilPrice",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          new QueryArgument<NonNullGraphType<MetricsInputObject>>()
           {
             Name = "measuredMetrics",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<ActionOutcomeObject>>()
+          new QueryArgument<NonNullGraphType<ActionOutcomeInputObject>>()
           {
             Name = "actionOutcome",
             Description = "",
