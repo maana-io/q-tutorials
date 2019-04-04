@@ -41,6 +41,8 @@ https://hub.docker.com/_/microsoft-dotnet-core
 
 
 ## Building and running this template
+ENVIRONMENT VARIABLES NEED TO BE SET TO YOUR NEEDS IN DOCKERFILE AND ENV (System).
+
 Use either the below Docker or .NET build instructions, then open the GraphQL playgroun exposed by the application in "http://localhost:5000". 
 
 -IN .NET (CLI):
@@ -91,63 +93,6 @@ query {
     description
   }
 }
-```
-
---Info Query Response: (The query response will be the "data" property, meta-data associated with the response will be in the "extensions")
-
-```json
-{
-"data": {
-"info": {
-"id": "ed7584-2124-98fs-00s3-t739478t",
-"name": "maana.io.template",
-"description": "Dockerized ASP.NET Core GraphQL Template"
-}
-},
-"extensions": {
-"tracing": {
-"version": 1,
-"startTime": "2019-02-25T21:45:53.8003062Z",
-"endTime": "2019-02-25T21:45:53.8033062Z",
-"duration": 2695400,
-"parsing": {
-...
-...
-```
-
---createHuman mutation (adds a human):
-
-```graphql
-mutation {
-  createHuman(
-    human: {
-      name: "You"
-      dateOfBirth: "02/28/1970"
-      homePlanet: "Dantooine"
-      appearsIn: [NEWHOPE]
-    }
-  ) {
-    id
-  }
-}
-```
-
---createHuman mutation response:
-
-```json
-{
-"data": {
-"createHuman": {
-"id": "b1dd619e-be0d-40b5-8706-b2e14b3032c4"
-}
-},
-"extensions": {
-"tracing": {
-"version": 1,
-"startTime": "2019-02-26T04:29:21.942681Z",
-"endTime": "2019-02-26T04:29:21.943681Z",
-...
-...
 ```
 
 ## GraphQL Relay
