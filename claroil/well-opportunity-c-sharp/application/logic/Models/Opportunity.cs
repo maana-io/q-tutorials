@@ -9,11 +9,11 @@ namespace netBox.Models
         public string name { get; set; }
         public DateTime createdAt { get; set; }
         public List<Action> actions { get; set; }
-        public float incrementalRevenue { get; set; }
-        public float costReduction { get; set; }
-        public float cost { get; set; }
+        public double incrementalRevenue { get; set; }
+        public double costReduction { get; set; }
+        public double cost { get; set; }
         public Well well { get; set; }
-        public float manHours { get; set; }
+        public double manHours { get; set; }
 
     }
 }

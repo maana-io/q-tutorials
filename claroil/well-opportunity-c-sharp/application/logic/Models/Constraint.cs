@@ -5,7 +5,7 @@ namespace netBox.Models
   public class Constraint
   {
     public string id { get; set; }
-    public float budget { get; set; }
-    public float manHours { get; set; }
+    public double budget { get; set; }
+    public double manHours { get; set; }
   }
 }

@@ -5,9 +5,9 @@ namespace netBox.Models
     public class Metrics
     {
         public string id { get; set; }
-        public float waterCut { get; set; }
-        public float GOR { get; set; }
-        public float oilRate { get; set; }
+        public double waterCut { get; set; }
+        public double GOR { get; set; }
+        public double oilRate { get; set; }
         public int date { get; set; }
         public Well well { get; set; }
 
