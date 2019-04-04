@@ -60,12 +60,72 @@ namespace netBox.Repositories
       }else {
           metric.id = "1";
           metric.date = date;
-        //   metric.type = "predicted"; 
+        //   metric.type = "predicted";
           metric.waterCut= 1;
           metric.GOR= 1;
           metric.oilRate= 1;
       }
       return metric;
+        }
+
+        public async Task<Metrics> WellMeasuredMetrics(Well well, int date, CancellationToken cancellationToken) {
+            // TODO: Implement
+            return new Metrics();
+        }
+
+        public async Task<ActionOutcome> WellActionOutcome(Well well, Models.Action action, CancellationToken cancellationToken) {
+            // TODO: Implement
+            return new ActionOutcome();
+        }
+
+        public async Task<Models.Action> DiscoverIntervention(Metrics predictedMetrics, Metrics measuredMetrics, CancellationToken cancellationToken) {
+            // TODO: Implement
+            return new Models.Action();
+        }
+
+        public async Task<Models.Action> ShouldTestWell(float healthIndex, int lastTestDay, int today, CancellationToken cancellationToken) {
+            // TODO: Implement
+            return new Models.Action();
+        }
+
+        public async Task<float> HealthIndex(Metrics predictedMetrics, Metrics measuredMetrics, CancellationToken cancellationToken) {
+            // TODO: Implement
+            return 0.0F;
+        }
+
+        public async Task<int> WellLastTestDate(Well well, int today, CancellationToken cancellationToken) {
+            // TODO: Implement
+            return 0;
+        }
+
+        public async Task<int> TodayDate(CancellationToken cancellationToken) {
+            // TODO: Implement
+            return 0;
+        }
+
+        public async Task<List<Opportunity>> ApplyConstraints(List<Opportunity> opportunities, Constraint constraints, CancellationToken cancellationToken) {
+            // TODO: Implement
+            return new List<Opportunity>();
+        }
+
+        public async Task<Opportunity> CombineActionImpacts(Well well, List<ActionFinancialEstimate> costReduction, List<ActionFinancialEstimate> revenueGains, CancellationToken cancellationToken)  {
+            // TODO: Implement
+            return new Opportunity();
+        }
+
+        public async Task<List<ActionFinancialEstimate>> InterventionRevenueGain(float oilPrice, Metrics measuredMetrics, ActionOutcome actionOutcome, CancellationToken cancellationToken) {
+            // TODO: Implement
+            return new List<ActionFinancialEstimate>();
+        }
+
+        public async Task<List<ActionFinancialEstimate>> SkippingTestCostReduction(float oilPrice, Metrics measuredMetrics, ActionOutcome actionOutcome, CancellationToken cancellationToken) {
+            // TODO: Implement
+            return new List<ActionFinancialEstimate>();
+        }
+
+        public async Task<float> CurrentOilPrice(CancellationToken cancellationToken) {
+            // TODO: Implement
+            return 0.0F;
         }
     }
 }
