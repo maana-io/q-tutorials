@@ -13,12 +13,74 @@ const _ = require('lodash')
 
 const REMOTE_KSVC_ENDPOINT_URL = process.env.REMOTE_KSVC_ENDPOINT_URL
 
+const wellMetricByDateTypeQuery = gql`
+    query wellMetricByDate($wellId: ID!, $date:Int!, $type: String!){
+          metricsFilter(
+            filters:[
+              { fieldName:"date", op:"==", value:{INT:$date}},
+              { fieldName:"type", op:"==", value:{STRING:$type}},
+              { fieldName:"well", op:"==", value:{ID:$wellId}}
+            ]
+          ){
+            id well {id name} date type waterCut GOR oilRate
+          }
+    }`
+
+const wellActionOutcomeQuery = gql`
+    query wellActionOutcome($wellId:ID!, $actionId:ID!){
+         actionOutcomeFilter(
+           filters:[
+             {
+               fieldName:"action",
+               op:"==",
+               value:{ID:$actionId}
+             },
+             {
+               fieldName:"well",
+               op:"==",
+               value:{ID:$wellId}
+             },
+
+           ]
+         ){
+           id action {id name type} well {id name}
+           probabilityOfAnomaly increaseInOilRate cost manHours
+         }
+     }`
+
+const wellPastTestDateQuery = gql`
+    query wellPastTestDate($wellId:ID!, $today:Int!){
+        metricsFilter(
+          filters:[
+            {
+              fieldName:"date",
+              op:"<=",
+              value:{INT:$today}
+            },
+            {
+              fieldName:"type",
+              op:"==",
+              value:{STRING:"measured"}
+            },
+            {
+              fieldName:"well",
+              op:"==",
+              value:{ID:$wellId}
+            },
+
+          ]
+        ){
+          date
+        }
+      }`
+
+
 const resolvers = {
   Query: {
     info: async () => {
       return {
         name: 'ClarOil Well Optimization Demo',
-        version: '0.0.5',
+        version: '0.0.8',
         dm_url: REMOTE_KSVC_ENDPOINT_URL
       }
     },
@@ -53,27 +115,18 @@ const resolvers = {
       console.log('begin wellPredictedMetrics', well, date)
 
       let res = await CKGClient.query({
-        query: gql`
-          {
-            allMetricss  {
-              id
-              well {id name}
-              date
-              type
-              waterCut
-              GOR
-              oilRate
-            }
-          }
-        `
+        query: wellMetricByDateTypeQuery,
+        variables:  {  date, "wellId": well.id, type: "predicted"   }
       })
 
-      let { allMetricss } = res.data
-      let filteredMetrics = allMetricss.filter(x => x.date === date && x.well.id === well.id && x.type === 'predicted')
-      let len = filteredMetrics.length
+      let { metricsFilter } = res.data
+      let len = metricsFilter.length
+
+      console.log('  len:', len)
+
       let metric = {id: 1, well, date, type: 'predicted', waterCut: 1, GOR: 1, oilRate: 1}
       if (len > 0){
-         metric = _.take(filteredMetrics, 1)[0]
+         metric = _.take(metricsFilter, 1)[0]
       }
       console.log('end wellPredictedMetrics', metric)
       return metric
@@ -81,29 +134,20 @@ const resolvers = {
 
     async wellMeasuredMetrics(parent, { well, date }) {
       console.log('begin wellMeasuredMetrics', well, date)
+
       let res = await CKGClient.query({
-        query: gql`
-          {
-            allMetricss  {
-              id
-              well {id name}
-              date
-              type
-              waterCut
-              GOR
-              oilRate
-            }
-          }
-        `
+        query: wellMetricByDateTypeQuery,
+        variables: {  date, "wellId": well.id, type: "measured"  }
       })
 
-      let { allMetricss } = res.data
+      let { metricsFilter } = res.data
+      let len = metricsFilter.length
 
-      let filteredMetrics = allMetricss.filter(x => x.date === date && x.well.id === well.id && x.type === 'measured')
-      let len = filteredMetrics.length
+      console.log('  len:', len)
+
       let metric = {id: 1, well, date, type: 'measured', waterCut: 1, GOR: 1, oilRate: 1}
       if (len > 0){
-         metric = _.take(filteredMetrics, 1)[0]
+         metric = _.take(metricsFilter, 1)[0]
       }
       console.log('end wellMeasuredMetrics', metric)
       return metric
@@ -112,27 +156,15 @@ const resolvers = {
     async wellActionOutcome(parent, { well, action }) {
       console.log('begin wellActionOutcome', well, action)
       let res = await CKGClient.query({
-        query: gql`
-          {
-            allActionOutcomes {
-              id
-              action { id name type}
-              well { id name }
-              probabilityOfAnomaly
-              cost
-              manHours
-              increaseInOilRate
-            }
-          }
-        `
+        query: wellActionOutcomeQuery,
+        variables: { "wellId": well.id, "actionId": action.id}
       })
 
-      let { allActionOutcomes } = res.data
-      let filteredOutcome = allActionOutcomes.filter(x => x.well.id === well.id && x.action.id === action.id)
-      let len = filteredOutcome.length
+      let { actionOutcomeFilter } = res.data
+      let len = actionOutcomeFilter.length
       let singleActionOutcome =  {id: 1, action, well, probabilityOfAnomaly: 0, cost: 0, manHours: 0, increaseInOilRate: 0}
       if (len > 0) {
-        singleActionOutcome = _.take(filteredOutcome, 1)[0]
+        singleActionOutcome = _.take(actionOutcomeFilter, 1)[0]
       }
 
       console.log('end wellActionOutcome', singleActionOutcome)
@@ -224,26 +256,15 @@ const resolvers = {
       console.log('begin wellLastTestDate', well, today)
 
       let res = await CKGClient.query({
-        query: gql`
-          {
-            allMetricss  {
-              well {id}
-              date
-              type
-              waterCut
-              GOR
-              oilRate
-            }
-          }
-        `
+        query: wellPastTestDateQuery,
+        variables: {"wellId": well.id, "today": today}
       })
 
-      let { allMetricss } = res.data
-      let pastMeasuredMetrics = allMetricss.filter(x => x.date <= today && x.well.id === well.id && x.type === 'measured')
-      let len = pastMeasuredMetrics.length
+      let { metricsFilter } = res.data
+      let len = metricsFilter.length
       let date = 0
       if (len > 0){
-          let orderedMeasuredMetrics  = _.orderBy(pastMeasuredMetrics, ["date"], ["desc"])
+          let orderedMeasuredMetrics  = _.orderBy(metricsFilter, ["date"], ["desc"])
           let singleMeasurement = _.take(orderedMeasuredMetrics, 1)[0]
           date  = singleMeasurement.date
       }

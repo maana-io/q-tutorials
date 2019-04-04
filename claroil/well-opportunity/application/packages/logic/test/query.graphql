@@ -19,7 +19,16 @@
 {
    wellMeasuredMetrics(
     well:{id: "Co-01", name:"Co-01"},
-    date: 1111
+    date: 1173
+  ){
+    id well {id name} date type waterCut GOR oilRate
+  }
+}
+
+{
+   wellPredictedMetrics(
+    well:{id: "Co-01", name:"Co-01"},
+    date: 1173
   ){
     id well {id name} date type waterCut GOR oilRate
   }
