@@ -7,7 +7,7 @@ namespace netBox.Types
   using netBox.Models;
   using netBox.Repositories;
 
-  public class ConstraintInputObject : ObjectGraphType<Constraint>
+  public class ConstraintInputObject : InputObjectGraphType<Constraint>
   {
     public ConstraintInputObject(IWellRepository wellRepository)
     {

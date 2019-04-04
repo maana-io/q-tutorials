@@ -7,11 +7,11 @@ namespace netBox.Types
   using netBox.Models;
   using netBox.Repositories;
 
-  public class MetricsInputObject : ObjectGraphType<Metrics>
+  public class MetricsInputObject : InputObjectGraphType<Metrics>
   {
     public MetricsInputObject(IWellRepository wellRepository)
     {
-      this.Name = "Metrics";
+      this.Name = "MetricsInput";
       this.Description = "Metrics.";
       // To require authorization for all fields in this type.
       // this.AuthorizeWith(AuthorizationPolicyName.Admin);
@@ -22,7 +22,7 @@ namespace netBox.Types
       this.Field(x => x.GOR, type: typeof(NonNullGraphType<FloatGraphType>));
       this.Field(x => x.oilRate, type: typeof(NonNullGraphType<FloatGraphType>));
       this.Field(x => x.date, type: typeof(NonNullGraphType<IntGraphType>));
-      this.Field(x => x.well, type: typeof(NonNullGraphType<WellObject>));
+      this.Field(x => x.well, type: typeof(NonNullGraphType<WellInputObject>));
       this.Field(x => x.type, type: typeof(NonNullGraphType<StringGraphType>));
     }
   }

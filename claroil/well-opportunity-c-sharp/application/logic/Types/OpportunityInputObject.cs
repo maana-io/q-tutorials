@@ -7,7 +7,7 @@ namespace netBox.Types
   using netBox.Models;
   using netBox.Repositories;
 
-  public class OpportunityInputObject : ObjectGraphType<Opportunity>
+  public class OpportunityInputObject : InputObjectGraphType<Opportunity>
   {
     public OpportunityInputObject(IWellRepository wellRepository)
     {
@@ -20,12 +20,12 @@ namespace netBox.Types
           .Description("The unique identifier of the Opportunity.");
       this.Field(x => x.name, type: typeof(NonNullGraphType<StringGraphType>));
       this.Field(x => x.createdAt, type: typeof(NonNullGraphType<DateTimeGraphType>));
-      this.Field(x => x.actions, type: typeof(NonNullGraphType<ListGraphType<NonNullGraphType<ActionObject>>>));
+      this.Field(x => x.actions, type: typeof(NonNullGraphType<ListGraphType<NonNullGraphType<ActionInputObject>>>));
       this.Field(x => x.incrementalRevenue, type: typeof(NonNullGraphType<FloatGraphType>));
       this.Field(x => x.costReduction, type: typeof(NonNullGraphType<FloatGraphType>));
       this.Field(x => x.cost, type: typeof(NonNullGraphType<FloatGraphType>));
       this.Field(x => x.manHours, type: typeof(NonNullGraphType<FloatGraphType>));
-      this.Field(x => x.well, type: typeof(NonNullGraphType<WellObject>));
+      this.Field(x => x.well, type: typeof(NonNullGraphType<WellInputObject>));
     }
   }
 }

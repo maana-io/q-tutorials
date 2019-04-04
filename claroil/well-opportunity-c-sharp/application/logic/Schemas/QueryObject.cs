@@ -49,11 +49,11 @@ namespace netBox.Schemas
           "wellPredictedMetrics",
           "Get a Well's predicted metrics.",
           arguments: new QueryArguments(
-              new QueryArgument<NonNullGraphType<WellObject>>()
+              new QueryArgument<NonNullGraphType<WellInputObject>>
               {
                 Name = "well",
                 Description = "The well for which to get the metrics.",
-              }, new QueryArgument<NonNullGraphType<IntGraphType>>()
+              }, new QueryArgument<NonNullGraphType<IntGraphType>>
               {
                 Name = "date",
                 Description = "The date of the metrics to get."
@@ -68,7 +68,7 @@ namespace netBox.Schemas
         "wellMeasuredMetrics",
         "Get a Well's measured metrics.",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<WellObject>>()
+          new QueryArgument<NonNullGraphType<WellInputObject>>()
           {
             Name = "well",
             Description = "The well for which to get the metrics.",
@@ -90,7 +90,7 @@ namespace netBox.Schemas
         "wellActionOutcome",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<WellObject>>()
+          new QueryArgument<NonNullGraphType<WellInputObject>>()
           {
             Name = "well",
             Description = "The well for which to get the metrics.",
@@ -108,7 +108,7 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<ActionObject>, Models.Action>(
+      this.Field<NonNullGraphType<ActionObject>>(
         "discoverIntervention",
         "",
         arguments: new QueryArguments(
@@ -130,7 +130,7 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<ActionObject>, Models.Action>(
+      this.Field<NonNullGraphType<ActionObject>>(
         "shouldTestWell",
         "",
         arguments: new QueryArguments(
@@ -184,7 +184,7 @@ namespace netBox.Schemas
         "wellLastTestDate",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<WellObject>>()
+          new QueryArgument<NonNullGraphType<WellInputObject>>()
           {
             Name = "well",
             Description = "The well for which to get the metrics.",
@@ -236,7 +236,7 @@ namespace netBox.Schemas
         "combineActionImpacts",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<WellObject>>()
+          new QueryArgument<NonNullGraphType<WellInputObject>>()
           {
             Name = "well",
             Description = "The well for which to get the metrics.",
