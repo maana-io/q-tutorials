@@ -8,6 +8,10 @@ namespace netBox.Repositories
     using netBox.Models;
     using GraphQL.Common.Request;
     using Maana.AuthenticatedGraphQLClient;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using GraphQLParser;
+    using GraphQL.Builders;
 
     public class WellRepository : IWellRepository
     {
@@ -33,26 +37,44 @@ namespace netBox.Repositories
         public async Task<Metrics> WellPredictedMetrics(Well well, int date, CancellationToken cancellationToken)
         {
             var allMetricssRequest = new GraphQLRequest();
-            allMetricssRequest.Query = @"{
-                allMetricss {
-                    id
-                    well {id name}
-                    date
-                    type
-                    waterCut
-                    GOR
-                    oilRate
-                }
-                }";
+            var variables = new {date = date, wellId = well.id};
+            allMetricssRequest.Variables = variables;
+
+            allMetricssRequest.Query =  @"query($wellId: ID, $date:Int){
+                    metricsFilter(filters: [{
+                        fieldName: ""date""
+                        op: ""==""
+                        value: { INT: $date }
+                        }
+                        {
+                        fieldName: ""well""
+                        op: ""==""
+                        value: { ID: $wellId }
+                        }
+                        {
+                        fieldName: ""type""
+                        op: ""==""
+                        value: {STRING: ""predicted""} 
+                    }]) {
+                        id
+                        well {
+                            id
+                            name
+                        }
+                        date
+                        type
+                        waterCut
+                        GOR
+                        oilRate
+                    }
+                    }";
 
             var response = await Client.GetClientInstance().PostAsync(allMetricssRequest);
-            var allMetrics = response.GetDataFieldAs<List<Metrics>>("allMetricss");
-            var filteredMetrics = allMetrics.FindAll(x => x.date == date && x.well.id == well.id && x.type == "predicted");
-            var len = filteredMetrics.Count;
+            var allMetrics = response.GetDataFieldAs<List<Metrics>>("metricsFilter");
             Metrics metric;
-            if (len > 0)
+            if (allMetrics.Count > 0)
             {
-                metric = filteredMetrics[0];
+                metric = allMetrics.First();
             }
             else
             {
@@ -71,26 +93,44 @@ namespace netBox.Repositories
         public async Task<Metrics> WellMeasuredMetrics(Well well, int date, CancellationToken cancellationToken)
         {
             var allMetricssRequest = new GraphQLRequest();
-            allMetricssRequest.Query = @"{
-                allMetricss {
-                    id
-                    well {id name}
-                    date
-                    type
-                    waterCut
-                    GOR
-                    oilRate
-                }
-            }";
+            var variables = new {date = date, wellId = well.id};
+            allMetricssRequest.Variables = variables;
+
+            allMetricssRequest.Query =  @"query($wellId: ID, $date:Int){
+                    metricsFilter(filters: [{
+                        fieldName: ""date""
+                        op: ""==""
+                        value: { INT: $date }
+                        }
+                        {
+                        fieldName: ""well""
+                        op: ""==""
+                        value: { ID: $wellId }
+                        }
+                        {
+                        fieldName: ""type""
+                        op: ""==""
+                        value: {STRING: ""measured""} 
+                    }]) {
+                        id
+                        well {
+                            id
+                            name
+                        }
+                        date
+                        type
+                        waterCut
+                        GOR
+                        oilRate
+                    }
+                    }";
 
             var response = await Client.GetClientInstance().PostAsync(allMetricssRequest);
-            var allMetrics = response.GetDataFieldAs<List<Metrics>>("allMetricss");
-            var filteredMetrics = allMetrics.FindAll(x => x.date == date && x.well.id == well.id && x.type == "measured");
-            var len = filteredMetrics.Count;
+            var allMetrics = response.GetDataFieldAs<List<Metrics>>("metricsFilter");
             Metrics metric;
-            if (len > 0)
+            if (allMetrics.Count > 0)
             {
-                metric = filteredMetrics[0];
+                metric = allMetrics.First();
             }
             else
             {
@@ -109,26 +149,43 @@ namespace netBox.Repositories
         public async Task<ActionOutcome> WellActionOutcome(Well well, Models.Action action, CancellationToken cancellationToken)
         {
             var allActionOutcomesRequest = new GraphQLRequest();
-            allActionOutcomesRequest.Query = @"{
-                allActionOutcomes {
-                    id
-                    action {id name type}
-                    well {id name}
-                    probabilityOfAnomaly
-                    cost
-                    manHours
-                    increaseInOilRate
+            allActionOutcomesRequest.Variables = new {wellId = well.id, actionId = action.id};
+            allActionOutcomesRequest.Query = @" query($wellId: ID, $actionId: ID){
+                actionOutcomeFilter(filters: [
+                {
+                    fieldName: ""well""
+                    op: ""==""
+                    value: { ID: $wellId }
                 }
-            }";
+                {
+                    fieldName: ""action""
+                    op: ""==""
+                    value: { ID: $actionId }
+                }
+                ]) {
+                id
+                action {
+                    id
+                    name
+                    type
+                }
+                well {
+                    id
+                    name
+                }
+                probabilityOfAnomaly
+                cost
+                manHours
+                increaseInOilRate
+                }
+                }";
 
             var response = await Client.GetClientInstance().PostAsync(allActionOutcomesRequest);
-            var allActionOutcomes = response.GetDataFieldAs<List<ActionOutcome>>("allActionOutcomes");
-            var filteredActionOutcomes = allActionOutcomes.FindAll(x => x.action.id == action.id && x.well.id == well.id);
-            var len = filteredActionOutcomes.Count;
+            var allActionOutcomes = response.GetDataFieldAs<List<ActionOutcome>>("actionOutcomeFilter");
             ActionOutcome actionOutcome;
-            if (len > 0)
+            if (allActionOutcomes.Count > 0)
             {
-                actionOutcome = filteredActionOutcomes[0];
+                actionOutcome = allActionOutcomes.First();
             }
             else
             {
@@ -253,27 +310,31 @@ namespace netBox.Repositories
         public async Task<int> WellLastTestDate(Well well, int today, CancellationToken cancellationToken)
         {
             var allMetricssRequest = new GraphQLRequest();
-            allMetricssRequest.Query = @"{
-        allMetricss {
-          well {id}
-          date
-          type
-          waterCut
-          GOR
-          oilRate
-        }
-      }";
+            allMetricssRequest.Variables = new {wellId = well.id};
+            allMetricssRequest.Query = @"query($wellId: ID){
+                metricsFilter(filters: [
+                {
+                    fieldName: ""well""
+                    op: ""==""
+                    value: { ID: $wellId }
+                }
+                {
+                    fieldName: ""type""
+                    op: ""==""
+                    value: {STRING: ""measured""}
+                }
+                ]) {
+                    date
+                }
+            }";
 
             var response = await Client.GetClientInstance().PostAsync(allMetricssRequest);
-            var allMetrics = response.GetDataFieldAs<List<Metrics>>("allMetricss");
-
-            var pastMeasuredMetrics = allMetrics.Where(x => x.date <= today && x.well.id == well.id && x.type == "measured");
-            var len = pastMeasuredMetrics.Count();
+            var metrics = response.GetDataFieldAs<List<Metrics>>("metricsFilter");
             var date = 0;
 
-            if (len > 0)
+            if (metrics.Count > 0)
             {
-                var orderedMeasuredMetrics = pastMeasuredMetrics.OrderByDescending(x => x.date);
+                var orderedMeasuredMetrics = metrics.OrderByDescending(x => x.date);
                 var singleMeasurement = orderedMeasuredMetrics.First();
                 date = singleMeasurement.date;
             }
