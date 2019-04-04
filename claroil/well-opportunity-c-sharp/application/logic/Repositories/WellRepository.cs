@@ -7,6 +7,7 @@ namespace netBox.Repositories
     using System.Threading.Tasks;
     using netBox.Models;
     using GraphQL.Common.Request;
+    using Maana.AuthenticatedGraphQLClient;
 
     public class WellRepository : IWellRepository
     {
@@ -26,7 +27,7 @@ namespace netBox.Repositories
                 }
                 }";
 
-            var response = await Database.GraphQLClient.PostAsync(allWellsRequest);
+            var response = await Client.GetClientInstance().PostAsync(allWellsRequest);
             return response.GetDataFieldAs<List<Well>>("wells");
         }
         public async Task<Metrics> WellPredictedMetrics(Well well, int date, CancellationToken cancellationToken)
@@ -44,7 +45,7 @@ namespace netBox.Repositories
                 }
                 }";
 
-            var response = await Database.GraphQLClient.PostAsync(allMetricssRequest);
+            var response = await Client.GetClientInstance().PostAsync(allMetricssRequest);
             var allMetrics = response.GetDataFieldAs<List<Metrics>>("allMetricss");
             var filteredMetrics = allMetrics.FindAll(x => x.date == date && x.well.id == well.id && x.type == "predicted");
             var len = filteredMetrics.Count;
@@ -82,7 +83,7 @@ namespace netBox.Repositories
                 }
             }";
 
-            var response = await Database.GraphQLClient.PostAsync(allMetricssRequest);
+            var response = await Client.GetClientInstance().PostAsync(allMetricssRequest);
             var allMetrics = response.GetDataFieldAs<List<Metrics>>("allMetricss");
             var filteredMetrics = allMetrics.FindAll(x => x.date == date && x.well.id == well.id && x.type == "measured");
             var len = filteredMetrics.Count;
@@ -120,7 +121,7 @@ namespace netBox.Repositories
                 }
             }";
 
-            var response = await Database.GraphQLClient.PostAsync(allActionOutcomesRequest);
+            var response = await Client.GetClientInstance().PostAsync(allActionOutcomesRequest);
             var allActionOutcomes = response.GetDataFieldAs<List<ActionOutcome>>("allActionOutcomes");
             var filteredActionOutcomes = allActionOutcomes.FindAll(x => x.action.id == action.id && x.well.id == well.id);
             var len = filteredActionOutcomes.Count;
@@ -263,7 +264,7 @@ namespace netBox.Repositories
         }
       }";
 
-            var response = await Database.GraphQLClient.PostAsync(allMetricssRequest);
+            var response = await Client.GetClientInstance().PostAsync(allMetricssRequest);
             var allMetrics = response.GetDataFieldAs<List<Metrics>>("allMetricss");
 
             var pastMeasuredMetrics = allMetrics.Where(x => x.date <= today && x.well.id == well.id && x.type == "measured");
