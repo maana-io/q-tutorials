@@ -7,9 +7,9 @@ namespace netBox.Models
         public string id { get; set; }
         public Action action { get; set; }
         public Well well { get; set; }
-        public float probabilityOfAnomaly { get; set; }
-        public float cost { get; set; }
-        public float manHours { get; set; }
-        public float increaseInOilRate { get; set; }
+        public double probabilityOfAnomaly { get; set; }
+        public double cost { get; set; }
+        public double manHours { get; set; }
+        public double increaseInOilRate { get; set; }
     }
 }

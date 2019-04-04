@@ -8,13 +8,17 @@ namespace netBox.Repositories
     using netBox.Models;
     using GraphQL.Common.Request;
     using Maana.AuthenticatedGraphQLClient;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using GraphQLParser;
+    using GraphQL.Builders;
 
     public class WellRepository : IWellRepository
     {
         public async Task<List<Well>> AllActiveWells(CancellationToken cancellationToken)
         {
-            var allWellsRequest = new GraphQLRequest();
-            allWellsRequest.Query = @"{
+            var request = new GraphQLRequest();
+            request.Query = @"{
                 wells (ids:[
                     ""Pu-01"",""Pu-02"",""Pu-03"",""Pu-04"",""Pu-05"",
                     ""Co-01"",""Co-02"",
@@ -27,32 +31,51 @@ namespace netBox.Repositories
                 }
                 }";
 
-            var response = await Client.GetClientInstance().PostAsync(allWellsRequest);
+            var response = await Client.GetClientInstance().PostAsync(request);
             return response.GetDataFieldAs<List<Well>>("wells");
         }
         public async Task<Metrics> WellPredictedMetrics(Well well, int date, CancellationToken cancellationToken)
         {
-            var allMetricssRequest = new GraphQLRequest();
-            allMetricssRequest.Query = @"{
-                allMetricss {
-                    id
-                    well {id name}
-                    date
-                    type
-                    waterCut
-                    GOR
-                    oilRate
-                }
+            var request = new GraphQLRequest();
+            var variables = new {date = date, wellId = well.id};
+            request.Variables = variables;
+
+            request.Query =  @"query($wellId: ID, $date:Int){
+                    metricsFilter(filters: [{
+                            fieldName: ""date""
+                            op: ""==""
+                            value: { INT: $date }
+                        }
+                        {
+                            fieldName: ""well""
+                            op: ""==""
+                            value: { ID: $wellId }
+                        }
+                        {
+                            fieldName: ""type""
+                            op: ""==""
+                            value: {STRING: ""predicted""
+                        } 
+                    }]) {
+                        id
+                        well {
+                            id
+                            name
+                        }
+                        date
+                        type
+                        waterCut
+                        GOR
+                        oilRate
+                    }
                 }";
 
-            var response = await Client.GetClientInstance().PostAsync(allMetricssRequest);
-            var allMetrics = response.GetDataFieldAs<List<Metrics>>("allMetricss");
-            var filteredMetrics = allMetrics.FindAll(x => x.date == date && x.well.id == well.id && x.type == "predicted");
-            var len = filteredMetrics.Count;
+            var response = await Client.GetClientInstance().PostAsync(request);
+            var metrics = response.GetDataFieldAs<List<Metrics>>("metricsFilter");
             Metrics metric;
-            if (len > 0)
+            if (metrics.Count > 0)
             {
-                metric = filteredMetrics[0];
+                metric = metrics.First();
             }
             else
             {
@@ -70,27 +93,46 @@ namespace netBox.Repositories
 
         public async Task<Metrics> WellMeasuredMetrics(Well well, int date, CancellationToken cancellationToken)
         {
-            var allMetricssRequest = new GraphQLRequest();
-            allMetricssRequest.Query = @"{
-                allMetricss {
-                    id
-                    well {id name}
-                    date
-                    type
-                    waterCut
-                    GOR
-                    oilRate
-                }
-            }";
+            var request = new GraphQLRequest();
+            var variables = new {date = date, wellId = well.id};
+            request.Variables = variables;
 
-            var response = await Client.GetClientInstance().PostAsync(allMetricssRequest);
-            var allMetrics = response.GetDataFieldAs<List<Metrics>>("allMetricss");
-            var filteredMetrics = allMetrics.FindAll(x => x.date == date && x.well.id == well.id && x.type == "measured");
-            var len = filteredMetrics.Count;
+            request.Query =  @"query($wellId: ID, $date:Int){
+                    metricsFilter(filters: [{
+                            fieldName: ""date""
+                            op: ""==""
+                            value: { INT: $date }
+                        }
+                        {
+                            fieldName: ""well""
+                            op: ""==""
+                            value: { ID: $wellId }
+                        }
+                        {
+                            fieldName: ""type""
+                            op: ""==""
+                            value: {STRING: ""measured""
+                        } 
+                    }]) {
+                        id
+                        well {
+                            id
+                            name
+                        }
+                        date
+                        type
+                        waterCut
+                        GOR
+                        oilRate
+                    }
+                }";
+
+            var response = await Client.GetClientInstance().PostAsync(request);
+            var metrics = response.GetDataFieldAs<List<Metrics>>("metricsFilter");
             Metrics metric;
-            if (len > 0)
+            if (metrics.Count > 0)
             {
-                metric = filteredMetrics[0];
+                metric = metrics.First();
             }
             else
             {
@@ -108,12 +150,32 @@ namespace netBox.Repositories
 
         public async Task<ActionOutcome> WellActionOutcome(Well well, Models.Action action, CancellationToken cancellationToken)
         {
-            var allActionOutcomesRequest = new GraphQLRequest();
-            allActionOutcomesRequest.Query = @"{
-                allActionOutcomes {
+            var request = new GraphQLRequest();
+            request.Variables = new {wellId = well.id, actionId = action.id};
+            request.Query = @" query($wellId: ID, $actionId: ID){
+                actionOutcomeFilter(filters: [
+                    {
+                        fieldName: ""well""
+                        op: ""==""
+                        value: { ID: $wellId }
+                    }
+                    {
+                        fieldName: ""action""
+                        op: ""==""
+                        value: { ID: $actionId }
+                    }
+                ]) 
+                {
                     id
-                    action {id name type}
-                    well {id name}
+                    action {
+                        id
+                        name
+                        type
+                    }
+                    well {
+                        id
+                        name
+                    }
                     probabilityOfAnomaly
                     cost
                     manHours
@@ -121,14 +183,12 @@ namespace netBox.Repositories
                 }
             }";
 
-            var response = await Client.GetClientInstance().PostAsync(allActionOutcomesRequest);
-            var allActionOutcomes = response.GetDataFieldAs<List<ActionOutcome>>("allActionOutcomes");
-            var filteredActionOutcomes = allActionOutcomes.FindAll(x => x.action.id == action.id && x.well.id == well.id);
-            var len = filteredActionOutcomes.Count;
+            var response = await Client.GetClientInstance().PostAsync(request);
+            var outcomes = response.GetDataFieldAs<List<ActionOutcome>>("actionOutcomeFilter");
             ActionOutcome actionOutcome;
-            if (len > 0)
+            if (outcomes.Count > 0)
             {
-                actionOutcome = filteredActionOutcomes[0];
+                actionOutcome = outcomes.First();
             }
             else
             {
@@ -190,7 +250,7 @@ namespace netBox.Repositories
             return action;
         }
 
-        public Models.Action ShouldTestWell(float healthIndex, int lastTestDay, int today, CancellationToken cancellationToken)
+        public Models.Action ShouldTestWell(double healthIndex, int lastTestDay, int today, CancellationToken cancellationToken)
         {
             var testGap = today - lastTestDay;
 
@@ -215,7 +275,7 @@ namespace netBox.Repositories
             return action;
         }
 
-        public float HealthIndex(Metrics predictedMetrics, Metrics measuredMetrics, CancellationToken cancellationToken)
+        public double HealthIndex(Metrics predictedMetrics, Metrics measuredMetrics, CancellationToken cancellationToken)
         {
             //Watercut
             var predictedWatercut = predictedMetrics.waterCut;
@@ -252,28 +312,32 @@ namespace netBox.Repositories
 
         public async Task<int> WellLastTestDate(Well well, int today, CancellationToken cancellationToken)
         {
-            var allMetricssRequest = new GraphQLRequest();
-            allMetricssRequest.Query = @"{
-        allMetricss {
-          well {id}
-          date
-          type
-          waterCut
-          GOR
-          oilRate
-        }
-      }";
+            var request = new GraphQLRequest();
+            request.Variables = new {wellId = well.id};
+            request.Query = @"query($wellId: ID){
+                metricsFilter(filters: [
+                {
+                    fieldName: ""well""
+                    op: ""==""
+                    value: { ID: $wellId }
+                }
+                {
+                    fieldName: ""type""
+                    op: ""==""
+                    value: {STRING: ""measured""}
+                }
+                ]) {
+                    date
+                }
+            }";
 
-            var response = await Client.GetClientInstance().PostAsync(allMetricssRequest);
-            var allMetrics = response.GetDataFieldAs<List<Metrics>>("allMetricss");
-
-            var pastMeasuredMetrics = allMetrics.Where(x => x.date <= today && x.well.id == well.id && x.type == "measured");
-            var len = pastMeasuredMetrics.Count();
+            var response = await Client.GetClientInstance().PostAsync(request);
+            var metrics = response.GetDataFieldAs<List<Metrics>>("metricsFilter");
             var date = 0;
 
-            if (len > 0)
+            if (metrics.Count > 0)
             {
-                var orderedMeasuredMetrics = pastMeasuredMetrics.OrderByDescending(x => x.date);
+                var orderedMeasuredMetrics = metrics.OrderByDescending(x => x.date);
                 var singleMeasurement = orderedMeasuredMetrics.First();
                 date = singleMeasurement.date;
             }
@@ -314,13 +378,13 @@ namespace netBox.Repositories
 
         public Opportunity CombineActionImpacts(Well well, List<ActionFinancialEstimate> costReduction, List<ActionFinancialEstimate> revenueGains, CancellationToken cancellationToken)
         {
-            var incrementalRevenueSum = revenueGains.Aggregate(0F, (accumulator, actionFinancialEstimate) =>
+            var incrementalRevenueSum = revenueGains.Aggregate(0D, (accumulator, actionFinancialEstimate) =>
             {
                 var impact = actionFinancialEstimate.impact;
                 return accumulator + impact;
             });
 
-            var costReductionSum = costReduction.Aggregate(0F, (accumulator, actionFinancialEstimate) =>
+            var costReductionSum = costReduction.Aggregate(0D, (accumulator, actionFinancialEstimate) =>
             {
                 var impact = actionFinancialEstimate.impact;
                 return accumulator + impact;
@@ -328,13 +392,13 @@ namespace netBox.Repositories
 
             var combinedLists = costReduction.Concat(revenueGains);
 
-            var costSum = combinedLists.Aggregate(0F, (accumulator, actionFinancialEstimate) =>
+            var costSum = combinedLists.Aggregate(0D, (accumulator, actionFinancialEstimate) =>
             {
                 var cost = actionFinancialEstimate.cost;
                 return accumulator + cost;
             });
 
-            var manHoursSum = combinedLists.Aggregate(0F, (accumulator, actionFinancialEstimate) =>
+            var manHoursSum = combinedLists.Aggregate(0D, (accumulator, actionFinancialEstimate) =>
             {
                 var manHours = actionFinancialEstimate.manHours;
                 return accumulator + manHours;
@@ -355,7 +419,7 @@ namespace netBox.Repositories
             };
         }
 
-        public List<ActionFinancialEstimate> InterventionRevenueGain(float oilPrice, Metrics measuredMetrics, ActionOutcome actionOutcome, CancellationToken cancellationToken)
+        public List<ActionFinancialEstimate> InterventionRevenueGain(double oilPrice, Metrics measuredMetrics, ActionOutcome actionOutcome, CancellationToken cancellationToken)
         {
             var increaseInOilRate = actionOutcome.increaseInOilRate;
             var cost = actionOutcome.cost;
@@ -375,7 +439,7 @@ namespace netBox.Repositories
             return new List<ActionFinancialEstimate>() { afe };
         }
 
-        public List<ActionFinancialEstimate> SkippingTestCostReduction(float oilPrice, Metrics measuredMetrics, ActionOutcome actionOutcome, CancellationToken cancellationToken)
+        public List<ActionFinancialEstimate> SkippingTestCostReduction(double oilPrice, Metrics measuredMetrics, ActionOutcome actionOutcome, CancellationToken cancellationToken)
         {
             var probabilityOfAnomaly = actionOutcome.probabilityOfAnomaly / 100;
             var potentialCostOfSkippikingATest = measuredMetrics.oilRate * probabilityOfAnomaly * oilPrice * 60;
@@ -395,7 +459,7 @@ namespace netBox.Repositories
             return new List<ActionFinancialEstimate> { afe };
         }
 
-        public float CurrentOilPrice(CancellationToken cancellationToken)
+        public double CurrentOilPrice(CancellationToken cancellationToken)
         {
             return 10.0F;
         }

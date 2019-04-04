@@ -12,6 +12,7 @@ namespace netBox
     using GraphQL.Types;
     using GraphQL.Validation;
     using Microsoft.Extensions.Options;
+    using GraphQL.Conversion;
 
     public class InstrumentingGraphQLExecutor<TSchema> : DefaultGraphQLExecuter<TSchema>
         where TSchema : ISchema
@@ -56,6 +57,9 @@ namespace netBox
         {
             var options = base.GetOptions(operationName, query, variables, context, cancellationToken);
 
+            // Fixes default camel casing of field names.
+            options.FieldNameConverter = new DefaultFieldNameConverter();           
+            
             if (this.options.EnableMetrics)
             {
                 // Add instrumentation to measure how long field resolvers take to execute.
