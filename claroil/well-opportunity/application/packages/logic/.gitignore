@@ -61,3 +61,7 @@ build/Release
 *.bk
 *.bk2
 ./**/.vscode
+ 
+
+#Envrionment configuration should not be committed
+*.env 

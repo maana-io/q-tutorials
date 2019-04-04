@@ -15,6 +15,7 @@
     "faker": "^4.1.0",
     "graphql-tag": "^2.10.1",
     "graphql-yoga": "1.15.1",
+    "io.maana.shared": "^3.1.4-release",
     "lodash": "^4.17.11",
     "prisma-binding": "2.1.3"
   },
