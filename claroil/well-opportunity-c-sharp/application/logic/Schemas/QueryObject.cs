@@ -68,7 +68,7 @@ namespace netBox.Schemas
               "wellMeasuredMetrics",
               "Get a Well's measured metrics.",
               arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<WellObject>>()
+                new QueryArgument<NonNullGraphType<WellInputObject>>()
                 {
                     Name = "well",
                     Description = "The well for which to get the metrics.",
@@ -90,7 +90,7 @@ namespace netBox.Schemas
               "wellActionOutcome",
               "",
               arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<WellObject>>()
+                new QueryArgument<NonNullGraphType<WellInputObject>>()
                 {
                     Name = "well",
                     Description = "The well for which to get the metrics.",
@@ -184,7 +184,7 @@ namespace netBox.Schemas
               "wellLastTestDate",
               "",
               arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<WellObject>>()
+                new QueryArgument<NonNullGraphType<WellInputObject>>()
                 {
                     Name = "well",
                     Description = "The well for which to get the metrics.",
@@ -236,7 +236,7 @@ namespace netBox.Schemas
               "combineActionImpacts",
               "",
               arguments: new QueryArguments(
-                new QueryArgument<NonNullGraphType<WellObject>>()
+                new QueryArgument<NonNullGraphType<WellInputObject>>()
                 {
                     Name = "well",
                     Description = "The well for which to get the metrics.",
