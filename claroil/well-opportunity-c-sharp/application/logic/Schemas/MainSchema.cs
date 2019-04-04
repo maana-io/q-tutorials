@@ -14,8 +14,6 @@ namespace netBox.Schemas
             : base(resolver)
         {
             this.Query = resolver.Resolve<QueryObject>();
-            this.Mutation = mutation;
-            this.Subscription = subscription;
         }
     }
 }

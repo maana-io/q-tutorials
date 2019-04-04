@@ -49,11 +49,11 @@ namespace netBox.Schemas
           "wellPredictedMetrics",
           "Get a Well's predicted metrics.",
           arguments: new QueryArguments(
-              new QueryArgument<NonNullGraphType<WellObject>>()
+              new QueryArgument<NonNullGraphType<WellInputObject>>
               {
                 Name = "well",
                 Description = "The well for which to get the metrics.",
-              }, new QueryArgument<NonNullGraphType<IntGraphType>>()
+              }, new QueryArgument<NonNullGraphType<IntGraphType>>
               {
                 Name = "date",
                 Description = "The date of the metrics to get."
@@ -68,7 +68,7 @@ namespace netBox.Schemas
         "wellMeasuredMetrics",
         "Get a Well's measured metrics.",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<WellObject>>()
+          new QueryArgument<NonNullGraphType<WellInputObject>>()
           {
             Name = "well",
             Description = "The well for which to get the metrics.",
@@ -90,12 +90,12 @@ namespace netBox.Schemas
         "wellActionOutcome",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<WellObject>>()
+          new QueryArgument<NonNullGraphType<WellInputObject>>()
           {
             Name = "well",
             Description = "The well for which to get the metrics.",
           },
-          new QueryArgument<NonNullGraphType<ActionObject>>()
+          new QueryArgument<NonNullGraphType<ActionInputObject>>()
           {
             Name = "action",
             Description = "",
@@ -108,16 +108,16 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<ActionObject>, Models.Action>(
+      this.Field<NonNullGraphType<ActionObject>>(
         "discoverIntervention",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          new QueryArgument<NonNullGraphType<MetricsInputObject>>()
           {
             Name = "predictedMetrics",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          new QueryArgument<NonNullGraphType<MetricsInputObject>>()
           {
             Name = "measuredMetrics",
             Description = "",
@@ -130,7 +130,7 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<ActionObject>, Models.Action>(
+      this.Field<NonNullGraphType<ActionObject>>(
         "shouldTestWell",
         "",
         arguments: new QueryArguments(
@@ -158,16 +158,16 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<FloatGraphType>, float>(
+      this.Field<NonNullGraphType<FloatGraphType>>(
         "healthIndex",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          new QueryArgument<NonNullGraphType<MetricsInputObject>>()
           {
             Name = "predictedMetrics",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          new QueryArgument<NonNullGraphType<MetricsInputObject>>()
           {
             Name = "measuredMetrics",
             Description = "",
@@ -184,7 +184,7 @@ namespace netBox.Schemas
         "wellLastTestDate",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<WellObject>>()
+          new QueryArgument<NonNullGraphType<WellInputObject>>()
           {
             Name = "well",
             Description = "The well for which to get the metrics.",
@@ -202,7 +202,7 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<IntGraphType>, int>(
+      this.Field<NonNullGraphType<IntGraphType>>(
         "todayDate",
         "",
         resolve: context => wellRepository.TodayDate(
@@ -210,16 +210,16 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<ListGraphType<NonNullGraphType<OpportunityObject>>>, List<Opportunity>>(
+      this.Field<NonNullGraphType<ListGraphType<NonNullGraphType<OpportunityObject>>>>(
         "applyConstraints",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<OpportunityObject>>>>()
+          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<OpportunityInputObject>>>>()
           {
             Name = "opportunities",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<ConstraintObject>>()
+          new QueryArgument<NonNullGraphType<ConstraintInputObject>>()
           {
             Name = "constraints",
             Description = "",
@@ -232,21 +232,21 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<OpportunityObject>, Opportunity>(
+      this.Field<NonNullGraphType<OpportunityObject>>(
         "combineActionImpacts",
         "",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<WellObject>>()
+          new QueryArgument<NonNullGraphType<WellInputObject>>()
           {
             Name = "well",
             Description = "The well for which to get the metrics.",
           },
-          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>>()
+          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateInputObject>>>>()
           {
             Name = "costReduction",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>>()
+          new QueryArgument<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateInputObject>>>>()
           {
             Name = "revenueGains",
             Description = "",
@@ -260,7 +260,7 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>, List<ActionFinancialEstimate>>(
+      this.Field<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>>(
         "interventionRevenueGain",
         "",
         arguments: new QueryArguments(
@@ -269,12 +269,12 @@ namespace netBox.Schemas
             Name = "oilPrice",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          new QueryArgument<NonNullGraphType<MetricsInputObject>>()
           {
             Name = "measuredMetrics",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<ActionOutcomeObject>>()
+          new QueryArgument<NonNullGraphType<ActionOutcomeInputObject>>()
           {
             Name = "actionOutcome",
             Description = "",
@@ -288,7 +288,7 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>, List<ActionFinancialEstimate>>(
+      this.Field<NonNullGraphType<ListGraphType<NonNullGraphType<ActionFinancialEstimateObject>>>>(
         "skippingTestCostReduction",
         "",
         arguments: new QueryArguments(
@@ -297,12 +297,12 @@ namespace netBox.Schemas
             Name = "oilPrice",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<MetricsObject>>()
+          new QueryArgument<NonNullGraphType<MetricsInputObject>>()
           {
             Name = "measuredMetrics",
             Description = "",
           },
-          new QueryArgument<NonNullGraphType<ActionOutcomeObject>>()
+          new QueryArgument<NonNullGraphType<ActionOutcomeInputObject>>()
           {
             Name = "actionOutcome",
             Description = "",
@@ -316,7 +316,7 @@ namespace netBox.Schemas
         )
       );
 
-      this.FieldAsync<NonNullGraphType<FloatGraphType>, float>(
+      this.Field<NonNullGraphType<FloatGraphType>>(
         "currentOilPrice",
         "",
         resolve: context => wellRepository.CurrentOilPrice(
