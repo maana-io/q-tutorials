@@ -64,7 +64,7 @@ You need to have Docker installed and running on your machine.
 
 From `application/packages`
 
-    cd
+    cd logic
 
 ## Log into the Azure Container Registery
 
