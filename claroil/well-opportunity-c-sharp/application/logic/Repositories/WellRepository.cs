@@ -130,6 +130,7 @@ namespace netBox.Repositories
 
             var response = await Client.GetClientInstance().PostAsync(request);
             var metrics = response.GetDataFieldAs<List<Metrics>>("metricsFilter");
+
             Metrics metric;
             if (metrics != null && metrics.Count > 0)
             {
@@ -186,6 +187,7 @@ namespace netBox.Repositories
 
             var response = await Client.GetClientInstance().PostAsync(request);
             var outcomes = response.GetDataFieldAs<List<ActionOutcome>>("actionOutcomeFilter");
+            
             ActionOutcome actionOutcome;
             if (outcomes != null && outcomes.Count > 0)
             {
