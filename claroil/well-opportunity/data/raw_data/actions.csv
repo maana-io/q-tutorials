@@ -1,0 +1,8 @@
+Action ID, Action Name, Action Type
+No Intervention,No Intervention,Revenue Increase
+Hydraulic Fracturing,Hydraulic Fracturing,Revenue Increase
+Acidizing,Acidizing,Revenue Increase
+Water Shutoff,Water Shutoff,Revenue Increase
+Risky To Skip Test,Risky To Skip Test,Cost Reduction
+Safe To Skip Test,Safe To Skip Test,Cost Reduction
+OK To Skip Test,OK To Skip Test,Cost Reduction
