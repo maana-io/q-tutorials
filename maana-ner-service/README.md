@@ -48,16 +48,8 @@ Examples of "extract" query to run with default Model.
 ```graphql
 query Extract {
   extract(
-    source: [
-      "John, please get that article on www.linkedin.com or https://google.com or 192.67.23.222
-      and files: bla123bla.doc and itisme.jpg
-      and send to me by 5:00PM on Jul 4th 2018 or 4:00 am on 01/09/12 would be ideal, actually.
-      If you have any questions about \"Microsoft\" or 'Google' office at \"New York\"
-      you can reach my associate at (012)-345-6789 or (230) 241 2422 or +1(345)876-7554 or associative@mail.com or &lt;abracadabra123@maana.io>.
-      Send me $5,987.56 or £4,123.14 or € 100 by PayPal.
-      My SSN is 456-23-0965
-      My coordinates are: 47.617640, -122.191905 or 47°37'03.5\"N 122°11'30.9\"W"
-    ]
+    source: "John, please get that article on www.linkedin.com or https://google.com or 192.67.23.222 and files: bla123bla.doc and itisme.jpg and send to me by 5:00PM on Jul 4th 2018 or 4:00 am on 01/09/12 would be ideal, actually. If you have any questions about \"Microsoft\" or 'Google' office at \"New York\" you can reach my associate at (012)-345-6789 or (230) 241 2422 or +1(345)876-7554 or associative@mail.com or &lt;abracadabra123@maana.io>. Send me $5,987.56 or £4,123.14 or € 100 by PayPal. My SSN is 456-23-0965 My coordinates are: 47.617640, -122.191905 or 47°37'03.5\"N 122°11'30.9\"W"
+   
   ) {
     entityName
     surfaceForm
