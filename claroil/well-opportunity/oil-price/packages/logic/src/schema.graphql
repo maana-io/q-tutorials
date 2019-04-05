@@ -1,9 +1,0 @@
-type Info {
-  name: String
-  version: String
-}
-
-type Query {
-  info: Info
-  currentOilPrice: Float
-}
