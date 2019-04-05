@@ -72,8 +72,9 @@ namespace netBox.Repositories
 
             var response = await Client.GetClientInstance().PostAsync(request);
             var metrics = response.GetDataFieldAs<List<Metrics>>("metricsFilter");
+
             Metrics metric;
-            if (metrics.Count > 0)
+            if (metrics != null && metrics.Count > 0)
             {
                 metric = metrics.First();
             }
@@ -129,8 +130,9 @@ namespace netBox.Repositories
 
             var response = await Client.GetClientInstance().PostAsync(request);
             var metrics = response.GetDataFieldAs<List<Metrics>>("metricsFilter");
+
             Metrics metric;
-            if (metrics.Count > 0)
+            if (metrics != null && metrics.Count > 0)
             {
                 metric = metrics.First();
             }
@@ -185,8 +187,9 @@ namespace netBox.Repositories
 
             var response = await Client.GetClientInstance().PostAsync(request);
             var outcomes = response.GetDataFieldAs<List<ActionOutcome>>("actionOutcomeFilter");
+            
             ActionOutcome actionOutcome;
-            if (outcomes.Count > 0)
+            if (outcomes != null && outcomes.Count > 0)
             {
                 actionOutcome = outcomes.First();
             }
@@ -335,7 +338,7 @@ namespace netBox.Repositories
             var metrics = response.GetDataFieldAs<List<Metrics>>("metricsFilter");
             var date = 0;
 
-            if (metrics.Count > 0)
+            if (metrics != null && metrics.Count > 0)
             {
                 var orderedMeasuredMetrics = metrics.OrderByDescending(x => x.date);
                 var singleMeasurement = orderedMeasuredMetrics.First();
