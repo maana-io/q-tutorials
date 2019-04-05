@@ -212,7 +212,7 @@ const resolvers = {
           }
       }
 
-      if (waterCutGap > 0.07) {
+      if (waterCutGap > 7) {
         action = {
              id: 'Water Shutoff',
              name: 'Water Shutoff',
@@ -235,9 +235,9 @@ const resolvers = {
       let actionId =
         testGap > 60
           ? 'Risky To Skip Test'
-          :  healthIndex >= 0.8
+          :  healthIndex >= 0.96
           ? 'Safe To Skip Test'
-          : healthIndex >= 0.5 && healthIndex < 0.8
+          : healthIndex >= 0.5 && healthIndex < 0.96
           ? 'OK To Skip Test'
           : 'Risky To Skip Test'
           
