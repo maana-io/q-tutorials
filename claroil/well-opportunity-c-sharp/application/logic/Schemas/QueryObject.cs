@@ -328,12 +328,13 @@ namespace netBox.Schemas
       this.Field<InfoObject>(
           "info",
           resolve: context =>
-          {
+          { 
             return new Info
             {
+              Id = "maana.io.claroil.well.optimization.demo",
               Name = "ClarOil Well Optimization Demo",
-              Version = "0.0.5"
-
+              Version = "0.0.8",
+              Description = "ClarOil Well Optimization Demo"
             };
           });
     }
