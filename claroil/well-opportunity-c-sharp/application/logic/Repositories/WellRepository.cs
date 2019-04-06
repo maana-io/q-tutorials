@@ -427,7 +427,7 @@ namespace netBox.Repositories
             var increaseInOilRate = actionOutcome.increaseInOilRate;
             var cost = actionOutcome.cost;
             var manHours = actionOutcome.manHours;
-            var revenueIncrease = measuredMetrics.oilRate * oilPrice * 180 * increaseInOilRate;
+            var revenueIncrease = measuredMetrics.oilRate * oilPrice * 180000 * increaseInOilRate;
 
             var afe = new ActionFinancialEstimate
             {
@@ -445,7 +445,7 @@ namespace netBox.Repositories
         public List<ActionFinancialEstimate> SkippingTestCostReduction(double oilPrice, Metrics measuredMetrics, ActionOutcome actionOutcome, CancellationToken cancellationToken)
         {
             var probabilityOfAnomaly = actionOutcome.probabilityOfAnomaly / 100;
-            var potentialCostOfSkippikingATest = measuredMetrics.oilRate * probabilityOfAnomaly * oilPrice * 60;
+            var potentialCostOfSkippikingATest = measuredMetrics.oilRate * probabilityOfAnomaly * oilPrice * 60000;
             var costReduction = actionOutcome.cost;
             var manHours = actionOutcome.manHours;
 
