@@ -1,0 +1,35 @@
+.btn-dark {
+  background-color: #7e7e7e;
+  border-color: #7e7e7e;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+}
+
+h3 {
+  font-size: 1.3rem;
+}
+
+body,
+#root,
+.App {
+  min-height: 100vh;
+}
+
+.dropdown {
+  display: inline-block;
+}
+
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

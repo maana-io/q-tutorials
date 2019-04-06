@@ -1,0 +1,22 @@
+{
+  "projects": {
+    "welldata": {
+      "schemaPath": "data/welldata.graphql",
+      "extensions": {
+        "endpoints": {
+          "default": {
+            "url": "",
+            "headers": {
+              "Authorization": "Bearer ${env:MAANA_AUTH_TOKEN}"
+            }
+          }
+        }
+      }
+    }
+  },
+  "extensions": {
+    "maana": {
+      "auth": ""
+    }
+  }
+}
