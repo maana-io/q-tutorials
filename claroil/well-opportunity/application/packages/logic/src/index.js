@@ -196,7 +196,7 @@ const resolvers = {
       }
 
 
-      if (oilRateGap > 0.08) {
+      if (oilRateGap > 8) {
         action = {
              id: 'Hydraulic Fracturing',
              name: 'Hydraulic Fracturing',
@@ -204,7 +204,7 @@ const resolvers = {
           }
       }
 
-      if (oilRateGap > 0.05 && oilRateGap <= 0.08) {
+      if (oilRateGap > 5 && oilRateGap <= 8) {
         action = {
              id: 'Acidizing',
              name: 'Acidizing',
@@ -323,8 +323,8 @@ const resolvers = {
       _.forEach(opportunities, function(op) { op.sumBen = op.incrementalRevenue + op.costReduction;});
       let orderedOpportunityByRevenueGain = _.orderBy(
         opportunities,
-        ['sumBen', 'cost'],
-        ['desc', 'asc']
+        ['sumBen', 'cost', 'manHours'],
+        ['desc', 'asc', 'asc']
       )
       _.forEach(orderedOpportunityByRevenueGain, function(op) { delete op.sumBen;});
 
@@ -362,7 +362,7 @@ const resolvers = {
         0
       )
 
-      let cost = [...costReduction, ...revenueGains].reduce(
+      let costOfRevGains = revenueGains.reduce(
         (accumulator, actionFinancialEstimate) => {
           let { cost } = actionFinancialEstimate
           return accumulator + cost
@@ -370,36 +370,86 @@ const resolvers = {
         0
       )
 
-      let manHours = [...costReduction, ...revenueGains].reduce(
+      let potentialCostOfSkippingTests = costReduction.reduce(
+        (accumulator, actionFinancialEstimate) => {
+          let { cost } = actionFinancialEstimate
+          return accumulator + cost
+        },
+        0
+      )
+
+      let manHoursOfRevGains = revenueGains.reduce(
         (accumulator, actionFinancialEstimate) => {
           let { manHours } = actionFinancialEstimate
           return accumulator + manHours
         },
         0
       )
-      console.log('end combineActionImpacts')
 
-      return {
-        id: faker.random.uuid(),
-        well,
-        name: 'Opportunity for ' + well.name,
-        createdAt: new Date(),
-        actions: [
-          ...costReduction.map(x => x.action),
-          ...revenueGains.map(x => x.action)
-        ],
-        incrementalRevenue: incrementalRevenueSum,
-        costReduction: costReductionSum,
-        cost,
-        manHours
+      let opportunity = {}
+
+      if ((incrementalRevenueSum - costOfRevGains >= 0) && (costReductionSum - potentialCostOfSkippingTests > 0))
+      {
+          //both revenue gain and cost reduction
+          opportunity = {
+            id: faker.random.uuid(),
+            well,
+            name: 'Opportunity for ' + well.name,
+            createdAt: new Date(),
+            actions: [
+              ...revenueGains.map(x => x.action),
+              ...costReduction.map(x => x.action)
+            ],
+            incrementalRevenue: incrementalRevenueSum,
+            costReduction: costReductionSum - potentialCostOfSkippingTests,
+            cost: costOfRevGains,
+            manHours: manHoursOfRevGains
+          }
       }
+      else {
+          if (incrementalRevenueSum - costOfRevGains >= 0){
+              //only revenue gains
+              opportunity = {
+                    id: faker.random.uuid(),
+                    well,
+                    name: 'Opportunity for ' + well.name,
+                    createdAt: new Date(),
+                    actions: [
+                      ...revenueGains.map(x => x.action)
+                    ],
+                    incrementalRevenue: incrementalRevenueSum,
+                    costReduction: 0,
+                    cost: costOfRevGains,
+                    manHours: manHoursOfRevGains
+                  }
+          } else {
+              //only cost reduction? unreachable, always has a no-intervention revenue gain of 0!
+              opportunity = {
+                    id: faker.random.uuid(),
+                    well,
+                    name: 'Opportunity for ' + well.name,
+                    createdAt: new Date(),
+                    actions: [
+                      ...costReduction.map(x => x.action)
+                    ],
+                    incrementalRevenue: 0,
+                    costReduction: costReductionSum - potentialCostOfSkippingTests,
+                    cost: 0,
+                    manHours: 0
+                  }
+          }
+      }
+
+      console.log('end combineActionImpacts', opportunity)
+
+      return opportunity
     },
 
     async interventionRevenueGain(parent,{ oilPrice, measuredMetrics, actionOutcome }) {
       console.log('begin interventionRevenueGain', oilPrice, measuredMetrics, actionOutcome)
 
       let { increaseInOilRate, cost, manHours } = actionOutcome
-      let revenueIncrease = measuredMetrics.oilRate * oilPrice * 180 * increaseInOilRate
+      let revenueIncrease = measuredMetrics.oilRate * oilPrice * 180000 * increaseInOilRate
       console.log('end interventionRevenueGain', revenueIncrease)
 
       return [{
@@ -416,7 +466,7 @@ const resolvers = {
       console.log('begin skippingTestCostReduction', oilPrice, measuredMetrics, actionOutcome)
 
       let probabilityOfAnomaly = actionOutcome.probabilityOfAnomaly / 100
-      let potentialCostOfSkippikingATest = measuredMetrics.oilRate * probabilityOfAnomaly * oilPrice * 60
+      let potentialCostOfSkippikingATest = measuredMetrics.oilRate * probabilityOfAnomaly * oilPrice * 60000
       let costReduction = actionOutcome.cost
       let manHours = actionOutcome.manHours
       console.log('end skippingTestCostReduction', potentialCostOfSkippikingATest)
