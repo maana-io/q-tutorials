@@ -26,7 +26,7 @@ In the `application` folder, run the following:
 
         touch .env
 
-2.  In your favorite editor, edit the contents of the `.env` file.
+2.  In your favorite editor, edit the contents of the `.env` file (Make sure you replace the value in the square brackets with values provided by the administrator/project lead).
 
         # Identity
         SERVICE_ID='io.maana.demo'
@@ -35,10 +35,10 @@ In the `application` folder, run the following:
         # Peer/remote GraphQL services used
         REMOTE_KSVC_ENDPOINT_URL='[WORKSPACE_SERVICE_URL]'
         # Auth
-        MACHINE_TO_MACHINE_APP_AUTH_DOMAIN='maana-sales.auth0.com'
+        MACHINE_TO_MACHINE_APP_AUTH_DOMAIN='[AUTH_DOMAIN]'
         MACHINE_TO_MACHINE_APP_AUTH_CLIENT_ID='[AUTH_CLIENT_ID]'
         MACHINE_TO_MACHINE_APP_AUTH_CLIENT_SECRET='[AUTH_CLIENT_SECRET]'
-        MACHINE_TO_MACHINE_APP_AUTH_IDENTIFIER='https://h4.maana.io/'
+        MACHINE_TO_MACHINE_APP_AUTH_IDENTIFIER='[AUTH_IDENTIFIER]'
 
         # PubSub configuration
         RABBITMQ_ADDR='127.0.0.1'
@@ -65,6 +65,16 @@ You need to have Docker installed and running on your machine.
 From `application/packages`
 
     cd logic
+
+## Update enviornment variable in Dockerfile
+
+Before building your Docker image, you must set the following enviornment variables in the `Dockerfile` in the current directory (Make sure you replace the value in the square brackets with values provided by the administrator/project lead).
+  
+ ENV REMOTE_KSVC_ENDPOINT_URL=[WORKSPACE_SERVICE_URL]
+ENV MACHINE_TO_MACHINE_APP_AUTH_DOMAIN=[AUTH_DOMAIN]
+ENV MACHINE_TO_MACHINE_APP_AUTH_CLIENT_ID=[AUTH_CLIENT_ID]
+ENV MACHINE_TO_MACHINE_APP_AUTH_CLIENT_SECRET=[AUTH_CLIENT_SECRET]
+ENV MACHINE_TO_MACHINE_APP_AUTH_IDENTIFIER=[AUTH_IDENTIFIER]
 
 ## Log into the Azure Container Registery
 
