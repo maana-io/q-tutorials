@@ -187,7 +187,7 @@ namespace netBox.Repositories
 
             var response = await Client.GetClientInstance().PostAsync(request);
             var outcomes = response.GetDataFieldAs<List<ActionOutcome>>("actionOutcomeFilter");
-            
+
             ActionOutcome actionOutcome;
             if (outcomes != null && outcomes.Count > 0)
             {
@@ -243,7 +243,7 @@ namespace netBox.Repositories
                 action.type = "Revenue Increase";
             }
 
-            if (waterCutGap > 0.07)
+            if (waterCutGap > 0.7)
             {
                 action.id = "Water Shutoff";
                 action.name = "Water Shutoff";
@@ -263,9 +263,9 @@ namespace netBox.Repositories
             var actionId =
               testGap > 60
                 ? "Risky To Skip Test"
-                : healthIndex >= 0.8
+                : healthIndex >= 0.96
                 ? "Safe To Skip Test"
-                : healthIndex >= 0.5 && healthIndex < 0.8
+                : healthIndex >= 0.5 && healthIndex < 0.96
                 ? "OK To Skip Test"
                 : "Risky To Skip Test";
 
