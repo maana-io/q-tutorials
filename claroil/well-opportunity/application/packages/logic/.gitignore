@@ -61,3 +61,5 @@ build/Release
 *.bk
 *.bk2
 ./**/.vscode
+
+.env
