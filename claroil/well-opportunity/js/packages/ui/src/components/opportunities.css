@@ -1,0 +1,92 @@
+.opportunities {
+  padding: 1rem 0.5rem;
+  flex: 1;
+}
+
+.opportunities__title {
+  margin-bottom: 1rem;
+}
+
+.opportunities--revenue {
+  background-color: #dbe2f4;
+}
+
+.opportunities--savings {
+  background-color: #fff1cc;
+}
+
+.opportunities__table th td {
+  padding: 0 0.25rem;
+}
+
+.opportunities__table th,
+.opportunities__table td {
+  font-size: 0.9rem;
+}
+
+.opportunities__table td {
+  padding: 0.25rem;
+  vertical-align: middle;
+  border: 1px solid #d3d3d5;
+}
+
+.opportunities__table td:nth-child(3) {
+  border-right: none;
+}
+
+.opportunities__table td:first-child {
+  padding: 0.25rem;
+  vertical-align: middle;
+  border-left: 1px solid #d3d3d5;
+}
+
+.opportunities__table thead th {
+  padding: 0.25rem;
+  vertical-align: middle;
+  border: 1px solid #d3d3d5;
+}
+
+.opportunities__table .well {
+  width: 15%;
+}
+
+.opportunities__table th.sme-feedback {
+  width: 30%;
+  border: none;
+}
+
+.opportunities__table th:nth-child(3),
+.opportunities__cost-profit {
+  border-right: none;
+}
+
+.opportunities__cost-profit {
+  font-weight: bold;
+}
+
+.opportunities__recommendation {
+  text-align: left;
+}
+
+.opportunities__table .opportunities__actions {
+  border: none;
+}
+
+.opportunities__actions .btn-sm:first-child {
+  margin-right: 5px;
+}
+
+.btn-primary {
+  border-color: #325692;
+  background-color: #4471c4;
+}
+
+.btn-warning {
+  border-color: #a07907;
+  background-color: #be9000;
+  color: black;
+  color: white;
+}
+.btn-warning:hover {
+  color: white;
+}
