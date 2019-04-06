@@ -111,6 +111,34 @@ The "admin" policy can be uncommented in CustomServiceCollectionExtensions.cs.
 Examples of how to add authorization to entire classes or particular fields
 can be seen in Types/HumanObject.cs (currently commented out).
 
+## OAuth Authentication for Maana
+To obtain an auth token to authenticate against maana-services, the following ENV variables need to be set
+```bash
+ENV MACHINE_TO_MACHINE_APP_AUTH_DOMAIN
+ENV MACHINE_TO_MACHINE_APP_AUTH_CLIENT_ID
+ENV MACHINE_TO_MACHINE_APP_AUTH_CLIENT_SECRET
+ENV MACHINE_TO_MACHINE_APP_AUTH_IDENTIFIER
+```
+
+A custom class named OAuthFetcher (Maana namespace) has been built in this app to obtain the OAuth credentials. 
+Recommended method of passing a bearer token in GraphQL client headers is shown below:
+(An example of this is in the AuthenticatedGraphQLClient class in the Maana namespace)
+
+```bash
+    // Pass names of environment variables to OAuth fetcher to get credentials.
+    var authFetcher = OAuthFetcher.CreateFetcherUsingEnvironmentVariableNames(
+        "MACHINE_TO_MACHINE_APP_AUTH_DOMAIN",
+        "MACHINE_TO_MACHINE_APP_AUTH_CLIENT_ID",
+        "MACHINE_TO_MACHINE_APP_AUTH_CLIENT_SECRET",
+        "MACHINE_TO_MACHINE_APP_AUTH_IDENTIFIER");
+
+    var oauth = authFetcher.GetOAuthToken();
+
+    if(oauth!=null){
+        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {oauth.AccessToken??""}");
+    }
+```
+
 ## Application URL/Port
 By default, the application listens on "http://localhost:5000". 
 This can be adjusted in Properties/launchSettings.json. 
@@ -147,3 +175,9 @@ https://github.com/Dotnet-Boxed/Templates
 
 Example use of Dotnet-Boxed Templates (scaffolding for this template)
 https://elanderson.net/2018/07/asp-net-core-with-graphql-using-net-boxed/
+
+- ISSUES ENCOUNTERED IN DEVELOPMENT:
+https://github.com/graphql-dotnet/graphql-dotnet/issues/840
+https://github.com/graphql-dotnet/graphql-dotnet/issues/608
+https://github.com/graphql-dotnet/graphql-client/issues/77
+https://github.com/graphql-dotnet/graphql-dotnet/issues/336

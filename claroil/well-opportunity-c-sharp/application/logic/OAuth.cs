@@ -90,23 +90,23 @@ namespace Maana.OAuth
 
                     if(auth==null || auth.Data.AccessToken==null)
                     {
-                        Console.WriteLine("FAILED TO OBTAIN AUTH TOKEN");
+                        Console.WriteLine("OAuth: FAILED TO OBTAIN AUTH TOKEN.");
                         return null;
                     }
                     else
                     {
-                        Console.WriteLine($"Obtained OAuth token -- type: ${auth.Data.TokenType} expiry: ${auth.Data.ExpiresIn}");
+                        Console.WriteLine($"OAuth: Obtained OAuth token -- type: ${auth.Data.TokenType} expiry: ${auth.Data.ExpiresIn}");
                         return auth.Data;
                     }    
                 }
                 catch(Exception ex)
                 {
-                    throw new Exception($"Error obtaining OAuth token: {StripCredentials(ex.Message)}");
+                    throw new Exception($"OAuth: Error obtaining OAuth token: {StripCredentials(ex.Message)}");
                 }
             } 
             else
             {
-                Console.WriteLine("No auth identifier detected in environment variables: proceeding WITHOUT authentication!");
+                Console.WriteLine("OAuth: No auth identifier detected in environment variables: proceeding WITHOUT authentication!");
                 return null; 
             }
         }     

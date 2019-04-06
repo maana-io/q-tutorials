@@ -128,6 +128,9 @@ namespace netBox
             http2.MaxStreamsPerConnection = sourceHttp2.MaxStreamsPerConnection;
 
             limits.KeepAliveTimeout = sourceLimits.KeepAliveTimeout;
+
+            // By default the max connections# is null, which is treated as unlimited.
+            // https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel.core.kestrelserverlimits.maxconcurrentconnections?view=aspnetcore-2.2
             limits.MaxConcurrentConnections = sourceLimits.MaxConcurrentConnections;
             limits.MaxConcurrentUpgradedConnections = sourceLimits.MaxConcurrentUpgradedConnections;
             limits.MaxRequestBodySize = sourceLimits.MaxRequestBodySize;

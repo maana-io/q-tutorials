@@ -1,7 +1,6 @@
 using System;
 using GraphQL.Client;
 using Maana.OAuth;
-
 namespace Maana.AuthenticatedGraphQLClient
 {
     public class Client
@@ -17,7 +16,12 @@ namespace Maana.AuthenticatedGraphQLClient
             {
                 Console.WriteLine("{ AuthenticatedGraphQLClient } Creating authenticated graphql client.");
 
-                client = new GraphQLClient(Environment.GetEnvironmentVariable("REMOTE_KSVC_ENDPOINT_URL")); 
+                string ksvcsURI = Environment.GetEnvironmentVariable("REMOTE_KSVC_ENDPOINT_URL");
+
+                if(String.IsNullOrWhiteSpace(ksvcsURI))
+                    throw new Exception ("REMOTE_KSVC_ENDPOINT_URL environment variable is null/empty.");
+
+                client = new GraphQLClient(ksvcsURI); 
 
                 // Pass names of environment variables to OAuth fetcher to get credentials.
                 var authFetcher = OAuthFetcher.CreateFetcherUsingEnvironmentVariableNames(
@@ -29,7 +33,6 @@ namespace Maana.AuthenticatedGraphQLClient
                 var oauth = authFetcher.GetOAuthToken();
 
                 if(oauth!=null){
-                    Console.WriteLine("{ AuthenticatedGraphQLClient } Obtained OAuth token.");
                     client.DefaultRequestHeaders.Add("Authorization", $"Bearer {oauth.AccessToken??""}");
                 }
 

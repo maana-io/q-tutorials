@@ -188,7 +188,7 @@ Command:
 ```bash
 gql add-project
 ? Enter project name for new project: basic
-? Local schema file path: basic/schema.graphql
+? Local schema file path: basic/basic.graphql
 ? Endpoint URL (Enter to skip): <service url>
 ? Name of this endpoint, for e.g. default, dev, prod: (default)
 ? Subscription URL (Enter to skip):
@@ -266,8 +266,8 @@ Create instances from common data formats, such as CSV and JSON that conform to 
 The above CSV and JSON data can be loaded by using the &#39;load&#39; GraphQL CLI command, passing the mutation to call, the data file, field mappings (if any). delimeters, etc.
 
 ```bash
-gql mload basic/person.json -p basic
-gql mload basic/employer.json -p basic
+gql mload basic/Person.json -p basic
+gql mload basic/Employer.json -p basic
 ```
 
 ## Using Default Queries

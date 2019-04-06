@@ -151,7 +151,7 @@ namespace netBox.Schemas
           }
         ),
         resolve: context => wellRepository.ShouldTestWell(
-          context.GetArgument<float>("healthIndex"),
+          context.GetArgument<double>("healthIndex"),
           context.GetArgument<int>("lastTestDay"),
           context.GetArgument<int>("today"),
           context.CancellationToken
@@ -281,9 +281,9 @@ namespace netBox.Schemas
           }
         ),
         resolve: context => wellRepository.InterventionRevenueGain(
-          context.GetArgument<float>("oilPrice"),
+          context.GetArgument<double>("oilPrice"),
           context.GetArgument<Metrics>("measuredMetrics"),
-          context.GetArgument<ActionOutcome>("revenueGains"),
+          context.GetArgument<ActionOutcome>("actionOutcome"),
           context.CancellationToken
         )
       );
@@ -309,9 +309,9 @@ namespace netBox.Schemas
           }
         ),
         resolve: context => wellRepository.SkippingTestCostReduction(
-          context.GetArgument<float>("oilPrice"),
+          context.GetArgument<double>("oilPrice"),
           context.GetArgument<Metrics>("measuredMetrics"),
-          context.GetArgument<ActionOutcome>("revenueGains"),
+          context.GetArgument<ActionOutcome>("actionOutcome"),
           context.CancellationToken
         )
       );
