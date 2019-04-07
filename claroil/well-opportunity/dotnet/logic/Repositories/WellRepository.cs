@@ -357,8 +357,7 @@ namespace netBox.Repositories
         {
             var totalBudget = constraints.budget;
             var totalManHours = constraints.manHours;
-
-            var sortedOpportunities = opportunities.OrderBy(op => op.cost).OrderByDescending(op => op.incrementalRevenue + op.costReduction);
+            var sortedOpportunities = opportunities.OrderByDescending(op => op.incrementalRevenue + op.costReduction).ThenBy(op=>op.cost).ThenBy(op=>op.manHours);
             var filteredOpportunities = sortedOpportunities.Where(entry =>
             {
                 var cost = entry.cost;
