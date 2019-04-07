@@ -229,21 +229,21 @@ namespace netBox.Repositories
             action.type = "Revenue Increase";
 
 
-            if (oilRateGap > 0.08)
+            if (oilRateGap > 8)
             {
                 action.id = "Hydraulic Fracturing";
                 action.name = "Hydraulic Fracturing";
                 action.type = "Revenue Increase";
             }
 
-            if (oilRateGap > 0.05 && oilRateGap <= 0.08)
+            if (oilRateGap > 5 && oilRateGap <= 8)
             {
                 action.id = "Acidizing";
                 action.name = "Acidizing";
                 action.type = "Revenue Increase";
             }
 
-            if (waterCutGap > 0.7)
+            if (waterCutGap > 7)
             {
                 action.id = "Water Shutoff";
                 action.name = "Water Shutoff";
