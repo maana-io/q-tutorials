@@ -392,33 +392,73 @@ namespace netBox.Repositories
                 return accumulator + impact;
             });
 
-            var combinedLists = costReduction.Concat(revenueGains);
-
-            var costSum = combinedLists.Aggregate(0D, (accumulator, actionFinancialEstimate) =>
+            var costOfRevenueGains = revenueGains.Aggregate(0D, (accumulator, actionFinancialEstimate) =>
             {
                 var cost = actionFinancialEstimate.cost;
                 return accumulator + cost;
             });
 
-            var manHoursSum = combinedLists.Aggregate(0D, (accumulator, actionFinancialEstimate) =>
+            var potentialCostOfSkippingTests = costReduction.Aggregate(0D, (accumulator, actionFinancialEstimate) =>
             {
-                var manHours = actionFinancialEstimate.manHours;
-                return accumulator + manHours;
+                var cost = actionFinancialEstimate.cost;
+                return accumulator + cost;
             });
 
-            // TODO: Implement
-            return new Opportunity
+            var manHoursOfRevGains = revenueGains.Aggregate(0D, (accumulator, actionFinancialEstimate) =>
             {
-                id = Guid.NewGuid().ToString(),
-                well = well,
-                name = "Opportunity for " + well.name,
-                createdAt = new DateTime(),
-                actions = combinedLists.Select(x => x.action).ToList(),
-                incrementalRevenue = incrementalRevenueSum,
-                costReduction = costReductionSum,
-                cost = costSum,
-                manHours = manHoursSum
-            };
+                var hours = actionFinancialEstimate.manHours;
+                return accumulator + hours;
+            });
+
+            if(incrementalRevenueSum - costOfRevenueGains >= 0 && costReductionSum - potentialCostOfSkippingTests > 0)
+            {
+              // Both revenue gain and cost Reduction
+              return new Opportunity
+              {
+                  id = Guid.NewGuid().ToString(),
+                  well = well,
+                  name = "Opportunity for " + well.name,
+                  createdAt = new DateTime(),
+                  actions = revenueGains.Concat(costReduction).Select(x => x.action).ToList(),
+                  incrementalRevenue = incrementalRevenueSum,
+                  costReduction = costReductionSum - potentialCostOfSkippingTests,
+                  cost = costOfRevenueGains,
+                  manHours = manHoursOfRevGains
+              };
+            } 
+            else if(incrementalRevenueSum - costOfRevenueGains >= 0)
+            {
+              // Only revenue gains
+              return new Opportunity
+              {
+                  id = Guid.NewGuid().ToString(),
+                  well = well,
+                  name = "Opportunity for " + well.name,
+                  createdAt = new DateTime(),
+                  actions = revenueGains.Select(x => x.action).ToList(),
+                  incrementalRevenue = incrementalRevenueSum,
+                  costReduction = 0,
+                  cost = costOfRevenueGains,
+                  manHours = manHoursOfRevGains
+              };
+            }
+            else
+            {
+              // Only cost reduction? Unreachable, always has a no-intervention gain of 0!
+              return new Opportunity
+              {
+                  id = Guid.NewGuid().ToString(),
+                  well = well,
+                  name = "Opportunity for " + well.name,
+                  createdAt = new DateTime(),
+                  actions = costReduction.Select(x => x.action).ToList(),
+                  incrementalRevenue = 0,
+                  costReduction = costReductionSum-potentialCostOfSkippingTests,
+                  cost = 0,
+                  manHours = 0
+              };
+
+            }
         }
 
         public List<ActionFinancialEstimate> InterventionRevenueGain(double oilPrice, Metrics measuredMetrics, ActionOutcome actionOutcome, CancellationToken cancellationToken)
