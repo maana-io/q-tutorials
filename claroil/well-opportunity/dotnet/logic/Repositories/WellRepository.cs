@@ -410,7 +410,7 @@ namespace netBox.Repositories
             // TODO: Implement
             return new Opportunity
             {
-                id = new Guid().ToString(),
+                id = Guid.NewGuid().ToString(),
                 well = well,
                 name = "Opportunity for " + well.name,
                 createdAt = new DateTime(),
@@ -431,7 +431,7 @@ namespace netBox.Repositories
 
             var afe = new ActionFinancialEstimate
             {
-                id = new Guid().ToString(),
+                id = Guid.NewGuid().ToString(),
                 action = actionOutcome.action,
                 well = actionOutcome.well,
                 impact = revenueIncrease,
@@ -451,7 +451,7 @@ namespace netBox.Repositories
 
             var afe = new ActionFinancialEstimate
             {
-                id = new Guid().ToString(),
+                id = Guid.NewGuid().ToString(),
                 action = actionOutcome.action,
                 well = actionOutcome.well,
                 impact = costReduction,
