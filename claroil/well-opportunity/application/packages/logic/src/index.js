@@ -449,7 +449,8 @@ const resolvers = {
       console.log('begin interventionRevenueGain', oilPrice, measuredMetrics, actionOutcome)
 
       let { increaseInOilRate, cost, manHours } = actionOutcome
-      let revenueIncrease = measuredMetrics.oilRate * oilPrice * 180000 * increaseInOilRate
+      //oil rate is in thousand of barrels, and increase in oil rate is in percentage.
+      let revenueIncrease = measuredMetrics.oilRate * oilPrice * 180000 * increaseInOilRate / 100
       console.log('end interventionRevenueGain', revenueIncrease)
 
       return [{
