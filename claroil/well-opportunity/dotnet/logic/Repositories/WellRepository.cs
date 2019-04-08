@@ -15,6 +15,36 @@ namespace netBox.Repositories
 
     public class WellRepository : IWellRepository
     {
+        private string WellMetricByDateTypeQuery = @"query($wellId: ID, $date: Int, $type: String){
+                    metricsFilter(filters: [
+                        {
+                            fieldName: ""date""
+                            op: ""==""
+                            value: { INT: $date }
+                        }
+                        {
+                            fieldName: ""well""
+                            op: ""==""
+                            value: { ID: $wellId }
+                        }
+                        {
+                            fieldName: ""type""
+                            op: ""==""
+                            value: { STRING: $type }
+                        } 
+                    ]) {
+                        id
+                        well {
+                            id
+                            name
+                        }
+                        date
+                        type
+                        waterCut
+                        GOR
+                        oilRate
+                    }
+                }";
         public async Task<List<Well>> AllActiveWells(CancellationToken cancellationToken)
         {
             var request = new GraphQLRequest();
@@ -37,38 +67,10 @@ namespace netBox.Repositories
         public async Task<Metrics> WellPredictedMetrics(Well well, int date, CancellationToken cancellationToken)
         {
             var request = new GraphQLRequest();
-            var variables = new {date = date, wellId = well.id};
+            var variables = new { date = date, wellId = well.id, type = "predicted" };
             request.Variables = variables;
 
-            request.Query =  @"query($wellId: ID, $date:Int){
-                    metricsFilter(filters: [{
-                            fieldName: ""date""
-                            op: ""==""
-                            value: { INT: $date }
-                        }
-                        {
-                            fieldName: ""well""
-                            op: ""==""
-                            value: { ID: $wellId }
-                        }
-                        {
-                            fieldName: ""type""
-                            op: ""==""
-                            value: {STRING: ""predicted""
-                        } 
-                    }]) {
-                        id
-                        well {
-                            id
-                            name
-                        }
-                        date
-                        type
-                        waterCut
-                        GOR
-                        oilRate
-                    }
-                }";
+            request.Query = WellMetricByDateTypeQuery;
 
             var response = await Client.GetClientInstance().PostAsync(request);
             var metrics = response.GetDataFieldAs<List<Metrics>>("metricsFilter");
@@ -95,40 +97,13 @@ namespace netBox.Repositories
         public async Task<Metrics> WellMeasuredMetrics(Well well, int date, CancellationToken cancellationToken)
         {
             var request = new GraphQLRequest();
-            var variables = new {date = date, wellId = well.id};
+            var variables = new { date = date, wellId = well.id, type = "measured" };
             request.Variables = variables;
 
-            request.Query =  @"query($wellId: ID, $date:Int){
-                    metricsFilter(filters: [{
-                            fieldName: ""date""
-                            op: ""==""
-                            value: { INT: $date }
-                        }
-                        {
-                            fieldName: ""well""
-                            op: ""==""
-                            value: { ID: $wellId }
-                        }
-                        {
-                            fieldName: ""type""
-                            op: ""==""
-                            value: {STRING: ""measured""
-                        } 
-                    }]) {
-                        id
-                        well {
-                            id
-                            name
-                        }
-                        date
-                        type
-                        waterCut
-                        GOR
-                        oilRate
-                    }
-                }";
+            request.Query = WellMetricByDateTypeQuery;
 
             var response = await Client.GetClientInstance().PostAsync(request);
+            Console.WriteLine(JsonConvert.SerializeObject(response));
             var metrics = response.GetDataFieldAs<List<Metrics>>("metricsFilter");
 
             Metrics metric;
@@ -153,7 +128,7 @@ namespace netBox.Repositories
         public async Task<ActionOutcome> WellActionOutcome(Well well, Models.Action action, CancellationToken cancellationToken)
         {
             var request = new GraphQLRequest();
-            request.Variables = new {wellId = well.id, actionId = action.id};
+            request.Variables = new { wellId = well.id, actionId = action.id };
             request.Query = @" query($wellId: ID, $actionId: ID){
                 actionOutcomeFilter(filters: [
                     {
@@ -316,8 +291,8 @@ namespace netBox.Repositories
         public async Task<int> WellLastTestDate(Well well, int today, CancellationToken cancellationToken)
         {
             var request = new GraphQLRequest();
-            request.Variables = new {wellId = well.id};
-            request.Query = @"query($wellId: ID){
+            request.Variables = new { wellId = well.id, date = today };
+            request.Query = @"query($wellId: ID, $date: Int){
                 metricsFilter(filters: [
                 {
                     fieldName: ""well""
@@ -328,6 +303,11 @@ namespace netBox.Repositories
                     fieldName: ""type""
                     op: ""==""
                     value: {STRING: ""measured""}
+                }
+                {
+                    fieldName: ""date""
+                    op: ""<=""
+                    value: {INT: $date}
                 }
                 ]) {
                     date
@@ -357,7 +337,11 @@ namespace netBox.Repositories
         {
             var totalBudget = constraints.budget;
             var totalManHours = constraints.manHours;
-            var sortedOpportunities = opportunities.OrderByDescending(op => op.incrementalRevenue + op.costReduction).ThenBy(op=>op.cost).ThenBy(op=>op.manHours);
+            var sortedOpportunities = opportunities
+            .OrderByDescending(op => op.incrementalRevenue + op.costReduction)
+            .ThenBy(op => op.cost)
+            .ThenBy(op => op.manHours);
+
             var filteredOpportunities = sortedOpportunities.Where(entry =>
             {
                 var cost = entry.cost;
@@ -410,53 +394,53 @@ namespace netBox.Repositories
                 return accumulator + hours;
             });
 
-            if(incrementalRevenueSum - costOfRevenueGains >= 0 && costReductionSum - potentialCostOfSkippingTests > 0)
+            if (incrementalRevenueSum - costOfRevenueGains >= 0 && costReductionSum - potentialCostOfSkippingTests > 0)
             {
-              // Both revenue gain and cost Reduction
-              return new Opportunity
-              {
-                  id = Guid.NewGuid().ToString(),
-                  well = well,
-                  name = "Opportunity for " + well.name,
-                  createdAt = new DateTime(),
-                  actions = revenueGains.Concat(costReduction).Select(x => x.action).ToList(),
-                  incrementalRevenue = incrementalRevenueSum,
-                  costReduction = costReductionSum - potentialCostOfSkippingTests,
-                  cost = costOfRevenueGains,
-                  manHours = manHoursOfRevGains
-              };
-            } 
-            else if(incrementalRevenueSum - costOfRevenueGains >= 0)
+                // Both revenue gain and cost Reduction
+                return new Opportunity
+                {
+                    id = Guid.NewGuid().ToString(),
+                    well = well,
+                    name = "Opportunity for " + well.name,
+                    createdAt = new DateTime(),
+                    actions = revenueGains.Concat(costReduction).Select(x => x.action).ToList(),
+                    incrementalRevenue = incrementalRevenueSum,
+                    costReduction = costReductionSum - potentialCostOfSkippingTests,
+                    cost = costOfRevenueGains,
+                    manHours = manHoursOfRevGains
+                };
+            }
+            else if (incrementalRevenueSum - costOfRevenueGains >= 0)
             {
-              // Only revenue gains
-              return new Opportunity
-              {
-                  id = Guid.NewGuid().ToString(),
-                  well = well,
-                  name = "Opportunity for " + well.name,
-                  createdAt = new DateTime(),
-                  actions = revenueGains.Select(x => x.action).ToList(),
-                  incrementalRevenue = incrementalRevenueSum,
-                  costReduction = 0,
-                  cost = costOfRevenueGains,
-                  manHours = manHoursOfRevGains
-              };
+                // Only revenue gains
+                return new Opportunity
+                {
+                    id = Guid.NewGuid().ToString(),
+                    well = well,
+                    name = "Opportunity for " + well.name,
+                    createdAt = new DateTime(),
+                    actions = revenueGains.Select(x => x.action).ToList(),
+                    incrementalRevenue = incrementalRevenueSum,
+                    costReduction = 0,
+                    cost = costOfRevenueGains,
+                    manHours = manHoursOfRevGains
+                };
             }
             else
             {
-              // Only cost reduction? Unreachable, always has a no-intervention gain of 0!
-              return new Opportunity
-              {
-                  id = Guid.NewGuid().ToString(),
-                  well = well,
-                  name = "Opportunity for " + well.name,
-                  createdAt = new DateTime(),
-                  actions = costReduction.Select(x => x.action).ToList(),
-                  incrementalRevenue = 0,
-                  costReduction = costReductionSum-potentialCostOfSkippingTests,
-                  cost = 0,
-                  manHours = 0
-              };
+                // Only cost reduction? Unreachable, always has a no-intervention gain of 0!
+                return new Opportunity
+                {
+                    id = Guid.NewGuid().ToString(),
+                    well = well,
+                    name = "Opportunity for " + well.name,
+                    createdAt = new DateTime(),
+                    actions = costReduction.Select(x => x.action).ToList(),
+                    incrementalRevenue = 0,
+                    costReduction = costReductionSum - potentialCostOfSkippingTests,
+                    cost = 0,
+                    manHours = 0
+                };
 
             }
         }
@@ -468,7 +452,7 @@ namespace netBox.Repositories
             var manHours = actionOutcome.manHours;
 
             // Oil rate is in thousand of barrels, and increase in oil rate is in percentage.
-            var revenueIncrease = measuredMetrics.oilRate * oilPrice * 180000 * increaseInOilRate / 100;
+            var revenueIncrease = measuredMetrics.oilRate * oilPrice * 180000 * (increaseInOilRate / 100);
 
             var afe = new ActionFinancialEstimate
             {
