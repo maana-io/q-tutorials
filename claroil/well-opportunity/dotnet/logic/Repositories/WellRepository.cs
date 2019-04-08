@@ -281,9 +281,9 @@ namespace netBox.Repositories
                   Math.Abs((predictedOilRate - measuredOilRate) / predictedOilRate)
                 : 0;
 
-            var hidx = (1 / 3) * waterCutHealthIndex +
-                           (1 / 3) * GORHealthIndex +
-                           (1 / 3) * oilRateHealthIndex;
+            var hidx = (waterCutHealthIndex / 3) +
+                           (GORHealthIndex / 3) +
+                           (oilRateHealthIndex / 3);
 
             return hidx;
         }
