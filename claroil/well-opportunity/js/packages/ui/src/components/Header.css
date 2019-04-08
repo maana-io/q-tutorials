@@ -1,0 +1,42 @@
+.header {
+  background-color: #e8f4e0;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.claroil-logo__container {
+  display: flex;
+  align-items: center;
+}
+
+.claroil-logo {
+  margin-right: 1.2rem;
+}
+
+.header__claroil-title {
+  display: inline-block;
+  color: #718f5f;
+  font-size: 1.75rem;
+}
+
+.header__title {
+  color: #3b5625;
+  margin: 0;
+  font-size: 1.75rem;
+  text-align: center;
+}
+
+.header__title-container {
+  flex: 1;
+}
+
+.maana-logo__container {
+  padding: 0 2rem;
+  background-color: #c9dcda;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  /* flex-basis: 20%; */
+}

@@ -1,0 +1,23 @@
+.number-selector {
+  display: flex;
+  align-items: center;
+  margin: 0 1rem;
+}
+
+.number-selector__title {
+  margin-right: 1rem;
+}
+
+.number-selector__value {
+  margin-right: 0.5rem;
+}
+
+span.number-selector__value {
+  min-width: 50px;
+  padding: 0.15rem 0.25rem;
+}
+
+span.number-selector__value:hover {
+  border: 1px solid #aaa;
+  cursor: text;
+}
