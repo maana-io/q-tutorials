@@ -1,22 +1,17 @@
 {
   "projects": {
-    "welldata": {
-      "schemaPath": "data/welldata.graphql",
+    "well-opportunity": {
+      "schemaPath": "well-opportunity.graphql",
       "extensions": {
         "endpoints": {
           "default": {
-            "url": "",
+            "url": "https://cstraining01.knowledge.maana.io:8443/service/c3e896d4-dce5-4682-b3f8-57b9b0d9e459/graphql",
             "headers": {
               "Authorization": "Bearer ${env:MAANA_AUTH_TOKEN}"
             }
           }
         }
       }
-    }
-  },
-  "extensions": {
-    "maana": {
-      "auth": ""
     }
   }
 }
