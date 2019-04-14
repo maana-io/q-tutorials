@@ -1,0 +1,125 @@
+# source: http://localhost:8050/graphql
+# timestamp: Sat Apr 13 2019 06:33:02 GMT+0300 (Arabian Standard Time)
+
+scalar Date
+
+type Info {
+  id: ID!
+  name: String!
+  description: String
+}
+
+type Location {
+  """id"""
+  id: ID!
+  lat: Float!
+  lon: Float!
+}
+
+input LocationAsInput {
+  id: ID!
+  lat: Float!
+  lon: Float!
+}
+
+type Port {
+  """id"""
+  id: ID!
+  location: Location!
+  draftM: Float!
+}
+
+input PortAsInput {
+  id: ID!
+  location: LocationAsInput!
+  draftM: Float!
+}
+
+"""Standard queries (instance and batch)"""
+type Query {
+  info: Info
+  constrainByCapacity(shipment: ShipmentAsInput!, vessels: [VesselAsInput!]!): [VesselOutput!]!
+  constrainByDraft(shipment: ShipmentAsInput!, vessels: [VesselROBAsInput!]!): [VesselOutput!]!
+  constrainByTime(shipment: ShipmentAsInput!, vesselDestinations: [VesselDestinationAsInput!]!): [VesselOutput!]!
+  intersectVessels(a: [VesselAsInput!]!, b: [VesselAsInput!]!, c: [VesselAsInput!]!): [VesselOutput!]!
+  vesselShipmentCosts(shipment: ShipmentAsInput!, vessels: [VesselAsInput!]!): [VesselCost!]!
+  selectBestVessel(vesselCosts: [VesselCostAsInput!]!): VesselCost!
+  findVesselDestination(vessel: VesselAsInput!): VesselDestination!
+  findVesselROB(vessel: VesselAsInput!): VesselROB!
+}
+
+input ShipmentAsInput {
+  id: ID!
+  product: String!
+  loadingDate: Date!
+  loadingPort: PortAsInput!
+  dischargeDate: Date!
+  dischargePort: PortAsInput!
+  quantityMT: Float!
+}
+
+type Vessel {
+  """id"""
+  id: ID!
+  capacityMT: Float!
+  maxAllowableSpeedK: Float!
+  unloadedDraftM: Float!
+  draftLoadCoef: Float!
+}
+
+input VesselAsInput {
+  id: ID!
+  capacityMT: Float!
+  maxAllowableSpeedK: Float!
+  unloadedDraftM: Float!
+  draftLoadCoef: Float!
+}
+
+type VesselCost {
+  """id"""
+  id: ID!
+  vessel: Vessel!
+  cost: Float!
+}
+
+input VesselCostAsInput {
+  id: ID!
+  vessel: VesselAsInput!
+  cost: Float!
+}
+
+type VesselDestination {
+  """id"""
+  id: ID!
+  vessel: Vessel!
+  port: Port!
+  arrivalDate: Date!
+}
+
+input VesselDestinationAsInput {
+  id: ID!
+  vessel: VesselAsInput!
+  port: PortAsInput!
+  arrivalDate: Date!
+}
+
+type VesselOutput {
+  id: ID!
+  capacityMT: Float!
+  maxAllowableSpeedK: Float!
+  unloadedDraftM: Float!
+  draftLoadCoef: Float!
+}
+
+type VesselROB {
+  """id"""
+  id: ID!
+  vessel: Vessel!
+  ROB: Float!
+}
+
+input VesselROBAsInput {
+  id: ID!
+  vessel: VesselAsInput!
+  ROB: Float!
+}

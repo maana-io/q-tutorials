@@ -1,0 +1,19 @@
+scalar Date
+
+type Info {
+  id: ID!
+  name: String!
+  description: String
+}
+
+input CompanyAsInput {
+  id: ID!
+  Company: String!
+}
+
+# Standard queries (instance and batch)
+type Query {
+  info: Info
+  helloWorld(name: String!): String!
+  flattenCompanyList(companies: [CompanyAsInput]): [String]
+}
