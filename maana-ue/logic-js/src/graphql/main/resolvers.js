@@ -16,7 +16,7 @@ export const resolver = {
         description: 'Maana Q User Ed ucation helper functions'
       }
     },
-    helloWorld: async (_, { name }) => `Hello, ${name}`,
+    helloWorld: async (_, { name }) => `Howdy, ${name}`,
     flattenCompanyList: async (_, { companies }) =>
       companies.map(x => x.Company)
   }
