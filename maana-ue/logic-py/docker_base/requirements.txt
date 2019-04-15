@@ -1,0 +1,14 @@
+aiohttp==3.0.9
+aiohttp_cors==0.7.0
+graphql-core==2.0
+graphql-relay==0.4.5
+graphql-server-core==1.0.dev20170322001
+graphql-ws==0.2.0
+graphqlclient==0.2.4
+jinja2==2.10
+aiohttp-graphql==1.0.0
+requests==2.18.4
+auth0-python
+python-dotenv==0.8.2
+aio_pika==2.3.0
+python-dateutil==2.5.0

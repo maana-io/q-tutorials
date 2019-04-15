@@ -1,0 +1,13 @@
+version: "3"
+services:
+  python-base:
+    build:
+      context: docker_base/
+      dockerfile: Dockerfile
+    image: base-python-micro:latest
+  service:
+    build: service/
+    ports:
+      - "8050:8050"
+    depends_on:
+      - "python-base"

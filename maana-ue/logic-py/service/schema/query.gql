@@ -1,0 +1,4 @@
+type Query {
+  info: String
+  extractRefineryDetailsFromText(text: String): [Refinery]
+}
