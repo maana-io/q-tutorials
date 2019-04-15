@@ -6,14 +6,29 @@ type Info {
   description: String
 }
 
-input CompanyAsInput {
+type OilRefinery {
   id: ID!
-  Company: String!
+  location: String!
+  capacity: Float!
+}
+
+input OilRefineryAsInput {
+  id: ID!
+  location: String!
+  capacity: Float!
 }
 
 # Standard queries (instance and batch)
 type Query {
   info: Info
   helloWorld(name: String!): String!
-  flattenCompanyList(companies: [CompanyAsInput]): [String]
+  wikiOilRefineryTopics: [String!]!
+  wikiParseOilRefineries(text: String!): [OilRefinery!]!
+  oilRefineryLocations(refineries: [OilRefineryAsInput!]!): [String!]!
+  largestOilRefinery(refineries: [OilRefineryAsInput!]!): OilRefinery!
+  totalLocationCapacity(
+    refineries: [OilRefineryAsInput!]!
+    location: String!
+  ): Float!
+  totalCapacity(refineries: [OilRefineryAsInput!]!): Float!
 }
