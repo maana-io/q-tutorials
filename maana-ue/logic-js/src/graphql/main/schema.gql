@@ -1,0 +1,34 @@
+scalar Date
+
+type Info {
+  id: ID!
+  name: String!
+  description: String
+}
+
+type OilRefinery {
+  id: ID!
+  location: String!
+  capacity: Float!
+}
+
+input OilRefineryAsInput {
+  id: ID!
+  location: String!
+  capacity: Float!
+}
+
+# Standard queries (instance and batch)
+type Query {
+  info: Info
+  helloWorld(name: String!): String!
+  wikiOilRefineryTopics: [String!]!
+  wikiParseOilRefineries(text: String!): [OilRefinery!]!
+  oilRefineryLocations(refineries: [OilRefineryAsInput!]!): [String!]!
+  largestOilRefinery(refineries: [OilRefineryAsInput!]!): OilRefinery!
+  totalLocationCapacity(
+    refineries: [OilRefineryAsInput!]!
+    location: String!
+  ): Float!
+  totalCapacity(refineries: [OilRefineryAsInput!]!): Float!
+}

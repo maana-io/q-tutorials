@@ -50,7 +50,7 @@ mutation smallcensus {
 In the above mutation, the kindID field is filled in with the id of kind "SmallCensusCSV". The user gives a model name, and identify label field, feature fields, candidate models and candidate preprocessors. The user also specifies to perform 2-fold cross validation for model selection, and perform 4 episodes of hyper-parameter sampling and 2 episodes of hyper-parameter search.
 
 
-To visualize the results, search for kind "Dataset", and drag it to the workspace, then click the link at finalModel. The kind MachineLearningModel will show on the canvus.
+To visualize the results, search for kind "Dataset", and drag the search result "Kind: DataSet" to the workspace, then click the link at finalModel.  Do not select the result "Maana Meta Learning: Kind: Dataset", as that is the type associated with the service, not where the results are currently stored. The kind MachineLearningModel will show on the canvas.  
 
 <p><p><img src="machinelearning.png" alt="MachineLearningModels", style="height: 100%; width: 100%; align: center"/>
 </p>

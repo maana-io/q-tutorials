@@ -1,0 +1,5 @@
+# npmignore file
+tests/
+*.test.js
+phantomjs/
+src/
