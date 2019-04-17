@@ -556,14 +556,17 @@ There are several differences between mutation - 'trainingToKind' and query - 't
 mutation TrainFromFileToKind {
   trainingToKind(
     data: {
-      name: "BOEM_labeled"
-      URL: "../library/src/test/resources/BOEM_labeled.json" # formats: .json, .csv, .tsv, .txt"
+      URL: "../library/src/test/resources/BOEM_labeled.json" # URL of data file or Path if service running locally, formats: .json, .csv, .tsv, .txt
       # URL: "%PUBLIC_BACKEND_URI%/downloads/1250010d-5844-48aa-84ae-d96b28ab5d90/BOEM_labeled.json", # example of URL from Maana
       # kindId: "1250010d-5844-48aa-84ae-d96b28ab5d90" # use Kind ID if data was uploaded to Maana
+      name: "BOEM_labeled"
     }
     model: {
-      name: "myModel" # new model will be saved to Maana as a kind file with this name
-      # URL: "path/or/URL/to/myModel.ser.gz" # if local path is specified then model will also be saved to this path as well
+      # URL: "..." # ignore it if service running on cluster and use local path to save Model if service running locally
+      # kindId: "..." # ignore it
+      name: "myModel" # New CRFModel will be saved to Maana as a Kind file with this ‘name’.
+      # After that a new record will be added to Kind “NERModelStat” with this ‘name’ and identifiers of new Model - {URL, kindId}.
+      # Model (with this ‘name’) also will be saved inside service directory “/usr/app/service/crfmodels/”.
     }
     splitRate: 0.2
     seed: 5
@@ -768,7 +771,21 @@ mutation TrainFromFileToKind {
 ```graphql
 query TrainFromFile {
   training(
-    # the same arguments as for 'training' query
+    model: {
+      #URL: "..." # ignore it if service running on cluster and use local path to save Model if service running locally
+      #kindId: "..." # ignore it
+      name: "myNewNERModel" # Model (with this ‘name’) will be saved inside service directory
+    }
+    data: {
+      URL: "../library/src/test/resources/BOEM_labeled.json" # URL of data file or Path if service running locally, formats: .json, .csv, .tsv, .txt
+      # URL: "%PUBLIC_BACKEND_URI%/downloads/1250010d-5844-48aa-84ae-d96b28ab5d90/BOEM_labeled.json", # example of URL from Maana
+      # kindId: "1250010d-5844-48aa-84ae-d96b28ab5d90" # use Kind ID if data was uploaded to Maana
+      name: "BOEM_labeled"
+    }
+    splitRate: 0.2
+    seed: 5
+    decimals: 3
+
   ) {
     # the same uotput data format as for 'training' query
   }
@@ -800,8 +817,11 @@ mutation TrainFromTextToKind {
       ]
     }
     model: {
-      name: "myModel" # give any name to model which will be built and saved to Maana
-      #URL: "/local/path/to/myModel.ser.gz" # if you want to save model locally
+      # URL: "..." # ignore it if service running on cluster and use local path to save Model if service running locally
+      # kindId: "..." # ignore it
+      name: "myModel" # New CRFModel will be saved to Maana as a Kind file with this ‘name’.
+      # After that a new record will be added to Kind “NERModelStat” with this ‘name’ and identifiers of new Model - {URL, kindId}.
+      # Model (with this ‘name’) also will be saved inside service directory “/usr/app/service/crfmodels/”.
     }
     splitRate: 0.7 # 70% for training, 30% for testing
     seed: 5
@@ -882,13 +902,17 @@ mutation AccyracyTestFromFile {
   testingToKind(
     data: {
       name: "BOEM_labeled"
-      URL: "../library/src/test/resources/BOEM_labeled.json" # formats: .json, .csv, .tsv, .txt"
+      URL: "../library/src/test/resources/BOEM_labeled.json" # URL of data file or Path if service running locally, formats: .json, .csv, .tsv, .txt
       # URL: "%PUBLIC_BACKEND_URI%/downloads/1250010d-5844-48aa-84ae-d96b28ab5d90/BOEM_labeled.json", # example of URL from Maana
       # kindId: "1250010d-5844-48aa-84ae-d96b28ab5d90" # use Kind ID if data was uploaded to Maana
     }
     model: {
-      name: "myModel" # new model will be saved to Maana as a kind file with this name
-      # URL: "path/or/URL/to/myModel.ser.gz" # if local path is specified then model will also be saved to this path as well
+      name: "myModel" # Use it if CRFModel has already built with this name.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
     }
     decimals: 3 # precision of statistical metrics
   ) {
@@ -1011,9 +1035,12 @@ The only difference from 'testing' query is that mutation will make a record int
 mutation AccyracyTestFromTexts {
   testingToKind(
     model: {
-      # kindId: "eac35cca-19bf-41b8-94a4-9a6ccec211bf"
-      name: "myModel"
-      # URL: "/path/or/URL/to/file/myModel.ser.gz"
+      name: "myModel" # Use it if CRFModel has already built with this name.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
     }
     data: {
       name: "myData"
@@ -1082,7 +1109,21 @@ mutation AccyracyTestFromTexts {
 ```graphql
 query Test {
   testing(
-    # the same arguments as for 'testingToKind' query
+    data: {
+      name: "BOEM_labeled"
+      URL: "../library/src/test/resources/BOEM_labeled.json" # URL of data file or Path if service running locally, formats: .json, .csv, .tsv, .txt
+      # URL: "%PUBLIC_BACKEND_URI%/downloads/1250010d-5844-48aa-84ae-d96b28ab5d90/BOEM_labeled.json", # example of URL from Maana
+      # kindId: "1250010d-5844-48aa-84ae-d96b28ab5d90" # use Kind ID if data was uploaded to Maana
+    }
+    model: {
+      name: "myModel" # Use it if CRFModel has already built with this name.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
+    }
+    decimals: 3 # precision of statistical metrics
   ) {
     # the same uotput data format as for 'testingToKind' query
   }
@@ -1101,9 +1142,12 @@ Parameter 'length':
 query GetModel {
   getModel(
     model: {
-      # kindId: "eac35cca-19bf-41b8-94a4-9a6ccec211bf"
-      # URL: "path/or/URL/to/crf_model.ser.gz"
-      name: "myModel"
+      name: "myModel" # Use it if CRFModel has already built with this name.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
     }
     length: 1024 # if 0 then return whole model (base64 string)
   )
@@ -1119,8 +1163,9 @@ So, service works as auto-annotation system to spead up of training datasets pre
 query ExtendXMLLabeling {
   extendXMLText(
     model: {
-      #URL: "/the/new/CRF/model/will/be/saved/by/this/path/as/myNewNERModel.ser.gz"
-      name: "myNewNERModel"
+      #URL: "..." # ignore it if service running on cluster and use local path to save Model if service running locally
+      #kindId: "..." # ignore it
+      name: "myNewNERModel" # Model (with this ‘name’) will be saved inside service directory
     }
     text: "<Person>William Gilbert</Person> was born in <Location>Colchester, England</Location>, into a middle class family of some wealth. He entered <Organization>St. John's College</Organization>, <Location>Cambridge</Location>, in <Date>1558</Date> and obtained an B.A. in <Date>1561</Date>, an M.A. in <Date>1564</Date>, and finally an M.D. in <Date>1569</Date>. Upon receiving this last degree, he became a senior fellow of the <Organization>college</Organization>, where he held several offices. <Person>Gilbert</Person> set up a medical practice in <Location>London</Location> in the <Date>1570s</Date> and became a member of the <Organization>Royal College of Physicians</Organization> (the body that regulated the practice of medicine in <Location>London</Location> and <Location>Vicinity</Location>). He held a number of offices in the <Organization>college</Organization> and in <Date>1600</Date> was elected president. He never married. Co-inventor of calculus, a major contributor to the science of optics and a gifted mathematician, Isaac Newton ( 1643 - 1727 ), who was born in Lincolnshire, outlined the laws of mechanics that now underpin vast swaths of classical physics. Most important of all, Newton outlined the principle of gravity, which explained how the planets revolve round the sun. During his life, he was showered with honours, including the presidency of the Royal Society. He is renowned as a supreme rationalist, though he actually wrote more about alchemy and religion, including a 300,000-word treatise that attempted to prove the pope was really the Antichrist and an “apocalyptic whore”."
   )
@@ -1154,8 +1199,9 @@ query ExtendXMLLabeling {
 query ExtendLabeling {
   extend(
     model: {
-      #URL: "/the/new/CRF/model/will/be/saved/by/this/path/as/myNewNERModel.ser.gz"
-      name: "myNewNERModel"
+      #URL: "..." # ignore it if service running on cluster and use local path to save Model if service running locally
+      #kindId: "..." # ignore it
+      name: "myNewNERModel" # Model (with this ‘name’) will be saved inside service directory
     }
     source: {
       text: "William Gilbert was born in Colchester, England, into a middle class family of some wealth. He entered St. John's College, Cambridge, in 1558 and obtained an B.A. in 1561, an M.A. in 1564, and finally an M.D. in 1569. Upon receiving this last degree, he became a senior fellow of the college, where he held several offices. Gilbert set up a medical practice in London in the 1570s and became a member of the Royal College of Physicians (the body that regulated the practice of medicine in London and Vicinity). He held a number of offices in the college and in 1600 was elected president. He never married. Co-inventor of calculus, a major contributor to the science of optics and a gifted mathematician, Isaac Newton ( 1643 - 1727 ), who was born in Lincolnshire, outlined the laws of mechanics that now underpin vast swaths of classical physics. Most important of all, Newton outlined the principle of gravity, which explained how the planets revolve round the sun. During his life, he was showered with honours, including the presidency of the Royal Society. He is renowned as a supreme rationalist, though he actually wrote more about alchemy and religion, including a 300,000-word treatise that attempted to prove the pope was really the Antichrist and an “apocalyptic whore”."
@@ -1293,8 +1339,9 @@ query SplitToSentences {
 query ExtendBatchLabeling {
   extendBatch(
     model: {
-      #URL: "/the/new/CRF/model/will/be/saved/by/this/path/as/myNewNERModel.ser.gz"
-      name: "myNewNERModel"
+      #URL: "..." # ignore it if service running on cluster and use local path to save Model if service running locally
+      #kindId: "..." # ignore it
+      name: "myNewNERModel" # Model (with this ‘name’) will be saved inside service directory
     }
     sources: [
       {
@@ -1546,9 +1593,12 @@ query ExtractWithModel {
   extract(
     source: "Daily update notification made to BSEE Houma District, Bobby Nelson."
     model: {
-      URL: "../library/src/test/resources/BOEM_model.ser.gz" # Path to model file or URL if model was loaded to Maana as a Kind
-      # kindId: "<use Kind ID if model file was uploaded to Maana as a Kind>"
-      # name: "<use model name if it was trained and service was not restarted since that time (cached model)>"
+      name: "myModel" # Use it if CRFModel has already built with this name.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
     }
     calcProb: true # if true, you'll get probability distribution vector (it works with customer model only)
     k: 3 # calculation of k annotations with best probabilities
@@ -1750,9 +1800,12 @@ query ExtractBatchWithModel {
       "David Stanley lives in Lake Charles and works for MMS."
     ]
     model: {
-      URL: "../library/src/test/resources/BOEM_model.ser.gz" # Path to model file or URL if model was loaded to Maana as a Kind
-      # kindId: "<use Kind ID if model file was uploaded to Maana as a Kind>"
-      # name: "<use model name if it was trained and service was not restarted since that time (cached model)>"
+      name: "myModel" # Use it if CRFModel has already built with this name.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
     }
     calcProb: true # if true, you'll get probability distribution vector (it works with customer model only)
     k: 3 # calculation of k annotations with best probabilities
@@ -1884,9 +1937,12 @@ query IsSurfaceFormWithModel {
     source: "BOEM"
     tag: "Organization"
     model: {
-      URL: "../library/src/test/resources/BOEM_model.ser.gz" # Path to model file or URL if model was loaded to Maana as a Kind
-      # kindId: "<use Kind ID if model file was uploaded to Maana as a Kind>"
-      # name: "<use model name if it was trained and service was not restarted since that time (cached model)>"
+      name: "myModel" # Use it if CRFModel has already built with this name.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
     }
   )
 }
@@ -1938,9 +1994,12 @@ query ParseWithModel {
   parse(
     source: "BOEM"
     model: {
-      URL: "../library/src/test/resources/BOEM_model.ser.gz" # Path to model file or URL if model was loaded to Maana as a Kind
-      # kindId: "<use Kind ID if model file was uploaded to Maana as a Kind>"
-      # name: "<use model name if it was trained and service was not restarted since that time (cached model)>"
+      name: "myModel" # Use it if CRFModel has already built with this name.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
     }
   )
 }
