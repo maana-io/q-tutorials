@@ -74,7 +74,7 @@ dataURL (in training / testing queries) is a path or URL to data file of many fo
 <summary>click to expand example</summary>
 <p>
 
-```json
+```ruby
 [
   {
     "text": "Microsoft Corporation is multinational technology company with headquarters in Redmond Washington.",
@@ -113,7 +113,7 @@ dataURL (in training / testing queries) is a path or URL to data file of many fo
 <summary>click to expand example</summary>
 <p>
 
-```json
+```ruby
 {
   "title": "BOEM Data - Common Entities",
   "type": "Drilling Comments",
@@ -132,7 +132,7 @@ dataURL (in training / testing queries) is a path or URL to data file of many fo
 <summary>click to expand example</summary>
 <p>
 
-```json
+```ruby
 [
   //... document array ...
 ]
@@ -147,7 +147,7 @@ dataURL (in training / testing queries) is a path or URL to data file of many fo
 <summary>click to expand example</summary>
 <p>
 
-```json
+```ruby
 {
   //phrase 1
 }
@@ -222,7 +222,7 @@ Microsoft Organization
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query Normalize {
   normalize(
     sources: [
@@ -272,7 +272,7 @@ query Normalize {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "normalize": [
@@ -382,13 +382,13 @@ It saves annotated sentences to Maana Kind. Before saving it makes normalization
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 mutation SaveProgress {
   saveProgressToKind(
     model: { name: "myModel" }
     data: {
       name: "myData"
-      labels: "{\"Person\": \"value1\", \"Location\": \"value2\"}"
+      labels: "[{\"id\":\"t1\",\"tag\":\"Person\",\"kindId\":\"k1\",\"kindName\":\"Person\",\"fieldId\":\"k1f1\",\"fieldName\":\"name\"},{\"id\":\"t2\",\"tag\":\"Date\",\"kindId\":\"k2\",\"kindName\":\"Date\",\"fieldId\":\"k1f3\",\"fieldName\":\"name\"},{\"id\":\"t3\",\"tag\":\"Location\",\"kindId\":\"k5\",\"kindName\":\"Location\",\"fieldId\":\"k5f2\",\"fieldName\":\"Name\"}]"
       sources: [
         {
           text: "<Person>William Gilbert</Person> was born in <Location>Colchester, England</Location>, into a middle class family of some wealth."
@@ -430,7 +430,7 @@ mutation SaveProgress {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "saveProgressToKind": {
@@ -457,7 +457,7 @@ It reads saved sentences from Maana Kind
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query ReadProgress {
   readProgressFromKind(
     dataKindRecordId: "6fc730d5-a363-4393-ac58-600649b61ad4"
@@ -490,13 +490,13 @@ query ReadProgress {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "readProgressFromKind": {
       "timeStamp": "4/1/2019, 1:19:42 PM",
       "name": "myData",
-      "labels": "{\"Person\":\"value1\",\"Location\":\"value2\"}",
+      "labels": "[{\"id\":\"t1\",\"tag\":\"Person\",\"kindId\":\"k1\",\"kindName\":\"Person\",\"fieldId\":\"k1f1\",\"fieldName\":\"name\"},{\"id\":\"t2\",\"tag\":\"Date\",\"kindId\":\"k2\",\"kindName\":\"Date\",\"fieldId\":\"k1f3\",\"fieldName\":\"name\"},{\"id\":\"t3\",\"tag\":\"Location\",\"kindId\":\"k5\",\"kindName\":\"Location\",\"fieldId\":\"k5f2\",\"fieldName\":\"Name\"}]",
       "sources": [
         {
           "text": "William Gilbert was born in Colchester, England, into a middle class family of some wealth.",
@@ -611,7 +611,7 @@ query ReadProgress {
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query TrainFromFile {
   training(
     data: {
@@ -698,7 +698,7 @@ There are several differences between mutation - 'trainingToKind' and query - 't
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 mutation TrainFromFileToKind {
   trainingToKind(
     data: {
@@ -777,7 +777,7 @@ mutation TrainFromFileToKind {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "trainingToKind": {
@@ -927,12 +927,12 @@ Building new CRF model on training data passed to query
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 mutation TrainFromTextToKind {
   trainingToKind(
     data: {
       name: "myData" # give any name to your dataset
-      labels: "{\"Person\": \"value1\", \"Location\": \"value2\"}" # some additional info which is not used for training purpose
+      labels: "[{\"id\":\"t1\",\"tag\":\"Person\",\"kindId\":\"k1\",\"kindName\":\"Person\",\"fieldId\":\"k1f1\",\"fieldName\":\"name\"},{\"id\":\"t2\",\"tag\":\"Date\",\"kindId\":\"k2\",\"kindName\":\"Date\",\"fieldId\":\"k1f3\",\"fieldName\":\"name\"},{\"id\":\"t3\",\"tag\":\"Location\",\"kindId\":\"k5\",\"kindName\":\"Location\",\"fieldId\":\"k5f2\",\"fieldName\":\"Name\"},{\"id\":\"t4\",\"tag\":\"Organization\",\"kindId\":\"k4\",\"kindName\":\"Organization\",\"fieldId\":\"k4f4\",\"fieldName\":\"name\"}]" # some additional info which is not used for training purpose
       sources: [
         {
           # formats may be different (see normalization above)
@@ -991,7 +991,7 @@ mutation TrainFromTextToKind {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "trainingToKind": {
@@ -1032,7 +1032,7 @@ mutation TrainFromTextToKind {
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query Test {
   testing(
     data: {
@@ -1093,7 +1093,7 @@ The only difference from 'testing' query is that mutation will make a record int
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 mutation AccyracyTestFromFile {
   testingToKind(
     data: {
@@ -1150,7 +1150,7 @@ mutation AccyracyTestFromFile {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "testingToKind": {
@@ -1233,12 +1233,12 @@ Testing on the data passed to query
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 mutation AccyracyTestFromTexts {
   testingToKind(
     data: {
       name: "myData"
-      labels: "{\"Person\": \"value1\", \"Location\": \"value2\"}"
+      labels: "[{\"id\":\"t1\",\"tag\":\"Person\",\"kindId\":\"k1\",\"kindName\":\"Person\",\"fieldId\":\"k1f1\",\"fieldName\":\"name\"},{\"id\":\"t2\",\"tag\":\"Date\",\"kindId\":\"k2\",\"kindName\":\"Date\",\"fieldId\":\"k1f3\",\"fieldName\":\"name\"},{\"id\":\"t3\",\"tag\":\"Location\",\"kindId\":\"k5\",\"kindName\":\"Location\",\"fieldId\":\"k5f2\",\"fieldName\":\"Name\"},{\"id\":\"t4\",\"tag\":\"Organization\",\"kindId\":\"k4\",\"kindName\":\"Organization\",\"fieldId\":\"k4f4\",\"fieldName\":\"name\"}]"
       sources: [
         {
           # Entities may be represented inside input text as xml-tags
@@ -1323,7 +1323,7 @@ Parameter 'length':
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query GetModel {
   getModel(
     model: {
@@ -1351,7 +1351,7 @@ Try your own examples to understand how it works.
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query SplitToSentences {
   splitToSentences(
     text: "Saint Petersburg (Russian: Санкт-Петербу́рг) is Russia's second-largest city after Moscow, with 5 million inhabitants in 2012, part of the Saint Petersburg agglomeration with a population of 6.2 million (2015). An important Russian port on the Baltic Sea, it has a status of a federal subject (a federal city). Situated on the Neva River, at the head of the Gulf of Finland on the Baltic Sea, it was founded by Tsar Peter the Great on 27 May [O.S. 16 May] 1703. On 1 September 1914, the name was changed from Saint Petersburg to Petrograd (Russian: Петрогра́д), on 26 January 1924 to Leningrad (Russian: Ленингра́д), and on 1 October 1991 back to its original name. During the periods 1713–1728 and 1732–1918, Saint Petersburg was the capital of Imperial Russia. In 1918, the central government bodies moved to Moscow, which is about 625 km (388 miles) to the south-east. Saint Petersburg is one of the most modern cities of Russia, as well as its cultural capital. The Historic Centre of Saint Petersburg and Related Groups of Monuments constitute a UNESCO World Heritage Site. Saint Petersburg is home to the Hermitage, one of the largest art museums in the world. Many foreign consulates, international corporations, banks and businesses have offices in Saint Petersburg."
@@ -1366,7 +1366,7 @@ query SplitToSentences {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "splitToSentences": [
@@ -1401,7 +1401,7 @@ Extending XML-tagged entities throughout the whole text.
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query ExtendXMLLabeling {
   extendXMLText(
     model: {
@@ -1421,7 +1421,7 @@ query ExtendXMLLabeling {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "extendXMLText": "<Person>William Gilbert</Person> was born in <Location>Colchester, England</Location>, into a middle class family of some wealth.\nHe entered <Organization>St. John's College</Organization>, <Location>Cambridge</Location>, in <Date>1558</Date> and obtained an B.A. in <Date>1561</Date>, an M.A. in <Date>1564</Date>, and finally an M.D. in <Date>1569</Date>.\nUpon receiving this last degree, he became a senior fellow of the <Organization>college</Organization>, where he held several offices.\n<Person>Gilbert</Person> set up a medical practice in <Location>London</Location> in the <Date>1570s</Date> and became a member of the <Organization>Royal College of Physicians</Organization> (the body that regulated the practice of medicine in <Location>London</Location> and <Location>Vicinity</Location>).\nHe held a number of offices in the <Organization>college</Organization> and in <Date>1600</Date> was elected president.\nHe never married.\nCo-inventor of calculus, a major contributor to the science of optics and a gifted mathematician, Isaac Newton ( 1643 - <Date>1727</Date> ), who was born in <Location>Lincolnshire</Location>, outlined the laws of mechanics that now underpin vast swaths of classical physics.\nMost important of all, Newton outlined the principle of gravity, which explained how the planets revolve round the sun.\n<Person>During</Person> his life, he was showered with honours, including the presidency of the <Organization>Royal Society</Organization>.\nHe is renowned as a supreme rationalist, though he actually wrote more about alchemy and religion, including a 300,000-word treatise that attempted to prove the pope was really the <Location>Antichrist</Location> and an “apocalyptic whore”."
@@ -1446,7 +1446,7 @@ Extending tagged entities throughout the whole text (see comments for extendXMLT
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query ExtendLabeling {
   extend(
     model: {
@@ -1506,7 +1506,7 @@ query ExtendLabeling {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "extend": {
@@ -1559,7 +1559,7 @@ Unlike extend() query if we have input data as a set of texts use extendBatch().
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query ExtendBatchLabeling {
   extendBatch(
     model: {
@@ -1627,7 +1627,7 @@ query ExtendBatchLabeling {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "extendBatch": [
@@ -1688,7 +1688,7 @@ Extract query to run with default Stanford model:
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query Extract {
   extract(source: "Mikhael lives in Seattle and works for Google.") {
     text
@@ -1713,7 +1713,7 @@ query Extract {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "extract": {
@@ -1765,7 +1765,7 @@ Extract query to run with customer model:
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query ExtractWithModel {
   extract(
     source: "Daily update notification made to BSEE Houma District, Bobby Nelson."
@@ -1812,7 +1812,7 @@ query ExtractWithModel {
 - xtext: xml marked text
 - entities: array of entities with: tag, token (entity itself as it appear in the text), span, offset
 
-```json
+```ruby
 {
   "data": {
     "extract": {
@@ -1978,7 +1978,7 @@ Extract query to run with default Stanford model:
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query Extract {
   extractBatch(
     sources: [
@@ -2006,7 +2006,7 @@ query Extract {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "extractBatch": [
@@ -2050,7 +2050,7 @@ Batch extract query to run with customer model:
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query ExtractBatchWithModel {
   extractBatch(
     sources: [
@@ -2091,7 +2091,7 @@ query ExtractBatchWithModel {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "extractBatch": [
@@ -2179,7 +2179,7 @@ Example of "is surface form" query to run with default Stanford model:
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query IsSurfaceForm {
   isSurfaceForm(source: "Seattle", tag: "Location")
 }
@@ -2192,7 +2192,7 @@ query IsSurfaceForm {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "isSurfaceForm": true
@@ -2209,7 +2209,7 @@ Example of "is surface form" query to run with customer model:
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query IsSurfaceFormWithModel {
   isSurfaceForm(
     source: "BOEM"
@@ -2233,7 +2233,7 @@ query IsSurfaceFormWithModel {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "isSurfaceForm": true
@@ -2252,7 +2252,7 @@ Example of parse query to run with default Stanford model:
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query Parse {
   parse(source: "Forrest Gump")
 }
@@ -2268,7 +2268,7 @@ query Parse {
 - returns the parsed entity name if the source text is exactly as entity with no additional text to the left or right of the entity,
 - otherwise return empty string.
 
-```json
+```ruby
 {
   "data": {
     "parse": "Forrest Gump"
@@ -2285,7 +2285,7 @@ Example of parse query to run with customer model:
 <summary>click to expand example</summary>
 <p>
 
-```graphql
+```ruby
 query ParseWithModel {
   parse(
     source: "BOEM"
@@ -2308,7 +2308,7 @@ query ParseWithModel {
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "parse": "BOEM"
