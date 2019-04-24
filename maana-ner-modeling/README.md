@@ -4,7 +4,7 @@ This is the maana NER (Named Entity Recognition) Modeling graphql microservice.
 It provides:
 
 1.  Extract entities (Person name, Location, Phone number, ...) from text.
-2.  Training new CRF Model. https://en.wikipedia.org/wiki/Conditional_random_field
+2.  Training new CRF (Conditional Random Field) Classifier Model. https://en.wikipedia.org/wiki/Conditional_random_field
 3.  Testing CRF Model.
 4.  Auto-annotation of text.
 
@@ -70,7 +70,11 @@ dataURL (in training / testing queries) is a path or URL to data file of many fo
 - {tag, tokens} - this is word-based format and entities must to be ordered
 - {tag, start, end} - this is word-based format and entities may not be ordered
 
-```json
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 [
   {
     "text": "Microsoft Corporation is multinational technology company with headquarters in Redmond Washington.",
@@ -100,9 +104,16 @@ dataURL (in training / testing queries) is a path or URL to data file of many fo
 ]
 ```
 
+</p>
+</details>
+
 2.  Document .json
 
-```json
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 {
   "title": "BOEM Data - Common Entities",
   "type": "Drilling Comments",
@@ -112,17 +123,31 @@ dataURL (in training / testing queries) is a path or URL to data file of many fo
 }
 ```
 
+</p>
+</details>
+
 3.  Document array .json
 
-```json
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 [
   //... document array ...
 ]
 ```
 
+</p>
+</details>
+
 4.  Phrase list .txt or .csv or .tsv
 
-```json
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 {
   //phrase 1
 }
@@ -132,12 +157,22 @@ dataURL (in training / testing queries) is a path or URL to data file of many fo
 //...
 ```
 
+</p>
+</details>
+
 5. xml-tagged .txt or .csv or .tsv
+
+<details>
+<summary>click to expand example</summary>
+<p>
 
 ```xml
 <Person>Satya Narayana Nadella</Person> is from <Location>India</Location>.
 He is the CEO of <Organization>Microsoft</Organization>.
 ```
+
+</p>
+</details>
 
 6. Word-tag .tsv
    This is Stanford lib basic data format. To train new CRF Model all other data formats will be transformed to this format inside service.
@@ -147,6 +182,10 @@ He is the CEO of <Organization>Microsoft</Organization>.
 - punctuation signs , ; . as a separate words
 - each phrase ended with dot .
 - empty line between phrases
+
+<details>
+<summary>click to expand example</summary>
+<p>
 
 ```
 Satya Person
@@ -167,16 +206,23 @@ Microsoft Organization
 
 ```
 
-## Examples of query
+</p>
+</details>
 
-### Example of normalize query:
+## Examples of query and mutation
+
+### NORMALIZE query
 
 - Normalization of tagged phrases means to convert them to standard format - { text xtext entities {tag token span offset tokens start end} }
 - Tagged phrases could be represented in different formats (see examples and comments below in query code)
 - To avoid ambiguity use xml-tagged text or character based entity format - {tag, token, offset, span}.
 - Words based data format - {tokens, start, end, color} is developed to use in Active Learning UI and is not precise format because entity sometime is the part of word but not separate word.
 
-```graphql
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 query Normalize {
   normalize(
     sources: [
@@ -219,11 +265,14 @@ query Normalize {
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "normalize": [
@@ -325,17 +374,21 @@ query Normalize {
 </p>
 </details>
 
-### Example of mutation query - saving progress
+### SAVE-PROGRESS-TO-KIND mutation
 
 It saves annotated sentences to Maana Kind. Before saving it makes normalization.
 
-```graphql
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 mutation SaveProgress {
   saveProgressToKind(
     model: { name: "myModel" }
     data: {
       name: "myData"
-      labels: "{\"Person\": \"value1\", \"Location\": \"value2\"}"
+      labels: "[{\"id\":\"t1\",\"tag\":\"Person\",\"kindId\":\"k1\",\"kindName\":\"Person\",\"fieldId\":\"k1f1\",\"fieldName\":\"name\"},{\"id\":\"t2\",\"tag\":\"Date\",\"kindId\":\"k2\",\"kindName\":\"Date\",\"fieldId\":\"k1f3\",\"fieldName\":\"name\"},{\"id\":\"t3\",\"tag\":\"Location\",\"kindId\":\"k5\",\"kindName\":\"Location\",\"fieldId\":\"k5f2\",\"fieldName\":\"Name\"}]"
       sources: [
         {
           text: "<Person>William Gilbert</Person> was born in <Location>Colchester, England</Location>, into a middle class family of some wealth."
@@ -370,11 +423,14 @@ mutation SaveProgress {
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "saveProgressToKind": {
@@ -393,11 +449,15 @@ mutation SaveProgress {
 </p>
 </details>
 
-### Example of read progress
+### READ-PROGRESS-FROM-KIND query
 
 It reads saved sentences from Maana Kind
 
-```graphql
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 query ReadProgress {
   readProgressFromKind(
     dataKindRecordId: "6fc730d5-a363-4393-ac58-600649b61ad4"
@@ -423,17 +483,20 @@ query ReadProgress {
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "readProgressFromKind": {
       "timeStamp": "4/1/2019, 1:19:42 PM",
       "name": "myData",
-      "labels": "{\"Person\":\"value1\",\"Location\":\"value2\"}",
+      "labels": "[{\"id\":\"t1\",\"tag\":\"Person\",\"kindId\":\"k1\",\"kindName\":\"Person\",\"fieldId\":\"k1f1\",\"fieldName\":\"name\"},{\"id\":\"t2\",\"tag\":\"Date\",\"kindId\":\"k2\",\"kindName\":\"Date\",\"fieldId\":\"k1f3\",\"fieldName\":\"name\"},{\"id\":\"t3\",\"tag\":\"Location\",\"kindId\":\"k5\",\"kindName\":\"Location\",\"fieldId\":\"k5f2\",\"fieldName\":\"Name\"}]",
       "sources": [
         {
           "text": "William Gilbert was born in Colchester, England, into a middle class family of some wealth.",
@@ -542,28 +605,26 @@ query ReadProgress {
 </p>
 </details>
 
-### Example of building new CRF model on training data from file:
+### TRAINING query
 
-There are several differences between mutation - 'trainingToKind' and query - 'training':
+<details>
+<summary>click to expand example</summary>
+<p>
 
-1. mutation adds binary .ser.gz-file as a Kind to Maana with CRF Model content
-2. mutation makes a record into the 'NERModelStat' Kind in Maana (if Kind doesn't exist it wiill be created)
-3. mutation makes a record into the 'NERLabeledData' Kind in Maana (if Kind doesn't exist it wiill be created)
-
-- data.URL is a path or URL to data file of many formats: .json, .csv, .tsv, .txt (see explanation below)
-
-```graphql
-mutation TrainFromFileToKind {
-  trainingToKind(
+```ruby
+query TrainFromFile {
+  training(
     data: {
+      URL: "../library/src/test/resources/BOEM_labeled.json" # URL of data file or Path if service running locally,
+      #     formats: .json, .csv, .tsv, .txt
+      #     example of URL from Maana: "%PUBLIC_BACKEND_URI%/downloads/1250010d-5844-48aa-84ae-d96b28ab5d90/BOEM_labeled.json",
+      # kindId: "..." # use Kind ID if data was uploaded to Maana
       name: "BOEM_labeled"
-      URL: "../library/src/test/resources/BOEM_labeled.json" # formats: .json, .csv, .tsv, .txt"
-      # URL: "%PUBLIC_BACKEND_URI%/downloads/1250010d-5844-48aa-84ae-d96b28ab5d90/BOEM_labeled.json", # example of URL from Maana
-      # kindId: "1250010d-5844-48aa-84ae-d96b28ab5d90" # use Kind ID if data was uploaded to Maana
     }
     model: {
-      name: "myModel" # new model will be saved to Maana as a kind file with this name
-      # URL: "path/or/URL/to/myModel.ser.gz" # if local path is specified then model will also be saved to this path as well
+      #URL: "..." # ignore it if service running on cluster and use local path to save Model if service running locally
+      #kindId: "..." # ignore it
+      name: "myNewNERModel" # Model (with this ‘name’) will be saved inside service directory “/usr/app/service/crfmodels/”.
     }
     splitRate: 0.2
     seed: 5
@@ -620,11 +681,103 @@ mutation TrainFromFileToKind {
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+### TRAINING-TO-KIND mutation
+
+There are several differences between mutation - 'trainingToKind' and query - 'training':
+
+1. mutation adds binary .ser.gz-file as a Kind to Maana with CRF Model content
+2. mutation makes a record into the 'NERModelStat' Kind in Maana (if Kind doesn't exist it wiill be created)
+3. mutation makes a record into the 'NERLabeledData' Kind in Maana (if Kind doesn't exist it wiill be created)
+
+- data.URL is a path or URL to data file of many formats: .json, .csv, .tsv, .txt (see explanation below)
+
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
+mutation TrainFromFileToKind {
+  trainingToKind(
+    data: {
+      URL: "../library/src/test/resources/BOEM_labeled.json" # URL of data file or Path if service running locally,
+      #     formats: .json, .csv, .tsv, .txt
+      #     example of URL from Maana: "%PUBLIC_BACKEND_URI%/downloads/1250010d-5844-48aa-84ae-d96b28ab5d90/BOEM_labeled.json"
+      # kindId: "..." # use Kind ID if data was uploaded to Maana
+      name: "BOEM_labeled"
+    }
+    model: {
+      # URL: "..." # ignore it if service running on cluster and use local path to save Model if service running locally
+      # kindId: "..." # ignore it
+      name: "myModel" # New CRFModel will be saved to Maana as a Kind file with this ‘name’.
+      # After that a new record will be added to Kind “NERModelStat” with this ‘name’ and identifiers of new Model - {URL, kindId}.
+      # Model (with this ‘name’) also will be saved inside service directory “/usr/app/service/crfmodels/”.
+    }
+    splitRate: 0.2
+    seed: 5
+    decimals: 3
+  ) {
+    timeStamp
+    modelKind
+    dataKind
+    params
+    timeToLearn
+    trainStat {
+      name
+      phraseCount
+      elapsedTime
+      dataKind
+      statOverAll {
+        expectedCount
+        observedCount
+        truePositives
+        falsePositives
+        falseNegatives
+        precision
+        recall
+        f1
+      }
+      statPerEntity {
+        tag
+        precision
+        recall
+        f1
+      }
+    }
+    testStat {
+      name
+      phraseCount
+      statOverAll {
+        expectedCount
+        observedCount
+        truePositives
+        falsePositives
+        falseNegatives
+        precision
+        recall
+        f1
+      }
+      statPerEntity {
+        tag
+        precision
+        recall
+        f1
+      }
+    }
+  }
+}
+```
+
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "trainingToKind": {
@@ -765,27 +918,21 @@ mutation TrainFromFileToKind {
 </p>
 </details>
 
-```graphql
-query TrainFromFile {
-  training(
-    # the same arguments as for 'training' query
-  ) {
-    # the same uotput data format as for 'training' query
-  }
-}
-```
-
-### Example of building new CRF model on training data passed to query
+Building new CRF model on training data passed to query
 
 - training data will be saved to "NERLabeledData" Kind in normalized format
 - training data may be retrieved back from Maana later with the query - readProgress()
 
-```graphql
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 mutation TrainFromTextToKind {
   trainingToKind(
     data: {
       name: "myData" # give any name to your dataset
-      labels: "{\"Person\": \"value1\", \"Location\": \"value2\"}" # some additional info which is not used for training purpose
+      labels: "[{\"id\":\"t1\",\"tag\":\"Person\",\"kindId\":\"k1\",\"kindName\":\"Person\",\"fieldId\":\"k1f1\",\"fieldName\":\"name\"},{\"id\":\"t2\",\"tag\":\"Date\",\"kindId\":\"k2\",\"kindName\":\"Date\",\"fieldId\":\"k1f3\",\"fieldName\":\"name\"},{\"id\":\"t3\",\"tag\":\"Location\",\"kindId\":\"k5\",\"kindName\":\"Location\",\"fieldId\":\"k5f2\",\"fieldName\":\"Name\"},{\"id\":\"t4\",\"tag\":\"Organization\",\"kindId\":\"k4\",\"kindName\":\"Organization\",\"fieldId\":\"k4f4\",\"fieldName\":\"name\"}]" # some additional info which is not used for training purpose
       sources: [
         {
           # formats may be different (see normalization above)
@@ -800,8 +947,11 @@ mutation TrainFromTextToKind {
       ]
     }
     model: {
-      name: "myModel" # give any name to model which will be built and saved to Maana
-      #URL: "/local/path/to/myModel.ser.gz" # if you want to save model locally
+      # URL: "..." # ignore it if service running on cluster and use local path to save Model if service running locally
+      # kindId: "..." # ignore it
+      name: "myModel" # New CRFModel will be saved to Maana as a Kind file with this ‘name’.
+      # After that a new record will be added to Kind “NERModelStat” with this ‘name’ and identifiers of new Model - {URL, kindId}.
+      # Model (with this ‘name’) also will be saved inside service directory “/usr/app/service/crfmodels/”.
     }
     splitRate: 0.7 # 70% for training, 30% for testing
     seed: 5
@@ -834,11 +984,14 @@ mutation TrainFromTextToKind {
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "trainingToKind": {
@@ -873,22 +1026,29 @@ mutation TrainFromTextToKind {
 </p>
 </details>
 
-### Example of testing from file:
+### TESTING query
 
-- data.URL is a path or URL to data file of many formats: .json, .csv, .tsv, .txt (see explanation below)
+<details>
+<summary>click to expand example</summary>
+<p>
 
-```graphql
-mutation AccyracyTestFromFile {
-  testingToKind(
+```ruby
+query Test {
+  testing(
     data: {
       name: "BOEM_labeled"
-      URL: "../library/src/test/resources/BOEM_labeled.json" # formats: .json, .csv, .tsv, .txt"
-      # URL: "%PUBLIC_BACKEND_URI%/downloads/1250010d-5844-48aa-84ae-d96b28ab5d90/BOEM_labeled.json", # example of URL from Maana
-      # kindId: "1250010d-5844-48aa-84ae-d96b28ab5d90" # use Kind ID if data was uploaded to Maana
+      URL: "../library/src/test/resources/BOEM_labeled.json" # URL of data file or Path if service running locally,
+      #     formats: .json, .csv, .tsv, .txt
+      #     example of URL from Maana: "%PUBLIC_BACKEND_URI%/downloads/1250010d-5844-48aa-84ae-d96b28ab5d90/BOEM_labeled.json",
+      # kindId: "..." # use Kind ID if data was uploaded to Maana
     }
     model: {
-      name: "myModel" # new model will be saved to Maana as a kind file with this name
-      # URL: "path/or/URL/to/myModel.ser.gz" # if local path is specified then model will also be saved to this path as well
+      name: "myModel" # Use it if CRFModel has already built with this name. If multiple models were built with the same name then last one is saved only.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
     }
     decimals: 3 # precision of statistical metrics
   ) {
@@ -922,11 +1082,75 @@ mutation AccyracyTestFromFile {
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+### TESTING-TO-KIND mutation
+
+The only difference from 'testing' query is that mutation will make a record into the 'CRFModelStat' Kind in Maana
+
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
+mutation AccyracyTestFromFile {
+  testingToKind(
+    data: {
+      name: "BOEM_labeled"
+      URL: "../library/src/test/resources/BOEM_labeled.json" # URL of data file or Path if service running locally,
+      #     formats: .json, .csv, .tsv, .txt
+      #     example of URL from Maana: "%PUBLIC_BACKEND_URI%/downloads/1250010d-5844-48aa-84ae-d96b28ab5d90/BOEM_labeled.json",
+      # kindId: "..." # use Kind ID if data was uploaded to Maana
+    }
+    model: {
+      name: "myModel" # Use it if CRFModel has already built with this name. If multiple models were built with the same name then last one is saved only.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
+    }
+    decimals: 3 # precision of statistical metrics
+  ) {
+    name
+    timeStamp
+    elapsedTime
+    phraseCount
+    statOverAll {
+      tag
+      expectedCount
+      observedCount
+      truePositives
+      falsePositives
+      falseNegatives
+      precision
+      recall
+      f1
+    }
+    statPerEntity {
+      tag
+      # expectedCount
+      # observedCount
+      # truePositives
+      # falsePositives
+      # falseNegatives
+      precision
+      recall
+      f1
+    }
+  }
+}
+```
+
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "testingToKind": {
@@ -1003,21 +1227,18 @@ mutation AccyracyTestFromFile {
 </p>
 </details>
 
-### Example of testing on the data passed to query
+Testing on the data passed to query
 
-The only difference from 'testing' query is that mutation will make a record into the 'CRFModelStat' Kind in Maana
+<details>
+<summary>click to expand example</summary>
+<p>
 
-```graphql
+```ruby
 mutation AccyracyTestFromTexts {
   testingToKind(
-    model: {
-      # kindId: "eac35cca-19bf-41b8-94a4-9a6ccec211bf"
-      name: "myModel"
-      # URL: "/path/or/URL/to/file/myModel.ser.gz"
-    }
     data: {
       name: "myData"
-      labels: "{\"Person\": \"value1\", \"Location\": \"value2\"}"
+      labels: "[{\"id\":\"t1\",\"tag\":\"Person\",\"kindId\":\"k1\",\"kindName\":\"Person\",\"fieldId\":\"k1f1\",\"fieldName\":\"name\"},{\"id\":\"t2\",\"tag\":\"Date\",\"kindId\":\"k2\",\"kindName\":\"Date\",\"fieldId\":\"k1f3\",\"fieldName\":\"name\"},{\"id\":\"t3\",\"tag\":\"Location\",\"kindId\":\"k5\",\"kindName\":\"Location\",\"fieldId\":\"k5f2\",\"fieldName\":\"Name\"},{\"id\":\"t4\",\"tag\":\"Organization\",\"kindId\":\"k4\",\"kindName\":\"Organization\",\"fieldId\":\"k4f4\",\"fieldName\":\"name\"}]"
       sources: [
         {
           # Entities may be represented inside input text as xml-tags
@@ -1062,6 +1283,14 @@ mutation AccyracyTestFromTexts {
         }
       ]
     }
+    model: {
+      name: "myModel" # Use it if CRFModel has already built with this name. If multiple models were built with the same name then last one is saved only.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
+    }
     decimals: 3
   ) {
     timeStamp
@@ -1079,17 +1308,10 @@ mutation AccyracyTestFromTexts {
 }
 ```
 
-```graphql
-query Test {
-  testing(
-    # the same arguments as for 'testingToKind' query
-  ) {
-    # the same uotput data format as for 'testingToKind' query
-  }
-}
-```
+</p>
+</details>
 
-### Example of "get Model" query.
+### GET-MODEL query
 
 Return Model in format - encoded Base64 String
 Parameter 'length':
@@ -1097,41 +1319,109 @@ Parameter 'length':
 1.  if omitted or 0 or >= model size then return whole Model
 2.  otherwise - return first portion of bytes, next query return next portion, etc. until return 0 which means end of model
 
-```graphql
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 query GetModel {
   getModel(
     model: {
-      # kindId: "eac35cca-19bf-41b8-94a4-9a6ccec211bf"
-      # URL: "path/or/URL/to/crf_model.ser.gz"
-      name: "myModel"
+      name: "myModel" # Use it if CRFModel has already built with this name. If multiple models were built with the same name then last one is saved only.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
     }
     length: 1024 # if 0 then return whole model (base64 string)
   )
 }
 ```
 
-### Example of extending XML-tagged entities throughout the whole text.
+</p>
+</details>
 
-If we labeled small part of text and want to extend labeling throughout the whole text, we can use extendXMLText() or extend() functions. Service will build new CRF Model on labeled sentences only and applies this model to whole text to detect other entities. After that we can make correction of detected entities and repeat process again.
-So, service works as auto-annotation system to spead up of training datasets preparation process.
+### SPLIT-TO-SENTENCES query
 
-```graphql
+It's not just splitting text to sentences by dots, it's more complicated splitting based on Stanford model.
+Try your own examples to understand how it works.
+
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
+query SplitToSentences {
+  splitToSentences(
+    text: "Saint Petersburg (Russian: Санкт-Петербу́рг) is Russia's second-largest city after Moscow, with 5 million inhabitants in 2012, part of the Saint Petersburg agglomeration with a population of 6.2 million (2015). An important Russian port on the Baltic Sea, it has a status of a federal subject (a federal city). Situated on the Neva River, at the head of the Gulf of Finland on the Baltic Sea, it was founded by Tsar Peter the Great on 27 May [O.S. 16 May] 1703. On 1 September 1914, the name was changed from Saint Petersburg to Petrograd (Russian: Петрогра́д), on 26 January 1924 to Leningrad (Russian: Ленингра́д), and on 1 October 1991 back to its original name. During the periods 1713–1728 and 1732–1918, Saint Petersburg was the capital of Imperial Russia. In 1918, the central government bodies moved to Moscow, which is about 625 km (388 miles) to the south-east. Saint Petersburg is one of the most modern cities of Russia, as well as its cultural capital. The Historic Centre of Saint Petersburg and Related Groups of Monuments constitute a UNESCO World Heritage Site. Saint Petersburg is home to the Hermitage, one of the largest art museums in the world. Many foreign consulates, international corporations, banks and businesses have offices in Saint Petersburg."
+  )
+}
+```
+
+</p>
+</details>
+
+<details>
+<summary>click to expand output results</summary>
+<p>
+
+```ruby
+{
+  "data": {
+    "splitToSentences": [
+      "Saint Petersburg (Russian: Санкт-Петербу́рг) is Russia's second-largest city after Moscow, with 5 million inhabitants in 2012, part of the Saint Petersburg agglomeration with a population of 6.2 million (2015).",
+      "An important Russian port on the Baltic Sea, it has a status of a federal subject (a federal city).",
+      "Situated on the Neva River, at the head of the Gulf of Finland on the Baltic Sea, it was founded by Tsar Peter the Great on 27 May [O.S. 16 May] 1703.",
+      "On 1 September 1914, the name was changed from Saint Petersburg to Petrograd (Russian: Петрогра́д), on 26 January 1924 to Leningrad (Russian: Ленингра́д), and on 1 October 1991 back to its original name.",
+      "During the periods 1713–1728 and 1732–1918, Saint Petersburg was the capital of Imperial Russia.",
+      "In 1918, the central government bodies moved to Moscow, which is about 625 km (388 miles) to the south-east.",
+      "Saint Petersburg is one of the most modern cities of Russia, as well as its cultural capital.",
+      "The Historic Centre of Saint Petersburg and Related Groups of Monuments constitute a UNESCO World Heritage Site.",
+      "Saint Petersburg is home to the Hermitage, one of the largest art museums in the world.",
+      "Many foreign consulates, international corporations, banks and businesses have offices in Saint Petersburg."
+    ]
+  }
+}
+```
+
+</p>
+</details>
+
+### EXTEND-XML-LABELING query
+
+Extending XML-tagged entities throughout the whole text.
+
+- If we labeled small part of text and want to extend labeling throughout the whole text, we can use extendXMLText() or extend() functions.
+- Service will build new CRF Model on labeled sentences only and applies this model to whole text to detect other entities.
+- After that we can make correction of detected entities and repeat process again.
+- So, service works as auto-annotation system to spead up of training datasets preparation process.
+
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 query ExtendXMLLabeling {
   extendXMLText(
     model: {
-      #URL: "/the/new/CRF/model/will/be/saved/by/this/path/as/myNewNERModel.ser.gz"
-      name: "myNewNERModel"
+      #URL: "..." # ignore it if service running on cluster and use local path to save Model if service running locally
+      #kindId: "..." # ignore it
+      name: "myNewNERModel" # Model (with this ‘name’) will be saved inside service directory “/usr/app/service/crfmodels/”.
     }
     text: "<Person>William Gilbert</Person> was born in <Location>Colchester, England</Location>, into a middle class family of some wealth. He entered <Organization>St. John's College</Organization>, <Location>Cambridge</Location>, in <Date>1558</Date> and obtained an B.A. in <Date>1561</Date>, an M.A. in <Date>1564</Date>, and finally an M.D. in <Date>1569</Date>. Upon receiving this last degree, he became a senior fellow of the <Organization>college</Organization>, where he held several offices. <Person>Gilbert</Person> set up a medical practice in <Location>London</Location> in the <Date>1570s</Date> and became a member of the <Organization>Royal College of Physicians</Organization> (the body that regulated the practice of medicine in <Location>London</Location> and <Location>Vicinity</Location>). He held a number of offices in the <Organization>college</Organization> and in <Date>1600</Date> was elected president. He never married. Co-inventor of calculus, a major contributor to the science of optics and a gifted mathematician, Isaac Newton ( 1643 - 1727 ), who was born in Lincolnshire, outlined the laws of mechanics that now underpin vast swaths of classical physics. Most important of all, Newton outlined the principle of gravity, which explained how the planets revolve round the sun. During his life, he was showered with honours, including the presidency of the Royal Society. He is renowned as a supreme rationalist, though he actually wrote more about alchemy and religion, including a 300,000-word treatise that attempted to prove the pope was really the Antichrist and an “apocalyptic whore”."
   )
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "extendXMLText": "<Person>William Gilbert</Person> was born in <Location>Colchester, England</Location>, into a middle class family of some wealth.\nHe entered <Organization>St. John's College</Organization>, <Location>Cambridge</Location>, in <Date>1558</Date> and obtained an B.A. in <Date>1561</Date>, an M.A. in <Date>1564</Date>, and finally an M.D. in <Date>1569</Date>.\nUpon receiving this last degree, he became a senior fellow of the <Organization>college</Organization>, where he held several offices.\n<Person>Gilbert</Person> set up a medical practice in <Location>London</Location> in the <Date>1570s</Date> and became a member of the <Organization>Royal College of Physicians</Organization> (the body that regulated the practice of medicine in <Location>London</Location> and <Location>Vicinity</Location>).\nHe held a number of offices in the <Organization>college</Organization> and in <Date>1600</Date> was elected president.\nHe never married.\nCo-inventor of calculus, a major contributor to the science of optics and a gifted mathematician, Isaac Newton ( 1643 - <Date>1727</Date> ), who was born in <Location>Lincolnshire</Location>, outlined the laws of mechanics that now underpin vast swaths of classical physics.\nMost important of all, Newton outlined the principle of gravity, which explained how the planets revolve round the sun.\n<Person>During</Person> his life, he was showered with honours, including the presidency of the <Organization>Royal Society</Organization>.\nHe is renowned as a supreme rationalist, though he actually wrote more about alchemy and religion, including a 300,000-word treatise that attempted to prove the pope was really the <Location>Antichrist</Location> and an “apocalyptic whore”."
@@ -1142,20 +1432,27 @@ query ExtendXMLLabeling {
 </p>
 </details>
 
-### Example of extending tagged entities throughout the whole text.
+### EXTEND-LABELING query
+
+Extending tagged entities throughout the whole text (see comments for extendXMLText() above).
 
 - This function not only extend labeling but return probabilities {prob} of entity detection. It allows us to pay more attention and correct entities with low probability first.
-- Moreover it calculate probabilities of k best annotations related to whole text. If we see that difference between first and second k-best probabilities is big enough it good sign of model verification.
-
+- Moreover it calculate probabilities of k best annotations related to whole text.
+- If we see that difference between first and second k-best probabilities is big enough it good sign of model verification.
 - calcProb : calculation of probability distribution vector for each detected entity
 - k : if > 0, return probabilities of k best annotations (related to whole text)
 
-```graphql
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 query ExtendLabeling {
   extend(
     model: {
-      #URL: "/the/new/CRF/model/will/be/saved/by/this/path/as/myNewNERModel.ser.gz"
-      name: "myNewNERModel"
+      #URL: "..." # ignore it if service running on cluster and use local path to save Model if service running locally
+      #kindId: "..." # ignore it
+      name: "myNewNERModel" # Model (with this ‘name’) will be saved inside service directory “/usr/app/service/crfmodels/”.
     }
     source: {
       text: "William Gilbert was born in Colchester, England, into a middle class family of some wealth. He entered St. John's College, Cambridge, in 1558 and obtained an B.A. in 1561, an M.A. in 1564, and finally an M.D. in 1569. Upon receiving this last degree, he became a senior fellow of the college, where he held several offices. Gilbert set up a medical practice in London in the 1570s and became a member of the Royal College of Physicians (the body that regulated the practice of medicine in London and Vicinity). He held a number of offices in the college and in 1600 was elected president. He never married. Co-inventor of calculus, a major contributor to the science of optics and a gifted mathematician, Isaac Newton ( 1643 - 1727 ), who was born in Lincolnshire, outlined the laws of mechanics that now underpin vast swaths of classical physics. Most important of all, Newton outlined the principle of gravity, which explained how the planets revolve round the sun. During his life, he was showered with honours, including the presidency of the Royal Society. He is renowned as a supreme rationalist, though he actually wrote more about alchemy and religion, including a 300,000-word treatise that attempted to prove the pope was really the Antichrist and an “apocalyptic whore”."
@@ -1202,11 +1499,14 @@ query ExtendLabeling {
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "extend": {
@@ -1248,53 +1548,24 @@ query ExtendLabeling {
 </p>
 </details>
 
-### Example of 'split to sentences' query
+### EXTEND-BATCH-LABELING query
 
-It's not just splitting text to sentences by dots, it's more complicated splitting based on Stanford model.
-Try your own examples to understand how it works.
+Unlike extend() query if we have input data as a set of texts use extendBatch().
 
-```graphql
-query SplitToSentences {
-  splitToSentences(
-    text: "Saint Petersburg (Russian: Санкт-Петербу́рг) is Russia's second-largest city after Moscow, with 5 million inhabitants in 2012, part of the Saint Petersburg agglomeration with a population of 6.2 million (2015). An important Russian port on the Baltic Sea, it has a status of a federal subject (a federal city). Situated on the Neva River, at the head of the Gulf of Finland on the Baltic Sea, it was founded by Tsar Peter the Great on 27 May [O.S. 16 May] 1703. On 1 September 1914, the name was changed from Saint Petersburg to Petrograd (Russian: Петрогра́д), on 26 January 1924 to Leningrad (Russian: Ленингра́д), and on 1 October 1991 back to its original name. During the periods 1713–1728 and 1732–1918, Saint Petersburg was the capital of Imperial Russia. In 1918, the central government bodies moved to Moscow, which is about 625 km (388 miles) to the south-east. Saint Petersburg is one of the most modern cities of Russia, as well as its cultural capital. The Historic Centre of Saint Petersburg and Related Groups of Monuments constitute a UNESCO World Heritage Site. Saint Petersburg is home to the Hermitage, one of the largest art museums in the world. Many foreign consulates, international corporations, banks and businesses have offices in Saint Petersburg."
-  )
-}
-```
+- Before applying extendBatch() take advantage of splitToSentences() query.
+- See also comments for extendXMLText() and extend() above.
 
-<details style="color:green">
-<summary>click to expand output results</summary>
+<details>
+<summary>click to expand example</summary>
 <p>
 
-```json
-{
-  "data": {
-    "splitToSentences": [
-      "Saint Petersburg (Russian: Санкт-Петербу́рг) is Russia's second-largest city after Moscow, with 5 million inhabitants in 2012, part of the Saint Petersburg agglomeration with a population of 6.2 million (2015).",
-      "An important Russian port on the Baltic Sea, it has a status of a federal subject (a federal city).",
-      "Situated on the Neva River, at the head of the Gulf of Finland on the Baltic Sea, it was founded by Tsar Peter the Great on 27 May [O.S. 16 May] 1703.",
-      "On 1 September 1914, the name was changed from Saint Petersburg to Petrograd (Russian: Петрогра́д), on 26 January 1924 to Leningrad (Russian: Ленингра́д), and on 1 October 1991 back to its original name.",
-      "During the periods 1713–1728 and 1732–1918, Saint Petersburg was the capital of Imperial Russia.",
-      "In 1918, the central government bodies moved to Moscow, which is about 625 km (388 miles) to the south-east.",
-      "Saint Petersburg is one of the most modern cities of Russia, as well as its cultural capital.",
-      "The Historic Centre of Saint Petersburg and Related Groups of Monuments constitute a UNESCO World Heritage Site.",
-      "Saint Petersburg is home to the Hermitage, one of the largest art museums in the world.",
-      "Many foreign consulates, international corporations, banks and businesses have offices in Saint Petersburg."
-    ]
-  }
-}
-```
-
-</p>
-</details>
-
-### Example of extending tagged entities for each of input text.
-
-```graphql
+```ruby
 query ExtendBatchLabeling {
   extendBatch(
     model: {
-      #URL: "/the/new/CRF/model/will/be/saved/by/this/path/as/myNewNERModel.ser.gz"
-      name: "myNewNERModel"
+      #URL: "..." # ignore it if service running on cluster and use local path to save Model if service running locally
+      #kindId: "..." # ignore it
+      name: "myNewNERModel" # Model (with this ‘name’) will be saved inside service directory “/usr/app/service/crfmodels/”.
     }
     sources: [
       {
@@ -1349,11 +1620,14 @@ query ExtendBatchLabeling {
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "extendBatch": [
@@ -1406,9 +1680,15 @@ query ExtendBatchLabeling {
 </p>
 </details>
 
-### Examples of extract query to run with default Stanford model:
+### EXTRACT query
 
-```graphql
+Extract query to run with default Stanford model:
+
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 query Extract {
   extract(source: "Mikhael lives in Seattle and works for Google.") {
     text
@@ -1426,11 +1706,14 @@ query Extract {
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "extract": {
@@ -1473,82 +1756,26 @@ query Extract {
 </p>
 </details>
 
-### Example of batch extract query to run with default Stanford model:
-
-```graphql
-query Extract {
-  extractBatch(
-    sources: [
-      "Los Angeles, is the second most populous city in the United States, after New York City, and the third most populous city in North America."
-      "With an estimated 4,000,000 residents, Los Angeles is the cultural, financial, and commercial center of Southern California."
-      "The Los Angeles metropolitan area also has a gross metropolitan product of $1.044 trillion"
-      "Los Angeles hosted the 1932 and 1984 Summer Olympics and will host the event for a third time in 2028."
-      "Historically home to the Chumash and Tongva, Los Angeles was claimed by Juan Rodríguez Cabrillo for Spain in 1542 along with the rest of what would become Alta California."
-      "During the war, more aircraft were produced in one year than in all the pre-war years since the Wright brothers flew the first airplane in 1903, combined."
-      "According to the 2010 Census, the racial makeup of Los Angeles included: 1,888,158 Whites (49.8%), 365,118 African Americans (9.6%), 28,215 Native Americans (0.7%), 426,959 Asians (11.3%)."
-      "The average annual temperature of the sea is 63 °F (17 °C), from 58 °F (14 °C) in January to 68 °F (20 °C) in August."
-    ]
-  ) {
-    # text
-    xtext
-    # entities { tag token span offset tokens start end }
-  }
-}
-```
-
-<details style="color:green">
-<summary>click to expand output results</summary>
-<p>
-
-```json
-{
-  "data": {
-    "extractBatch": [
-      {
-        "xtext": "<Location>Los Angeles</Location>, is the <ORDINAL>second</ORDINAL> most populous city in the <Location>United States</Location>, after <Location>New York City</Location>, and the <ORDINAL>third</ORDINAL> most populous city in <Location>North America</Location>."
-      },
-      {
-        "xtext": "With an estimated <Number>4,000,000</Number> residents, <Location>Los Angeles</Location> is the cultural, financial, and commercial center of <Location>Southern California</Location>."
-      },
-      {
-        "xtext": "The <Location>Los Angeles</Location> metropolitan area also has a gross metropolitan product of <Currency>$1.044 trillion</Currency>"
-      },
-      {
-        "xtext": "<Location>Los Angeles</Location> hosted the <DateKind>1932</DateKind> and <DateKind>1984 Summer</DateKind> <MISC>Olympics</MISC> and will host the event for a <ORDINAL>third</ORDINAL> time in <DateKind>2028</DateKind>."
-      },
-      {
-        "xtext": "Historically home to the <MISC>Chumash</MISC> and <MISC>Tongva</MISC>, <Location>Los Angeles</Location> was claimed by <Person>Juan Rodríguez Cabrillo</Person> for <Location>Spain</Location> in <DateKind>1542</DateKind> along with the rest of what would become <Location>Alta California</Location>."
-      },
-      {
-        "xtext": "During the war, more aircraft were produced in <DURATION>one year</DURATION> than in all <DURATION>the pre-war years</DURATION> since the <Person>Wright</Person> brothers flew the <ORDINAL>first</ORDINAL> airplane in <DateKind>1903</DateKind>, combined."
-      },
-      {
-        "xtext": "According to the <DateKind>2010</DateKind> Census, the racial makeup of <Location>Los Angeles</Location> included: <Number>1,888,158</Number> Whites (<Percentage>49.8%</Percentage>), <Number>365,118</Number> <MISC>African Americans</MISC> (<Percentage>9.6%</Percentage>), <Number>28,215</Number> <MISC>Native Americans</MISC> (<Percentage>0.7%</Percentage>), <Number>426,959</Number> <MISC>Asians</MISC> (<Percentage>11.3%</Percentage>)."
-      },
-      {
-        "xtext": "The average <SET>annual</SET> temperature of the sea is <Number>63</Number> °F (<Number>17</Number> °C), from <Number>58</Number> °F (<Number>14</Number> °C) in <DateKind>January</DateKind> to <Number>68</Number> °F (<Number>20</Number> °C) in <DateKind>August</DateKind>."
-      }
-    ]
-  }
-}
-```
-
-</p>
-</details>
-
-### Examples of extract query to run with customer model:
+Extract query to run with customer model:
 
 - calcProb : calculation of probability distribution vector for each detected entity
 - k : if > 0, return probabilities of k best annotations (related to whole text)
 
-```graphql
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 query ExtractWithModel {
   extract(
     source: "Daily update notification made to BSEE Houma District, Bobby Nelson."
     model: {
-      URL: "../library/src/test/resources/BOEM_model.ser.gz" # Path to model file or URL if model was loaded to Maana as a Kind
-      # kindId: "<use Kind ID if model file was uploaded to Maana as a Kind>"
-      # name: "<use model name if it was trained and service was not restarted since that time (cached model)>"
+      name: "myModel" # Use it if CRFModel has already built with this name. If multiple models were built with the same name then last one is saved only.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
     }
     calcProb: true # if true, you'll get probability distribution vector (it works with customer model only)
     k: 3 # calculation of k annotations with best probabilities
@@ -1574,7 +1801,10 @@ query ExtractWithModel {
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
@@ -1582,7 +1812,7 @@ query ExtractWithModel {
 - xtext: xml marked text
 - entities: array of entities with: tag, token (entity itself as it appear in the text), span, offset
 
-```json
+```ruby
 {
   "data": {
     "extract": {
@@ -1740,9 +1970,87 @@ query ExtractWithModel {
 </p>
 </details>
 
-### Example of batch extract query. It takes a list of texts as an input.
+### EXTRACT-BATCH query
 
-```graphql
+Extract query to run with default Stanford model:
+
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
+query Extract {
+  extractBatch(
+    sources: [
+      "Los Angeles, is the second most populous city in the United States, after New York City, and the third most populous city in North America."
+      "With an estimated 4,000,000 residents, Los Angeles is the cultural, financial, and commercial center of Southern California."
+      "The Los Angeles metropolitan area also has a gross metropolitan product of $1.044 trillion"
+      "Los Angeles hosted the 1932 and 1984 Summer Olympics and will host the event for a third time in 2028."
+      "Historically home to the Chumash and Tongva, Los Angeles was claimed by Juan Rodríguez Cabrillo for Spain in 1542 along with the rest of what would become Alta California."
+      "During the war, more aircraft were produced in one year than in all the pre-war years since the Wright brothers flew the first airplane in 1903, combined."
+      "According to the 2010 Census, the racial makeup of Los Angeles included: 1,888,158 Whites (49.8%), 365,118 African Americans (9.6%), 28,215 Native Americans (0.7%), 426,959 Asians (11.3%)."
+      "The average annual temperature of the sea is 63 °F (17 °C), from 58 °F (14 °C) in January to 68 °F (20 °C) in August."
+    ]
+  ) {
+    # text
+    xtext
+    # entities { tag token span offset tokens start end }
+  }
+}
+```
+
+</p>
+</details>
+
+<details>
+<summary>click to expand output results</summary>
+<p>
+
+```ruby
+{
+  "data": {
+    "extractBatch": [
+      {
+        "xtext": "<Location>Los Angeles</Location>, is the <ORDINAL>second</ORDINAL> most populous city in the <Location>United States</Location>, after <Location>New York City</Location>, and the <ORDINAL>third</ORDINAL> most populous city in <Location>North America</Location>."
+      },
+      {
+        "xtext": "With an estimated <Number>4,000,000</Number> residents, <Location>Los Angeles</Location> is the cultural, financial, and commercial center of <Location>Southern California</Location>."
+      },
+      {
+        "xtext": "The <Location>Los Angeles</Location> metropolitan area also has a gross metropolitan product of <Currency>$1.044 trillion</Currency>"
+      },
+      {
+        "xtext": "<Location>Los Angeles</Location> hosted the <DateKind>1932</DateKind> and <DateKind>1984 Summer</DateKind> <MISC>Olympics</MISC> and will host the event for a <ORDINAL>third</ORDINAL> time in <DateKind>2028</DateKind>."
+      },
+      {
+        "xtext": "Historically home to the <MISC>Chumash</MISC> and <MISC>Tongva</MISC>, <Location>Los Angeles</Location> was claimed by <Person>Juan Rodríguez Cabrillo</Person> for <Location>Spain</Location> in <DateKind>1542</DateKind> along with the rest of what would become <Location>Alta California</Location>."
+      },
+      {
+        "xtext": "During the war, more aircraft were produced in <DURATION>one year</DURATION> than in all <DURATION>the pre-war years</DURATION> since the <Person>Wright</Person> brothers flew the <ORDINAL>first</ORDINAL> airplane in <DateKind>1903</DateKind>, combined."
+      },
+      {
+        "xtext": "According to the <DateKind>2010</DateKind> Census, the racial makeup of <Location>Los Angeles</Location> included: <Number>1,888,158</Number> Whites (<Percentage>49.8%</Percentage>), <Number>365,118</Number> <MISC>African Americans</MISC> (<Percentage>9.6%</Percentage>), <Number>28,215</Number> <MISC>Native Americans</MISC> (<Percentage>0.7%</Percentage>), <Number>426,959</Number> <MISC>Asians</MISC> (<Percentage>11.3%</Percentage>)."
+      },
+      {
+        "xtext": "The average <SET>annual</SET> temperature of the sea is <Number>63</Number> °F (<Number>17</Number> °C), from <Number>58</Number> °F (<Number>14</Number> °C) in <DateKind>January</DateKind> to <Number>68</Number> °F (<Number>20</Number> °C) in <DateKind>August</DateKind>."
+      }
+    ]
+  }
+}
+```
+
+</p>
+</details>
+
+Batch extract query to run with customer model:
+
+- It takes a list of texts as an input.
+
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 query ExtractBatchWithModel {
   extractBatch(
     sources: [
@@ -1750,9 +2058,12 @@ query ExtractBatchWithModel {
       "David Stanley lives in Lake Charles and works for MMS."
     ]
     model: {
-      URL: "../library/src/test/resources/BOEM_model.ser.gz" # Path to model file or URL if model was loaded to Maana as a Kind
-      # kindId: "<use Kind ID if model file was uploaded to Maana as a Kind>"
-      # name: "<use model name if it was trained and service was not restarted since that time (cached model)>"
+      name: "myModel" # Use it if CRFModel has already built with this name. If multiple models were built with the same name then last one is saved only.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
     }
     calcProb: true # if true, you'll get probability distribution vector (it works with customer model only)
     k: 3 # calculation of k annotations with best probabilities
@@ -1773,11 +2084,14 @@ query ExtractBatchWithModel {
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "extractBatch": [
@@ -1855,19 +2169,30 @@ query ExtractBatchWithModel {
 </p>
 </details>
 
-### Example of "is surface form" query - returns true if a particular source is exactly a surface form of "entityName"
+### IS-SURFACE-FORM query
 
-```graphql
+Example of "is surface form" query to run with default Stanford model:
+
+- returns true if a particular source is exactly a surface form of "entityName"
+
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 query IsSurfaceForm {
   isSurfaceForm(source: "Seattle", tag: "Location")
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "isSurfaceForm": true
@@ -1878,25 +2203,37 @@ query IsSurfaceForm {
 </p>
 </details>
 
-```graphql
+Example of "is surface form" query to run with customer model:
+
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 query IsSurfaceFormWithModel {
   isSurfaceForm(
     source: "BOEM"
     tag: "Organization"
     model: {
-      URL: "../library/src/test/resources/BOEM_model.ser.gz" # Path to model file or URL if model was loaded to Maana as a Kind
-      # kindId: "<use Kind ID if model file was uploaded to Maana as a Kind>"
-      # name: "<use model name if it was trained and service was not restarted since that time (cached model)>"
+      name: "myModel" # Use it if CRFModel has already built with this name. If multiple models were built with the same name then last one is saved only.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
     }
   )
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "isSurfaceForm": true
@@ -1907,22 +2244,31 @@ query IsSurfaceFormWithModel {
 </p>
 </details>
 
-### Example of parse query:
+### PARSE query
 
-```graphql
+Example of parse query to run with default Stanford model:
+
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 query Parse {
   parse(source: "Forrest Gump")
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
 - returns the parsed entity name if the source text is exactly as entity with no additional text to the left or right of the entity,
 - otherwise return empty string.
 
-```json
+```ruby
 {
   "data": {
     "parse": "Forrest Gump"
@@ -1933,24 +2279,36 @@ query Parse {
 </p>
 </details>
 
-```graphql
+Example of parse query to run with customer model:
+
+<details>
+<summary>click to expand example</summary>
+<p>
+
+```ruby
 query ParseWithModel {
   parse(
     source: "BOEM"
     model: {
-      URL: "../library/src/test/resources/BOEM_model.ser.gz" # Path to model file or URL if model was loaded to Maana as a Kind
-      # kindId: "<use Kind ID if model file was uploaded to Maana as a Kind>"
-      # name: "<use model name if it was trained and service was not restarted since that time (cached model)>"
+      name: "myModel" # Use it if CRFModel has already built with this name. If multiple models were built with the same name then last one is saved only.
+      # kindId: "..." # It used only if CRFModel was uploaded to Maana as a file Kind and Maana generated this ID.
+      #   Cases:
+      #     CRFModel file was manually uploaded to Maana (drag & drop)
+      #     CRFModel file was uploaded automatically by function: trainingToKind() – see output of this function or record in Kind “NERModelStat”
+      # URL: "..." # URL of Model file or local Path if service running locally
     }
   )
 }
 ```
 
-<details style="color:green">
+</p>
+</details>
+
+<details>
 <summary>click to expand output results</summary>
 <p>
 
-```json
+```ruby
 {
   "data": {
     "parse": "BOEM"
