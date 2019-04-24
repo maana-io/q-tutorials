@@ -27,7 +27,7 @@ export const resolver = {
 
       // We use regular expressions to parse the lines
       const locationRegEx = /=+ (.*) =+/
-      const idAndCapacityRegEx = /(.*) (\d+\,\d+(,\d+)*)(.*) bbl\/d(.*)/gm
+      const idAndCapacityRegEx = /(.*) (\d+\,\d+(,\d+)*)(.*) bbl\/d(.*)/
 
       // Keep track of the current location
       let location = null
@@ -37,7 +37,6 @@ export const resolver = {
         if (locationMatch) {
           location = locationMatch[1]
         }
-
         // Fill in id and capacity
         const idAndCapacityMatch = idAndCapacityRegEx.exec(line)
         if (!idAndCapacityMatch) return
