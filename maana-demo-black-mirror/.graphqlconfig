@@ -1,0 +1,25 @@
+{
+  "projects": {
+    "maana-demo-black-mirror-helpers": {
+      "schemaPath": "schemas/maana-demo-black-mirror-helpers.graphql",
+      "extensions": {
+        "endpoints": {
+          "default": {
+            "url": "http://localhost:8050/graphql",
+            "headers": { "Authorization": "Bearer ${env:MAANA_AUTH_TOKEN}" }
+          }
+        }
+      }
+    },
+    "maana-measurement": {
+      "schemaPath": "schemas/maana-measurement.graphql",
+      "extensions": {
+        "endpoints": {
+          "default": {
+            "url": "https://stable.knowledge.maana.io:8443/service/ed3e41e1-1259-4dc5-9ef6-1a3fdba8a69c/graphql",
+            "headers": { "Authorization": "Bearer ${env:MAANA_AUTH_TOKEN}" }
+          }
+        }
+      }
+    }
+}

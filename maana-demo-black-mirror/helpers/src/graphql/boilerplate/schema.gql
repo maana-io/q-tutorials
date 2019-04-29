@@ -1,0 +1,11 @@
+scalar Date
+
+type Info {
+  id: ID!
+  name: String
+  description: String
+}
+
+type Query {
+  info: Info
+}
