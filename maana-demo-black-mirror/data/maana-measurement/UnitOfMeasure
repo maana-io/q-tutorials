@@ -1,0 +1,37 @@
+[
+  {
+    "id": "0",
+    "name": "(unknown)",
+    "displayAs": "(unknown)"
+  },
+  {
+    "id": "hertz",
+    "name": "Hertz",
+    "displayAs": "Hz"
+  },
+  {
+    "id": "bytes",
+    "name": "Bytes",
+    "displayAs": "b"
+  },
+  {
+    "id": "kilobytes",
+    "name": "Kilobytes",
+    "displayAs": "kb"
+  },
+  {
+    "id": "megabytes",
+    "name": "Megaytes",
+    "displayAs": "mb"
+  },
+  {
+    "id": "terabytes",
+    "name": "Terabytes",
+    "displayAs": "tb"
+  },
+  {
+    "id": "gigabytes",
+    "name": "Gigabytes",
+    "displayAs": "gb"
+  }
+]
