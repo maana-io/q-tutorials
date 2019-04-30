@@ -1,3 +1,4 @@
+import '@babel/polyfill'
 import initServer from './server'
 // JWT verification middleware
 import jwt from 'express-jwt'
@@ -31,8 +32,8 @@ const checkJwt = jwt(jwtVerificationDefinition)
 //
 // WebSocket Authentication Middleware
 //
-//This function manually adds the token to the express-jwt function,
-//such that it could retrieve directly and not from a request
+// This function manually adds the token to the express-jwt function,
+// such that it could retrieve directly and not from a request
 const jwtWithLocalToken = token => {
   let expandedDefinition = Object.assign({}, jwtVerificationDefinition)
   expandedDefinition.getToken = function() {
@@ -41,11 +42,11 @@ const jwtWithLocalToken = token => {
   return jwt(expandedDefinition)
 }
 
-//This function uses our custom form of express-jwt to ensure the token passed to the socket is valid
+// This function uses our custom form of express-jwt to ensure the token passed to the socket is valid
 const validateSocketToken = checkTokenFunc => {
   return new Promise(function(resolve, reject) {
-    //checkTokenFunc is a result of the express-jwt middleware
-    //since we're not using it in the express context, req and res don't have to be passed
+    // checkTokenFunc is a result of the express-jwt middleware
+    // since we're not using it in the express context, req and res don't have to be passed
     checkTokenFunc({}, {}, function(error) {
       if (typeof error !== 'undefined') {
         reject('Cannot verify access token', error)
@@ -62,7 +63,7 @@ const socketAuthMiddleware = (connectionParams, webSocket) => {
     return validateSocketToken(checkTokenFunc).then(
       () => {
         log(SELF).info(`Consumer ${connectionParams.consumerName} is connected`)
-        return
+        
       },
       err => {
         throw new Error(`Socket connection could not be established - ${err}`)

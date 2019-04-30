@@ -1,3 +1,4 @@
+import '@babel/polyfill'
 import initServer from './server'
 import chalk from 'chalk'
 

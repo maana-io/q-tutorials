@@ -11,8 +11,8 @@ export const resolver = {
   Query: {
     info: async () => {
       return {
-        id: 'maana-demo-black-mirror-helpers',
-        name: 'maana-demo-black-mirror-helpers',
+        id: 'maana-demo-black-mirror-helpers2',
+        name: 'maana-demo-black-mirror-helpers2',
         description: 'Maana Q demo Black Mirror helper functions'
       }
     }
