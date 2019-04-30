@@ -1,0 +1,78 @@
+type Country {
+  """
+  id
+  """
+  id: ID!
+  name: String
+  localizedName: LocalizedText
+}
+
+input CountryAsInput {
+  id: ID!
+  name: String
+  localizedName: LocalizedTextAsInput
+}
+
+type Language {
+  """
+  id
+  """
+  id: ID!
+  localizedName: LocalizedText
+  name: String
+}
+
+input LanguageAsInput {
+  id: ID!
+  localizedName: LocalizedTextAsInput
+  name: String
+}
+
+type LocalizedText {
+  """
+  id
+  """
+  id: ID!
+  languageTag: LanguageTag
+  text: String!
+}
+
+input LocalizedTextAsInput {
+  id: ID!
+  languageTag: LanguageTagAsInput
+  text: String!
+}
+
+type LanguageTag {
+  """
+  id
+  """
+  id: ID!
+  languageCode: Language
+  country: Country
+}
+
+input LanguageTagAsInput {
+  id: ID!
+  languageCode: LanguageAsInput
+  country: CountryAsInput
+}
+
+type Query {
+  translateOneLocalized_Mock(
+    localizedText: LocalizedTextAsInput!
+    targetLanguageTag: LanguageTagAsInput!
+  ): LocalizedText!
+  translateMultipleLocalized_Mock(
+    localizedTexts: [LocalizedTextAsInput!]!
+    targetLanguageTag: LanguageTagAsInput!
+  ): [LocalizedText!]!
+  translateOne_Mock(
+    text: String!
+    targetLanguageTag: LanguageTagAsInput!
+  ): LocalizedText!
+  translateMultiple_Mock(
+    texts: [String!]!
+    targetLanguageTag: LanguageTagAsInput!
+  ): [LocalizedText!]!
+}

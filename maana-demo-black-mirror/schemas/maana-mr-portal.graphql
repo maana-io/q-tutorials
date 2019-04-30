@@ -1,0 +1,917 @@
+# source: https://stable.knowledge.maana.io:8443/service/4e567126-7f99-4526-9835-80aad10e5626/graphql
+# timestamp: Tue Apr 30 2019 10:04:36 GMT-0700 (PDT)
+
+type Application {
+  id: ID!
+  name: String!
+  thumbnailUrl: String
+}
+
+input ApplicationAsInput {
+  id: ID!
+  name: String!
+  thumbnailUrl: String
+}
+
+type Argument {
+  id: ID!
+  name: String!
+  type: String!
+  typeKindId: ID
+  kind: Kind
+  modifiers: [String]
+  description: String
+  function: Function!
+  isDeleted: Boolean!
+}
+
+input ArgumentAsInput {
+  id: ID!
+  name: String!
+  type: String!
+  typeKindId: ID
+  kind: KindAsInput
+  modifiers: [String]
+  description: String
+  function: FunctionAsInput!
+  isDeleted: Boolean!
+}
+
+type ArgumentValue {
+  id: ID!
+  argument: Argument
+  operation: Operation
+  argumentRef: ID
+}
+
+input ArgumentValueAsInput {
+  id: ID!
+  argument: ArgumentAsInput
+  operation: OperationAsInput
+  argumentRef: ID
+}
+
+type Country {
+  id: ID!
+  name: String
+  localizedName: LocalizedText
+}
+
+input CountryAsInput {
+  id: ID!
+  name: String
+  localizedName: LocalizedTextAsInput
+}
+
+scalar Date
+
+scalar DateTime
+
+type Field {
+  id: ID!
+  name: String!
+  type: String!
+  description: String
+  modifiers: [String]
+  typeKindId: ID
+  displayAs: [String]
+  hide: Boolean
+  autoFocus: Boolean
+  readonly: Boolean
+  kind: Kind
+  isDeleted: Boolean!
+}
+
+input FieldAsInput {
+  id: ID!
+  name: String!
+  type: String!
+  description: String
+  modifiers: [String]
+  typeKindId: ID
+  displayAs: [String]
+  hide: Boolean
+  autoFocus: Boolean
+  readonly: Boolean
+  kind: KindAsInput
+  isDeleted: Boolean!
+}
+
+type FieldValue {
+  ID: ID
+  STRING: String
+  INT: Int
+  FLOAT: Float
+  BOOLEAN: Boolean
+  DATE: Date
+  TIME: Time
+  DATETIME: DateTime
+  JSON: JSON
+  KIND: ID
+  l_ID: [ID]
+  l_STRING: [String]
+  l_INT: [Int]
+  l_FLOAT: [Float]
+  l_BOOLEAN: [Boolean]
+  l_DATE: [Date]
+  l_TIME: [Time]
+  l_DATETIME: [DateTime]
+  l_JSON: [JSON]
+  l_KIND: [ID]
+}
+
+input FieldValueAsInput {
+  ID: ID
+  STRING: String
+  INT: Int
+  FLOAT: Float
+  BOOLEAN: Boolean
+  DATE: Date
+  TIME: Time
+  DATETIME: DateTime
+  JSON: JSON
+  KIND: ID
+  l_ID: [ID]
+  l_STRING: [String]
+  l_INT: [Int]
+  l_FLOAT: [Float]
+  l_BOOLEAN: [Boolean]
+  l_DATE: [Date]
+  l_TIME: [Time]
+  l_DATETIME: [DateTime]
+  l_JSON: [JSON]
+  l_KIND: [ID]
+}
+
+type Function {
+  id: ID!
+  name: String!
+  description: String
+  arguments: [Argument!]!
+  outputType: String!
+  outputKindId: ID
+  outputModifiers: [String]
+  isGenerated: Boolean!
+  kind: Kind
+  graphqlOperationType: String
+  functionType: String!
+  implementation: Implementation
+  service: Service!
+  isDeleted: Boolean!
+}
+
+input FunctionAsInput {
+  id: ID!
+  name: String!
+  description: String
+  arguments: [ArgumentAsInput!]!
+  outputType: String!
+  outputKindId: ID
+  outputModifiers: [String]
+  isGenerated: Boolean!
+  kind: KindAsInput
+  graphqlOperationType: String
+  functionType: String!
+  implementation: ImplementationAsInput
+  service: ServiceAsInput!
+  isDeleted: Boolean!
+}
+
+type FunctionGraphNode {
+  id: ID!
+  operationId: ID!
+}
+
+input FunctionGraphNodeAsInput {
+  id: ID!
+  operationId: ID!
+}
+
+type Implementation {
+  id: ID!
+  entrypoint: Operation
+  operations: [Operation!]!
+}
+
+input ImplementationAsInput {
+  id: ID!
+  entrypoint: OperationAsInput
+  operations: [OperationAsInput!]!
+}
+
+type Instance {
+  id: ID!
+  name: String
+  kindId: ID!
+  kind: Kind
+  fieldIds: [ID]
+  fieldValues: [FieldValue]
+  linksFrom: [Link]
+  linksTo: [Link]
+}
+
+input InstanceAsInput {
+  id: ID!
+  name: String
+  kindId: ID!
+  kind: KindAsInput
+  fieldIds: [ID]
+  fieldValues: [FieldValueAsInput]
+  linksFrom: [LinkAsInput]
+  linksTo: [LinkAsInput]
+}
+
+type InstanceRef {
+  id: ID!
+  kindId: ID
+  kindName: String
+  name: String
+  url: String
+  kind: Kind
+  instance: Instance
+  innerKind: Kind
+  innerFunction: Function
+}
+
+input InstanceRefAsInput {
+  id: ID!
+  kindId: ID
+  kindName: String
+  name: String
+  url: String
+  kind: KindAsInput
+  instance: InstanceAsInput
+  innerKind: KindAsInput
+  innerFunction: FunctionAsInput
+}
+
+type Inventory {
+  serviceKinds: [Kind!]!
+  workspaceKinds: [Kind!]!
+  functions: [Function!]!
+}
+
+input InventoryAsInput {
+  serviceKinds: [KindAsInput!]!
+  workspaceKinds: [KindAsInput!]!
+  functions: [FunctionAsInput!]!
+}
+
+scalar JSON
+
+type Kind {
+  id: ID!
+  name: String!
+  serviceId: ID
+  description: String
+  thumbnailUrl: String
+  isPublic: Boolean
+  isManaged: Boolean
+  isSystem: Boolean
+  nameField: ID
+  isGenerated: Boolean!
+  relationsFrom: [Relation]
+  relationsTo: [Relation]
+  linksFrom: [Link]
+  linksTo: [Link]
+  service: Service
+  isDeleted: Boolean!
+}
+
+input KindAsInput {
+  id: ID!
+  name: String!
+  serviceId: ID
+  description: String
+  thumbnailUrl: String
+  isPublic: Boolean
+  isManaged: Boolean
+  isSystem: Boolean
+  nameField: ID
+  isGenerated: Boolean!
+  relationsFrom: [RelationAsInput]
+  relationsTo: [RelationAsInput]
+  linksFrom: [LinkAsInput]
+  linksTo: [LinkAsInput]
+  service: ServiceAsInput
+  isDeleted: Boolean!
+}
+
+type KnowledgeGraphNode {
+  id: ID!
+  kind: Kind
+  instance: Instance
+  innerKind: Kind
+  innerFunction: Function
+}
+
+input KnowledgeGraphNodeAsInput {
+  id: ID!
+  kind: KindAsInput
+  instance: InstanceAsInput
+  innerKind: KindAsInput
+  innerFunction: FunctionAsInput
+}
+
+type Language {
+  id: ID!
+  localizedName: LocalizedText
+  name: String
+}
+
+input LanguageAsInput {
+  id: ID!
+  localizedName: LocalizedTextAsInput
+  name: String
+}
+
+type LanguageTag {
+  id: ID!
+  languageCode: Language
+  country: Country
+}
+
+input LanguageTagAsInput {
+  id: ID!
+  languageCode: LanguageAsInput
+  country: CountryAsInput
+}
+
+type Link {
+  id: ID!
+  relation: Relation!
+  fromKind: Kind
+  toKind: Kind
+  name: String
+  weight: Float
+  fromField: Field
+  fromInstance: Instance
+  fromOffset: String
+  fromSpan: String
+  toField: Field
+  toInstance: Instance
+  toOffset: String
+  toSpan: String
+}
+
+input LinkAsInput {
+  id: ID!
+  relation: RelationAsInput!
+  fromKind: KindAsInput
+  toKind: KindAsInput
+  name: String
+  weight: Float
+  fromField: FieldAsInput
+  fromInstance: InstanceAsInput
+  fromOffset: String
+  fromSpan: String
+  toField: FieldAsInput
+  toInstance: InstanceAsInput
+  toOffset: String
+  toSpan: String
+}
+
+type LocalizedText {
+  id: ID!
+  languageTag: LanguageTag
+  text: String!
+}
+
+input LocalizedTextAsInput {
+  id: ID!
+  languageTag: LanguageTagAsInput
+  text: String!
+}
+
+type Operation {
+  id: ID!
+  type: String!
+  function: Function
+  argumentValues: [ArgumentValue!]!
+}
+
+input OperationAsInput {
+  id: ID!
+  type: String!
+  function: FunctionAsInput
+  argumentValues: [ArgumentValueAsInput!]!
+}
+
+type Path {
+  id: ID!
+  parts: [String]
+}
+
+input PathAsInput {
+  id: ID!
+  parts: [String]
+}
+
+type PortalAnnouncement {
+  id: ID!
+  text: String
+}
+
+type PortalAvatar {
+  id: ID!
+  portalModel: PortalModel!
+}
+
+input PortalAvatarAsInput {
+  id: ID!
+  portalModel: PortalModelAsInput!
+}
+
+type PortalDashboard {
+  id: ID!
+  portalUser: PortalUserOutput!
+  recentPortalWorkspaces: [PortalWorkspace!]!
+  favoritePortalWorkspaces: [PortalWorkspace!]!
+}
+
+type PortalGraph {
+  id: ID!
+  name: String!
+  type: String!
+  expanded: Boolean!
+  zoom: Float!
+  offsetX: Float!
+  offsetY: Float!
+  workspace: Workspace!
+  function: Function
+  nodes: [PortalGraphNode!]!
+}
+
+input PortalGraphAsInput {
+  id: ID!
+  name: String!
+  type: String!
+  expanded: Boolean!
+  zoom: Float!
+  offsetX: Float!
+  offsetY: Float!
+  workspace: WorkspaceAsInput!
+  function: FunctionAsInput
+  nodes: [PortalGraphNodeAsInput!]!
+}
+
+type PortalGraphNode {
+  id: ID!
+  x: Float!
+  y: Float!
+  width: Float!
+  height: Float!
+  collapsed: Boolean!
+  knowledgeGraphNode: KnowledgeGraphNode
+  queryGraphNode: QueryGraphNode
+  functionGraphNode: FunctionGraphNode
+}
+
+input PortalGraphNodeAsInput {
+  id: ID!
+  x: Float!
+  y: Float!
+  width: Float!
+  height: Float!
+  collapsed: Boolean!
+  knowledgeGraphNode: KnowledgeGraphNodeAsInput
+  queryGraphNode: QueryGraphNodeAsInput
+  functionGraphNode: FunctionGraphNodeAsInput
+}
+
+type PortalLobby {
+  id: ID!
+  portalUser: PortalUserOutput!
+  visiblePortalUsers: [VisiblePortalUser!]!
+  announcements: [PortalAnnouncement!]!
+  scene: PortalScene!
+  dashboard: PortalDashboard!
+}
+
+type PortalModel {
+  id: ID!
+  asset: ID!
+}
+
+input PortalModelAsInput {
+  id: ID!
+  asset: ID!
+}
+
+type PortalScene {
+  id: ID!
+  name: String
+}
+
+input PortalUserAsInput {
+  id: ID!
+  user: UserAsInput!
+  thumnailUrl: URLAsInput!
+  avatar: PortalAvatarAsInput!
+  preferredLanguageTag: LanguageTagAsInput!
+}
+
+type PortalUserOutput {
+  id: ID!
+  user: UserOutput!
+  thumnailUrl: URL!
+  avatar: PortalAvatar!
+  preferredLanguageTag: LanguageTag!
+}
+
+type PortalWorkspace {
+  id: ID!
+  user: PortalUserOutput!
+  name: String!
+  workspace: Workspace!
+}
+
+type Query {
+  login(user: UserAsInput!): PortalLobby!
+  getPortalUserPreferredLanguage(portalUser: PortalUserAsInput!): LanguageTag!
+  CKGErrors: [String]
+}
+
+type QueryGraphFieldFilter {
+  id: ID!
+  fieldId: ID!
+  op: String!
+  value: String
+}
+
+input QueryGraphFieldFilterAsInput {
+  id: ID!
+  fieldId: ID!
+  op: String!
+  value: String
+}
+
+type QueryGraphNode {
+  id: ID!
+  kindId: ID!
+  fieldFilters: [QueryGraphFieldFilter!]!
+  children: [QueryGraphNodeConnection!]!
+  kind: Kind
+}
+
+input QueryGraphNodeAsInput {
+  id: ID!
+  kindId: ID!
+  fieldFilters: [QueryGraphFieldFilterAsInput!]!
+  children: [QueryGraphNodeConnectionAsInput!]!
+  kind: KindAsInput
+}
+
+type QueryGraphNodeConnection {
+  id: ID!
+  childId: ID!
+  childFieldId: ID!
+  parentId: ID!
+  parentFieldId: ID!
+  type: String!
+}
+
+input QueryGraphNodeConnectionAsInput {
+  id: ID!
+  childId: ID!
+  childFieldId: ID!
+  parentId: ID!
+  parentFieldId: ID!
+  type: String!
+}
+
+type RBACAuthority {
+  id: ID!
+  description: String
+}
+
+type RBACPolicy {
+  id: ID!
+  rbacAuthority: RBACAuthority!
+  rbacRole: RBACRole!
+  rbacVerb: RBACVerb!
+  effective: DateTime
+  expires: DateTime
+  objectId: ID!
+}
+
+type RBACRole {
+  id: ID!
+  description: String
+}
+
+type RBACVerb {
+  id: ID!
+  description: String
+}
+
+type Relation {
+  id: ID!
+  name: String!
+  inverseName: String!
+  description: String
+  undirected: Boolean
+  weight: Float
+  links: [Link]
+}
+
+input RelationAsInput {
+  id: ID!
+  name: String!
+  inverseName: String!
+  description: String
+  undirected: Boolean
+  weight: Float
+  links: [LinkAsInput]
+}
+
+type Role {
+  id: ID!
+  name: String!
+}
+
+input RoleAsInput {
+  id: ID!
+  name: String!
+}
+
+type Scheme {
+  id: ID!
+}
+
+input SchemeAsInput {
+  id: ID!
+}
+
+type Service {
+  id: ID!
+  name: String!
+  description: String
+  isManaged: Boolean!
+  isSystem: Boolean!
+  isReadOnly: Boolean!
+  endpointUrl: String!
+  subscriptionEndpointUrl: String
+  assistantUrl: String
+  thumbnailUrl: String
+  tags: [String!]!
+  created: DateTime!
+  modified: DateTime
+  schema: String!
+  serviceType: String!
+  provider: String
+  logicType: String
+  logicTemplate: JSON
+  aggregatedServices: [Service]
+  refreshPeriod: Int
+  lastChecked: DateTime
+  lastConnectionResult: Int
+  imports: [ServiceImport]
+  exports: [ServiceExport]
+  externalServiceInstances: [ServiceInstance]
+  kinds: [Kind]
+  functions: [Function]
+  workspace: Workspace
+  isDeleted: Boolean!
+}
+
+input ServiceAsInput {
+  id: ID!
+  name: String!
+  description: String
+  isManaged: Boolean!
+  isSystem: Boolean!
+  isReadOnly: Boolean!
+  endpointUrl: String!
+  subscriptionEndpointUrl: String
+  assistantUrl: String
+  thumbnailUrl: String
+  tags: [String!]!
+  created: DateTime!
+  modified: DateTime
+  schema: String!
+  serviceType: String!
+  provider: String
+  logicType: String
+  logicTemplate: JSON
+  aggregatedServices: [ServiceAsInput]
+  refreshPeriod: Int
+  lastChecked: DateTime
+  lastConnectionResult: Int
+  imports: [ServiceImportAsInput]
+  exports: [ServiceExportAsInput]
+  externalServiceInstances: [ServiceInstanceAsInput]
+  kinds: [KindAsInput]
+  functions: [FunctionAsInput]
+  workspace: WorkspaceAsInput
+  isDeleted: Boolean!
+}
+
+type ServiceExport {
+  id: ID!
+  function: Function
+  kind: Kind
+  as: String
+}
+
+input ServiceExportAsInput {
+  id: ID!
+  function: FunctionAsInput
+  kind: KindAsInput
+  as: String
+}
+
+type ServiceImport {
+  id: ID!
+  service: ID!
+  function: Function
+  kind: Kind
+  as: String
+}
+
+input ServiceImportAsInput {
+  id: ID!
+  service: ID!
+  function: FunctionAsInput
+  kind: KindAsInput
+  as: String
+}
+
+type ServiceInstance {
+  id: ID!
+  dockerServiceName: String!
+  hostName: String!
+  desiredState: String!
+  currentState: String!
+}
+
+input ServiceInstanceAsInput {
+  id: ID!
+  dockerServiceName: String!
+  hostName: String!
+  desiredState: String!
+  currentState: String!
+}
+
+type Tenant {
+  id: ID!
+  name: String!
+  users: [UserOutput]
+  services: [Service]
+  applications: [Application]
+}
+
+input TenantAsInput {
+  id: ID!
+  name: String!
+  users: [UserAsInput]
+  services: [ServiceAsInput]
+  applications: [ApplicationAsInput]
+}
+
+type TenantUserRole {
+  userId: ID!
+  user: UserOutput
+  tenantId: ID!
+  tenant: Tenant
+  roles: [Role]
+}
+
+input TenantUserRoleAsInput {
+  userId: ID!
+  user: UserAsInput
+  tenantId: ID!
+  tenant: TenantAsInput
+  roles: [RoleAsInput]
+}
+
+scalar Time
+
+type URL {
+  id: ID!
+  scheme: Scheme
+  host: String
+  port: Int
+  path: Path
+}
+
+input URLAsInput {
+  id: ID!
+  scheme: SchemeAsInput
+  host: String
+  port: Int
+  path: PathAsInput
+}
+
+input UserAsInput {
+  id: ID!
+  name: String!
+  givenName: String
+  familyName: String
+  email: String
+  picture: String
+  tenants: [TenantAsInput]
+  tenantUserRoles: [TenantUserRoleAsInput]
+  createdOn: DateTime
+  activities: [InstanceRefAsInput!]!
+  recentItems: [InstanceRefAsInput!]!
+  favoriteItems: [InstanceRefAsInput!]!
+  workspaces: [WorkspaceAsInput!]!
+  applications: [ApplicationAsInput!]!
+  theme: String
+  openWorkspaces: [WorkspaceAsInput!]!
+  activeWorkspace: WorkspaceAsInput
+}
+
+type UserOutput {
+  id: ID!
+  name: String!
+  givenName: String
+  familyName: String
+  email: String
+  picture: String
+  tenants: [Tenant]
+  tenantUserRoles: [TenantUserRole]
+  createdOn: DateTime
+  activities: [InstanceRef!]!
+  recentItems: [InstanceRef!]!
+  favoriteItems: [InstanceRef!]!
+  workspaces: [Workspace!]!
+  applications: [Application!]!
+  theme: String
+  openWorkspaces: [Workspace!]!
+  activeWorkspace: Workspace
+}
+
+type VisiblePortalUser {
+  id: ID!
+  fromPortalUser: PortalUserOutput!
+  toPortalUser: PortalUserOutput!
+  policies: [RBACPolicy]
+}
+
+type Workspace {
+  id: ID!
+  name: String!
+  thumbnailUrl: String!
+  owner: UserOutput!
+  isPublic: Boolean
+  isTemplate: Boolean
+  createdOn: DateTime!
+  lastOpenedOn: DateTime!
+  layout: WorkspaceLayout!
+  modelServiceId: ID!
+  logicServiceId: ID!
+  workspaceServiceId: ID!
+  services: [Service!]!
+  portalGraphs: [PortalGraph!]!
+  activeGraphPath: [ID!]!
+  instanceRefs: [InstanceRef!]!
+  inventory: Inventory
+}
+
+input WorkspaceAsInput {
+  id: ID!
+  name: String!
+  thumbnailUrl: String!
+  owner: UserAsInput!
+  isPublic: Boolean
+  isTemplate: Boolean
+  createdOn: DateTime!
+  lastOpenedOn: DateTime!
+  layout: WorkspaceLayoutAsInput!
+  modelServiceId: ID!
+  logicServiceId: ID!
+  workspaceServiceId: ID!
+  services: [ServiceAsInput!]!
+  portalGraphs: [PortalGraphAsInput!]!
+  activeGraphPath: [ID!]!
+  instanceRefs: [InstanceRefAsInput!]!
+  inventory: InventoryAsInput
+}
+
+type WorkspaceLayout {
+  id: ID!
+  explorerOpen: Boolean!
+  explorerSize: Float!
+  inventoryOpen: Boolean!
+  inventorySize: Float!
+  contextOpen: Boolean!
+  contextMode: String!
+  contextSize: Float!
+  dataVizOpen: Boolean!
+  dataVizSize: Float!
+}
+
+input WorkspaceLayoutAsInput {
+  id: ID!
+  explorerOpen: Boolean!
+  explorerSize: Float!
+  inventoryOpen: Boolean!
+  inventorySize: Float!
+  contextOpen: Boolean!
+  contextMode: String!
+  contextSize: Float!
+  dataVizOpen: Boolean!
+  dataVizSize: Float!
+}

@@ -6,7 +6,22 @@
         "endpoints": {
           "default": {
             "url": "http://localhost:8050/graphql",
-            "headers": { "Authorization": "Bearer ${env:MAANA_AUTH_TOKEN}" }
+            "headers": {
+              "Authorization": "Bearer ${env:MAANA_AUTH_TOKEN}"
+            }
+          }
+        }
+      }
+    },
+    "maana-language": {
+      "schemaPath": "schemas/maana-language.graphql",
+      "extensions": {
+        "endpoints": {
+          "default": {
+            "url": "https://stable.knowledge.maana.io:8443/service/05830e8d-a9af-42f3-a922-c76305c67e90/graphql",
+            "headers": {
+              "Authorization": "Bearer ${env:MAANA_AUTH_TOKEN}"
+            }
           }
         }
       }
@@ -17,9 +32,30 @@
         "endpoints": {
           "default": {
             "url": "https://stable.knowledge.maana.io:8443/service/ed3e41e1-1259-4dc5-9ef6-1a3fdba8a69c/graphql",
-            "headers": { "Authorization": "Bearer ${env:MAANA_AUTH_TOKEN}" }
+            "headers": {
+              "Authorization": "Bearer ${env:MAANA_AUTH_TOKEN}"
+            }
+          }
+        }
+      }
+    },
+    "maana-measurement": {
+      "schemaPath": "schemas/maana-mr-portal.graphql",
+      "extensions": {
+        "endpoints": {
+          "default": {
+            "url": "https://stable.knowledge.maana.io:8443/service/4e567126-7f99-4526-9835-80aad10e5626/graphql",
+            "headers": {
+              "Authorization": "Bearer ${env:MAANA_AUTH_TOKEN}"
+            }
           }
         }
       }
     }
+  },
+  "extensions": {
+    "maana": {
+      "auth": "eyJhY2Nlc3NfdG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklsSkVVa1JSYW1NMFVXcEZOVTE2U1hwTmEwNUdUWHBOTlUxcVdrUk9SRlV6VVd0Tk5GSkVhRVZPZWxrelVXcFJNMDlVUWtaT2R5SjkuZXlKcGMzTWlPaUpvZEhSd2N6b3ZMMjFoWVc1aExtRjFkR2d3TG1OdmJTOGlMQ0p6ZFdJaU9pSjNZV0ZrZkdvNVlWSlFUVmhZUTJkVE9VeEtZWGxPVlhOclVuaDFabmh5WVhKa1kybHpiblJtYjB4amVYVnphRkVpTENKaGRXUWlPaUpvZEhSd2N6b3ZMMmcwTG0xaFlXNWhMbWx2THlJc0ltbGhkQ0k2TVRVMU5qVTFOVFUwTVN3aVpYaHdJam94TlRVNU1UUTNOVFF4TENKaGVuQWlPaUkwYjNoVFZESTVTMUF4WkVneE16QlBSa0ozTVdVMFRWQkVPRFp2V1dWclZpSXNJbk5qYjNCbElqb2liMlptYkdsdVpWOWhZMk5sYzNNaWZRLm5KWHJRSEZRbVB3ZXRkcU5kSkM3alVuNWRoX0dYT3VfMWRxczlhUlVVT0hXUGV0MGR4eFZqMU92bGVzU0RtelBqaDRvMzJJMlJmX3BOY1dfMjZNWXNla1hNQnVHWE9fWmg4dUVmTzctQnlVRkxWeWkxOVV5VTR0VENFUm0xSDNiZE1CZkNvQzFPSzZydVM1ek9LLVpQMktBYTRSTl9WS2xnbVI0MFRlSkw1OHpkSzA5RnRhVFMtUk5JYTh3aS1ZUEFoU3NJbjV6MDJ5Y2xTeXRyQkgwWExPcHJBaE1JeXUzeE10WGdLYmFCMjBmMXJndFQxWHhLVFZybXZvZFFVdlNlMS1PeTBHSm8yZFZuMFllV2o1enljNDE1U1h6NkNwelR2WS1wbXVvTlRFV1d6bjBuSnJ6cmlhOEplMWNYMHZqUDB4amxqSGpOZ3pvWTdtZkgtWmM3USIsInJlZnJlc2hfdG9rZW4iOiJVYmw4V3VqSHJHMGhhd2M4dzh0UHlxN29BcFZRUm9TM242Z2h0NDZaNXN0LXkiLCJleHBpcmVzX2luIjoyNTkyMDAwLCJ0b2tlbl90eXBlIjoiQmVhcmVyIiwiZXhwaXJlc19hdCI6MTU1OTE0NzU0MjA1OSwidXJsIjoiaHR0cHM6Ly9tYWFuYS5hdXRoMC5jb20vb2F1dGgvdG9rZW4iLCJpZCI6IjRveFNUMjlLUDFkSDEzME9GQncxZTRNUEQ4Nm9ZZWtWIn0="
+    }
+  }
 }

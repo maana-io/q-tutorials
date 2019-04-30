@@ -1,0 +1,76 @@
+# source: http://localhost:8050/graphql
+# timestamp: Tue Apr 30 2019 10:04:32 GMT-0700 (PDT)
+
+type Country {
+  """id"""
+  id: ID!
+  name: String
+  localizedName: LocalizedText
+}
+
+input CountryAsInput {
+  id: ID!
+  name: String
+  localizedName: LocalizedTextAsInput
+}
+
+scalar Date
+
+scalar DateTime
+
+type Info {
+  id: ID!
+  name: String
+  description: String
+}
+
+scalar JSON
+
+type Language {
+  """id"""
+  id: ID!
+  localizedName: LocalizedText
+  name: String
+}
+
+input LanguageAsInput {
+  id: ID!
+  localizedName: LocalizedTextAsInput
+  name: String
+}
+
+type LanguageTag {
+  """id"""
+  id: ID!
+  languageCode: Language
+  country: Country
+}
+
+input LanguageTagAsInput {
+  id: ID!
+  languageCode: LanguageAsInput
+  country: CountryAsInput
+}
+
+type LocalizedText {
+  """id"""
+  id: ID!
+  languageTag: LanguageTag
+  text: String!
+}
+
+input LocalizedTextAsInput {
+  id: ID!
+  languageTag: LanguageTagAsInput
+  text: String!
+}
+
+type Query {
+  info: Info
+  translateOneLocalized_Mock(localizedText: LocalizedTextAsInput!, targetLanguageTag: LanguageTagAsInput!): LocalizedText!
+  translateMultipleLocalized_Mock(localizedTexts: [LocalizedTextAsInput!]!, targetLanguageTag: LanguageTagAsInput!): [LocalizedText!]!
+  translateOne_Mock(text: String!, targetLanguageTag: LanguageTagAsInput!): LocalizedText!
+  translateMultiple_Mock(texts: [String!]!, targetLanguageTag: LanguageTagAsInput!): [LocalizedText!]!
+}
+
+scalar Time

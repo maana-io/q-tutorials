@@ -1,4 +1,7 @@
 scalar Date
+scalar DateTime
+scalar Time
+scalar JSON
 
 type Info {
   id: ID!
