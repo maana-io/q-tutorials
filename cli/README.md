@@ -215,7 +215,7 @@ gql get-schema -p basic
 
 Create instances from common data formats, such as CSV and JSON that conform to the model. The /basic examples of person and employer instance data are given below.
 
-### person.csv
+### Person.csv
 
 ```baash
 "id","name","dob","employer"
@@ -223,14 +223,14 @@ Create instances from common data formats, such as CSV and JSON that conform to 
 "P01","George Lucas","1944-05-14","E00"
 ```
 
-### employer.csv
+### Employer.csv
 
 ```baash
 "id","name","ceo"
 "E00","Lucasfilm Ltd.","P01"
 ```
 
-### person.json
+### Person.json
 
 ```json
 [
@@ -249,7 +249,7 @@ Create instances from common data formats, such as CSV and JSON that conform to 
 ]
 ```
 
-### employer.json
+### Employer.json
 
 ```json
 [
