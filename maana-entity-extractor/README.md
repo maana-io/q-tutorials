@@ -21,3 +21,8 @@ selected, the following view should be visible - showing the extracted Physical 
 </p>
 Many other entities are extracted based on the entities defined in the maana-ner service include Person, Location and Organization.  The extracted data can now be used as part of a larger pipeline.
 
+To grab the extractions you need to call the getExtractions query and provide a kindId, fieldName and instanceId as shown below
+<p><p><img src="EntityExtractorGetExtractions.png" alt="Upload", style="height: 100%; width: 100%; align: center"/>
+</p>
+<em>Figure 1: View showing the result of the getExtractions query.</em>
+</p>
