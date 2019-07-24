@@ -201,7 +201,7 @@ Adding the following endpoints to your config:  basic
 Again, we need to add the authorization header.
 
 - In Maana Q 3.1.0 or later just run the `gql maddheaders` command
-- In Maana Q 3.5.0 will require adding it manually, check [here](#v3.0.5) for instructions.
+- In Maana Q 3.0.5 will require adding it manually, check [here](#v3.0.5) for instructions.
 
 ## Introspecting the Service
 
