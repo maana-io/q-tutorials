@@ -210,7 +210,7 @@ npm init -y
 npm i -D babel-cli gql-merge npm-run-all
 ```
 
-And add the following scripts:
+And add the following scripts to your `package.json` file:
 
 ```json
   "scripts": {
