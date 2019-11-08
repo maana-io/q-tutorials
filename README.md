@@ -1,5 +1,5 @@
 # Q Tutorials
-A collection of tutorials for learning how to use the Maana Knowledge Platform and several of the data and Data Science services that come with it.  As a learning plan, we encourage you to proceeed through the tutorials in the order below.  More advanced tutorials will be added in the future.
+A collection of tutorials for learning how to use the Maana Knowledge Platform and several of the data and Data Science services that come with it.  As a learning plan, we encourage you to proceed through the tutorials in the order below.  More advanced tutorials will be added in the future.
 
 ## [Classifying the Types of Fields](https://github.com/maana-io/q-tutorials/tree/master/maana-fieldclassifier)
 This tutorial demonstrates how the Maana Field Classifier service recognizes new data added to the platform and attempts to identify the types of fields.  The tutorial covers concepts of uploading data, platform events, links, and functions.
