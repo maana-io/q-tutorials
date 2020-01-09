@@ -10,9 +10,13 @@ It is best to make a copy of this repo (delete the .git folder to detach it from
 
 ## Installation
 
-```sh
-npm i -g graphql-cli graphql-cli-maana
+Assuming you already have a valid [NodeJS and npm](https://nodejs.org/en/) setup:
+
 ```
+npm i -g graphql-cli@~3.0 graphql-cli-maana
+```
+
+**graphql-cli version:** Note that version 3 of graphql-cli is required. Problems around broken installs, or unidentified or missing commands may be indicative of a wrong version being used.
 
 ## Setup
 
