@@ -15,8 +15,10 @@ This section describes how this services was assembled such that it could be rec
 For convenience, the following commands should be installed globally:
 
 ```bash
-npm i -g create-react-app prisma graphql-yoga lerna graphql-cli graphql-cli-maana
+npm i -g create-react-app prisma graphql-yoga lerna graphql-cli@~3.0 graphql-cli-maana
 ```
+
+**graphql-cli version:** Note that version 3 of graphql-cli is required. Problems around broken installs, or unidentified or missing commands may be indicative of a wrong version being used.
 
 ### maana-graph: Lerna monorepo
 

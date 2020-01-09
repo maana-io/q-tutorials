@@ -6,7 +6,13 @@ In this tutorial, we will walk step-by-step for creating a managed graph from a 
 
 We use the GraphQL command line interface (CLI) with the Maana plugin:
 
-npm i -g graphql-cli graphql-cli-maana
+Assuming you already have a valid [NodeJS and npm](https://nodejs.org/en/) setup:
+
+```
+npm i -g graphql-cli@~3.0 graphql-cli-maana
+```
+
+**graphql-cli version:** Note that version 3 of graphql-cli is required. Problems around broken installs, or unidentified or missing commands may be indicative of a wrong version being used.
 
 ## Setup
 
