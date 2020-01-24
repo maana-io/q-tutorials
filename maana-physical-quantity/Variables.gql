@@ -1,0 +1,1721 @@
+{
+  "IMPERIAL":{
+      "name": "Imperial",
+      "description": "Imperial (American) Unit System",
+      "units": [
+        {
+          "name": "ft",
+          "aliases": [
+            "ft",
+            "foot",
+            "feet",
+            "'"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "ft",
+                "aliases": [
+                  "ft",
+                  "foot",
+                  "feet",
+                  "'"
+                ],
+                "dimension": {
+                  "name": "LENGTH",
+                  "aliases": [
+                    "LENGTH"
+                  ],
+                  "formula": "L¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.3048,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "in",
+          "aliases": [
+            "in",
+            "inch",
+            "inches",
+            "\""
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "in",
+                "aliases": [
+                  "in",
+                  "inch",
+                  "inches",
+                  "\""
+                ],
+                "dimension": {
+                  "name": "LENGTH",
+                  "aliases": [
+                    "LENGTH"
+                  ],
+                  "formula": "L¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.0254,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "mi",
+          "aliases": [
+            "mi",
+            "mile",
+            "miles"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "mi",
+                "aliases": [
+                  "mi",
+                  "mile",
+                  "miles"
+                ],
+                "dimension": {
+                  "name": "LENGTH",
+                  "aliases": [
+                    "LENGTH"
+                  ],
+                  "formula": "L¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 1609.344,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "yd",
+          "aliases": [
+            "yd",
+            "yds",
+            "yard",
+            "yards"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "yd",
+                "aliases": [
+                  "yd",
+                  "yds",
+                  "yard",
+                  "yards"
+                ],
+                "dimension": {
+                  "name": "LENGTH",
+                  "aliases": [
+                    "LENGTH"
+                  ],
+                  "formula": "L¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.9144,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "bbl",
+          "aliases": [
+            "bbl",
+            "BBL",
+            "bbls",
+            "BBLS",
+            "barrel",
+            "barrels"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "bbl",
+                "aliases": [
+                  "bbl",
+                  "BBL",
+                  "bbls",
+                  "BBLS",
+                  "barrel",
+                  "barrels"
+                ],
+                "dimension": {
+                  "name": "VOLUME",
+                  "aliases": [
+                    "VOLUME"
+                  ],
+                  "formula": "L³"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.159,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "oz",
+          "aliases": [
+            "oz",
+            "ounce",
+            "ounces"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "oz",
+                "aliases": [
+                  "oz",
+                  "ounce",
+                  "ounces"
+                ],
+                "dimension": {
+                  "name": "MASS",
+                  "aliases": [
+                    "MASS"
+                  ],
+                  "formula": "M¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.0000296,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "lb",
+          "aliases": [
+            "#",
+            "lb",
+            "lbs",
+            "pound",
+            "pounds"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "lb",
+                "aliases": [
+                  "#",
+                  "lb",
+                  "lbs",
+                  "pound",
+                  "pounds"
+                ],
+                "dimension": {
+                  "name": "FORCE",
+                  "aliases": [
+                    "FORCE",
+                    "WEIGHT"
+                  ],
+                  "formula": "L¹M¹T⁻²"
+                },
+                "siUnitConversion": {
+                  "multiplier": 4.44822,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "T",
+          "aliases": [
+            "T",
+            "Tesla",
+            "Teslas"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "T",
+                "aliases": [
+                  "T",
+                  "Tesla",
+                  "Teslas"
+                ],
+                "dimension": {
+                  "name": "MAGNETIC_FLUX_DENSITY",
+                  "aliases": [
+                    "MAGNETIC_FLUX_DENSITY"
+                  ],
+                  "formula": "M¹T⁻²J⁻¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 1,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "s",
+          "aliases": [
+            "s",
+            "sec",
+            "secs",
+            "second",
+            "seconds"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "s",
+                "aliases": [
+                  "s",
+                  "sec",
+                  "secs",
+                  "second",
+                  "seconds"
+                ],
+                "dimension": {
+                  "name": "TIME",
+                  "aliases": [
+                    "TIME"
+                  ],
+                  "formula": "T¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 1,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "min",
+          "aliases": [
+            "min",
+            "mins",
+            "minute",
+            "minutes"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "min",
+                "aliases": [
+                  "min",
+                  "mins",
+                  "minute",
+                  "minutes"
+                ],
+                "dimension": {
+                  "name": "TIME",
+                  "aliases": [
+                    "TIME"
+                  ],
+                  "formula": "T¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 60,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "hr",
+          "aliases": [
+            "h",
+            "hr",
+            "hrs",
+            "hours",
+            "hour"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "hr",
+                "aliases": [
+                  "h",
+                  "hr",
+                  "hrs",
+                  "hours",
+                  "hour"
+                ],
+                "dimension": {
+                  "name": "TIME",
+                  "aliases": [
+                    "TIME"
+                  ],
+                  "formula": "T¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 3600,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "day",
+          "aliases": [
+            "day",
+            "days"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "day",
+                "aliases": [
+                  "day",
+                  "days"
+                ],
+                "dimension": {
+                  "name": "TIME",
+                  "aliases": [
+                    "TIME"
+                  ],
+                  "formula": "T¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 86400,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "wk",
+          "aliases": [
+            "wk",
+            "wks",
+            "week",
+            "weeks"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "wk",
+                "aliases": [
+                  "wk",
+                  "wks",
+                  "week",
+                  "weeks"
+                ],
+                "dimension": {
+                  "name": "TIME",
+                  "aliases": [
+                    "TIME"
+                  ],
+                  "formula": "T¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 604800,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "mo",
+          "aliases": [
+            "mo",
+            "month",
+            "months"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "mo",
+                "aliases": [
+                  "mo",
+                  "month",
+                  "months"
+                ],
+                "dimension": {
+                  "name": "TIME",
+                  "aliases": [
+                    "TIME"
+                  ],
+                  "formula": "T¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 2592000,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "yr",
+          "aliases": [
+            "yr",
+            "yrs",
+            "year",
+            "years"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "yr",
+                "aliases": [
+                  "yr",
+                  "yrs",
+                  "year",
+                  "years"
+                ],
+                "dimension": {
+                  "name": "TIME",
+                  "aliases": [
+                    "TIME"
+                  ],
+                  "formula": "T¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 35140000,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "ea",
+          "aliases": [
+            "ea",
+            "each",
+            "eaches"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "ea",
+                "aliases": [
+                  "ea",
+                  "each",
+                  "eaches"
+                ],
+                "dimension": {
+                  "name": "AMOUNT",
+                  "aliases": [
+                    "AMOUNT"
+                  ],
+                  "formula": "N¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 1,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "gal",
+          "aliases": [
+            "gallon",
+            "gallons",
+            "gal"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "gal",
+                "aliases": [
+                  "gallon",
+                  "gallons",
+                  "gal"
+                ],
+                "dimension": {
+                  "name": "VOLUME",
+                  "aliases": [
+                    "VOLUME"
+                  ],
+                  "formula": "L³"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.00378541,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "pint",
+          "aliases": [
+            "pint",
+            "pints"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "pint",
+                "aliases": [
+                  "pint",
+                  "pints"
+                ],
+                "dimension": {
+                  "name": "VOLUME",
+                  "aliases": [
+                    "VOLUME"
+                  ],
+                  "formula": "L³"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.00056826125,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "dram",
+          "aliases": [
+            "dram",
+            "drams"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "dram",
+                "aliases": [
+                  "dram",
+                  "drams"
+                ],
+                "dimension": {
+                  "name": "VOLUME",
+                  "aliases": [
+                    "VOLUME"
+                  ],
+                  "formula": "L³"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.000003696691195,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "acre",
+          "aliases": [
+            "acre",
+            "acres"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "acre",
+                "aliases": [
+                  "acre",
+                  "acres"
+                ],
+                "dimension": {
+                  "name": "AREA",
+                  "aliases": [
+                    "AREA",
+                    "PERMEABILITY"
+                  ],
+                  "formula": "L²"
+                },
+                "siUnitConversion": {
+                  "multiplier": 4047,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "ft²",
+          "aliases": [
+            "sqft"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "ft",
+                "aliases": [
+                  "ft",
+                  "foot",
+                  "feet",
+                  "'"
+                ],
+                "dimension": {
+                  "name": "LENGTH",
+                  "aliases": [
+                    "LENGTH"
+                  ],
+                  "formula": "L¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.3048,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 2
+            }
+          ]
+        },
+        {
+          "name": "in²",
+          "aliases": [
+            "sqin",
+            "sqinch"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "in",
+                "aliases": [
+                  "in",
+                  "inch",
+                  "inches",
+                  "\""
+                ],
+                "dimension": {
+                  "name": "LENGTH",
+                  "aliases": [
+                    "LENGTH"
+                  ],
+                  "formula": "L¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.0254,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 2
+            }
+          ]
+        },
+        {
+          "name": "mi²",
+          "aliases": [
+            "sqmi"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "mi",
+                "aliases": [
+                  "mi",
+                  "mile",
+                  "miles"
+                ],
+                "dimension": {
+                  "name": "LENGTH",
+                  "aliases": [
+                    "LENGTH"
+                  ],
+                  "formula": "L¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 1609.344,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 2
+            }
+          ]
+        },
+        {
+          "name": "lb/in²",
+          "aliases": [
+            "psi",
+            "PSI"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "in",
+                "aliases": [
+                  "in",
+                  "inch",
+                  "inches",
+                  "\""
+                ],
+                "dimension": {
+                  "name": "LENGTH",
+                  "aliases": [
+                    "LENGTH"
+                  ],
+                  "formula": "L¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.0254,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": -2
+            },
+            {
+              "base": {
+                "name": "lb",
+                "aliases": [
+                  "#",
+                  "lb",
+                  "lbs",
+                  "pound",
+                  "pounds"
+                ],
+                "dimension": {
+                  "name": "FORCE",
+                  "aliases": [
+                    "FORCE",
+                    "WEIGHT"
+                  ],
+                  "formula": "L¹M¹T⁻²"
+                },
+                "siUnitConversion": {
+                  "multiplier": 4.44822,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "atm",
+          "aliases": [
+            "atm",
+            "atmosphere",
+            "atmospheres"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "atm",
+                "aliases": [
+                  "atm",
+                  "atmosphere",
+                  "atmospheres"
+                ],
+                "dimension": {
+                  "name": "PRESSURE",
+                  "aliases": [
+                    "PRESSURE",
+                    "STRESS",
+                    "ENERGY_DENSITY"
+                  ],
+                  "formula": "L⁻¹M¹T⁻²"
+                },
+                "siUnitConversion": {
+                  "multiplier": 101325,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "%",
+          "aliases": [
+            "percent",
+            "percentage",
+            "%"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "%",
+                "aliases": [
+                  "percent",
+                  "percentage",
+                  "%"
+                ],
+                "dimension": {
+                  "name": "DIMENSIONLESS",
+                  "aliases": [
+                    "DIMENSIONLESS",
+                    "RATIO",
+                    "ANGLE"
+                  ],
+                  "formula": "1"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.01,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "ppm",
+          "aliases": [
+            "ppm"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "ppm",
+                "aliases": [
+                  "ppm"
+                ],
+                "dimension": {
+                  "name": "DIMENSIONLESS",
+                  "aliases": [
+                    "DIMENSIONLESS",
+                    "RATIO",
+                    "ANGLE"
+                  ],
+                  "formula": "1"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.000001,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "reyn",
+          "aliases": [
+            "reyn"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "reyn",
+                "aliases": [
+                  "reyn"
+                ],
+                "dimension": {
+                  "name": "DYNAMIC_VISCOSITY",
+                  "aliases": [
+                    "DYNAMIC_VISCOSITY"
+                  ],
+                  "formula": "L⁻¹M¹T⁻¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 6890,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "°F",
+          "aliases": [
+            "°F",
+            "ºF",
+            "°Farenheit",
+            "℉"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "°F",
+                "aliases": [
+                  "°F",
+                  "ºF",
+                  "°Farenheit",
+                  "℉"
+                ],
+                "dimension": {
+                  "name": "TEMPERATURE",
+                  "aliases": [
+                    "TEMPERATURE"
+                  ],
+                  "formula": "ϴ¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.5555555555,
+                  "offset": 255.37
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "°R",
+          "aliases": [
+            "°R",
+            "ºR",
+            "°Rankine"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "°R",
+                "aliases": [
+                  "°R",
+                  "ºR",
+                  "°Rankine"
+                ],
+                "dimension": {
+                  "name": "TEMPERATURE",
+                  "aliases": [
+                    "TEMPERATURE"
+                  ],
+                  "formula": "ϴ¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.5555555555,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "gal/hr",
+          "aliases": [
+            "gph"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "gal",
+                "aliases": [
+                  "gallon",
+                  "gallons",
+                  "gal"
+                ],
+                "dimension": {
+                  "name": "VOLUME",
+                  "aliases": [
+                    "VOLUME"
+                  ],
+                  "formula": "L³"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.00378541,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            },
+            {
+              "base": {
+                "name": "hr",
+                "aliases": [
+                  "h",
+                  "hr",
+                  "hrs",
+                  "hours",
+                  "hour"
+                ],
+                "dimension": {
+                  "name": "TIME",
+                  "aliases": [
+                    "TIME"
+                  ],
+                  "formula": "T¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 3600,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": -1
+            }
+          ]
+        },
+        {
+          "name": "ft/s",
+          "aliases": [
+            "fps",
+            "FPS"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "ft",
+                "aliases": [
+                  "ft",
+                  "foot",
+                  "feet",
+                  "'"
+                ],
+                "dimension": {
+                  "name": "LENGTH",
+                  "aliases": [
+                    "LENGTH"
+                  ],
+                  "formula": "L¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.3048,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            },
+            {
+              "base": {
+                "name": "s",
+                "aliases": [
+                  "s",
+                  "sec",
+                  "secs",
+                  "second",
+                  "seconds"
+                ],
+                "dimension": {
+                  "name": "TIME",
+                  "aliases": [
+                    "TIME"
+                  ],
+                  "formula": "T¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 1,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": -1
+            }
+          ]
+        },
+        {
+          "name": "mi/hr",
+          "aliases": [
+            "mph"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "hr",
+                "aliases": [
+                  "h",
+                  "hr",
+                  "hrs",
+                  "hours",
+                  "hour"
+                ],
+                "dimension": {
+                  "name": "TIME",
+                  "aliases": [
+                    "TIME"
+                  ],
+                  "formula": "T¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 3600,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": -1
+            },
+            {
+              "base": {
+                "name": "mi",
+                "aliases": [
+                  "mi",
+                  "mile",
+                  "miles"
+                ],
+                "dimension": {
+                  "name": "LENGTH",
+                  "aliases": [
+                    "LENGTH"
+                  ],
+                  "formula": "L¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 1609.344,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "gal/min",
+          "aliases": [
+            "gpm"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "gal",
+                "aliases": [
+                  "gallon",
+                  "gallons",
+                  "gal"
+                ],
+                "dimension": {
+                  "name": "VOLUME",
+                  "aliases": [
+                    "VOLUME"
+                  ],
+                  "formula": "L³"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.00378541,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            },
+            {
+              "base": {
+                "name": "min",
+                "aliases": [
+                  "min",
+                  "mins",
+                  "minute",
+                  "minutes"
+                ],
+                "dimension": {
+                  "name": "TIME",
+                  "aliases": [
+                    "TIME"
+                  ],
+                  "formula": "T¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 60,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": -1
+            }
+          ]
+        },
+        {
+          "name": "1/min",
+          "aliases": [
+            "rpm"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "min",
+                "aliases": [
+                  "min",
+                  "mins",
+                  "minute",
+                  "minutes"
+                ],
+                "dimension": {
+                  "name": "TIME",
+                  "aliases": [
+                    "TIME"
+                  ],
+                  "formula": "T¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 60,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": -1
+            }
+          ]
+        },
+        {
+          "name": "B",
+          "aliases": [
+            "bel",
+            "B"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "B",
+                "aliases": [
+                  "bel",
+                  "B"
+                ],
+                "dimension": {
+                  "name": "DIMENSIONLESS",
+                  "aliases": [
+                    "DIMENSIONLESS",
+                    "RATIO",
+                    "ANGLE"
+                  ],
+                  "formula": "1"
+                },
+                "siUnitConversion": {
+                  "multiplier": 1,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "lbm",
+          "aliases": [
+            "lbm"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "lbm",
+                "aliases": [
+                  "lbm"
+                ],
+                "dimension": {
+                  "name": "MASS",
+                  "aliases": [
+                    "MASS"
+                  ],
+                  "formula": "M¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.45359237,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "lbm/gal",
+          "aliases": [
+            "ppg",
+            "PPG"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "gal",
+                "aliases": [
+                  "gallon",
+                  "gallons",
+                  "gal"
+                ],
+                "dimension": {
+                  "name": "VOLUME",
+                  "aliases": [
+                    "VOLUME"
+                  ],
+                  "formula": "L³"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.00378541,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": -1
+            },
+            {
+              "base": {
+                "name": "lbm",
+                "aliases": [
+                  "lbm"
+                ],
+                "dimension": {
+                  "name": "MASS",
+                  "aliases": [
+                    "MASS"
+                  ],
+                  "formula": "M¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.45359237,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        },
+        {
+          "name": "ft³",
+          "aliases": [
+            "SCF",
+            "scf"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "ft",
+                "aliases": [
+                  "ft",
+                  "foot",
+                  "feet",
+                  "'"
+                ],
+                "dimension": {
+                  "name": "LENGTH",
+                  "aliases": [
+                    "LENGTH"
+                  ],
+                  "formula": "L¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 0.3048,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 3
+            }
+          ]
+        },
+        {
+          "name": "ton",
+          "aliases": [
+            "ton",
+            "tonne",
+            "tons",
+            "tonnes"
+          ],
+          "factors": [
+            {
+              "base": {
+                "name": "ton",
+                "aliases": [
+                  "ton",
+                  "tonne",
+                  "tons",
+                  "tonnes"
+                ],
+                "dimension": {
+                  "name": "MASS",
+                  "aliases": [
+                    "MASS"
+                  ],
+                  "formula": "M¹"
+                },
+                "siUnitConversion": {
+                  "multiplier": 907.185,
+                  "offset": 0
+                }
+              },
+              "prefix": null,
+              "exponent": 1
+            }
+          ]
+        }
+      ],
+      "prefixes": []
+  },
+  "LENGTH":{
+      "name": "LENGTH",
+      "aliases": [
+        "LENGTH"
+      ],
+      "formula": "L¹"
+  },
+  "PSI":{
+      "name": "lb/in²",
+      "aliases": [
+        "psi",
+        "PSI"
+      ],
+      "factors": [
+        {
+          "base": {
+            "name": "in",
+            "aliases": [
+              "in",
+              "inch",
+              "inches",
+              "\""
+            ],
+            "dimension": {
+              "name": "LENGTH",
+              "aliases": [
+                "LENGTH"
+              ],
+              "formula": "L¹"
+            },
+            "siUnitConversion": {
+              "multiplier": 0.0254,
+              "offset": 0
+            }
+          },
+          "prefix": null,
+          "exponent": -2
+        },
+        {
+          "base": {
+            "name": "lb",
+            "aliases": [
+              "#",
+              "lb",
+              "lbs",
+              "pound",
+              "pounds"
+            ],
+            "dimension": {
+              "name": "FORCE",
+              "aliases": [
+                "FORCE",
+                "WEIGHT"
+              ],
+              "formula": "L¹M¹T⁻²"
+            },
+            "siUnitConversion": {
+              "multiplier": 4.44822,
+              "offset": 0
+            }
+          },
+          "prefix": null,
+          "exponent": 1
+        }
+      ]
+  },
+  "X1": {
+      "magnitude": 12,
+      "unitOfMeasure": {
+        "name": "in",
+        "aliases": [],
+        "factors": [
+          {
+            "base": {
+              "name": "in",
+              "aliases": [],
+              "dimension": {
+                "name": "LENGTH",
+                "aliases": [
+                  "LENGTH"
+                ],
+                "formula": "L¹"
+              },
+              "siUnitConversion": {
+                "multiplier": 0.0254,
+                "offset": 0
+              }
+            },
+            "prefix": null,
+            "exponent": 1
+          }
+        ]
+      }
+    },
+    "X2": {
+      "magnitude": 1,
+      "unitOfMeasure": {
+        "name": "ft",
+        "aliases": [],
+        "factors": [
+          {
+            "base": {
+              "name": "ft",
+              "aliases": [],
+              "dimension": {
+                "name": "LENGTH",
+                "aliases": [
+                  "LENGTH"
+                ],
+                "formula": "L¹"
+              },
+              "siUnitConversion": {
+                "multiplier": 0.3048,
+                "offset": 0
+              }
+            },
+            "prefix": null,
+            "exponent": 1
+          }
+        ]
+      }
+    },
+    "X3": {
+      "magnitude": 0.3333333333333333,
+      "unitOfMeasure": {
+        "name": "yd",
+        "aliases": [],
+        "factors": [
+          {
+            "base": {
+              "name": "yd",
+              "aliases": [],
+              "dimension": {
+                "name": "LENGTH",
+                "aliases": [
+                  "LENGTH"
+                ],
+                "formula": "L¹"
+              },
+              "siUnitConversion": {
+                "multiplier": 0.9144,
+                "offset": 0
+              }
+            },
+            "prefix": null,
+            "exponent": 1
+          }
+        ]
+      }
+    },
+    "Y1": {
+      "magnitude": 12,
+      "unitOfMeasure": {
+        "name": "in",
+        "aliases": [],
+        "factors": [
+          {
+            "base": {
+              "name": "in",
+              "aliases": [],
+              "dimension": {
+                "name": "LENGTH",
+                "aliases": [
+                  "LENGTH"
+                ],
+                "formula": "L¹"
+              },
+              "siUnitConversion": {
+                "multiplier": 0.0254,
+                "offset": 0
+              }
+            },
+            "prefix": null,
+            "exponent": 1
+          }
+        ]
+      }
+    },
+    "Y2": {
+      "magnitude": 1,
+      "unitOfMeasure": {
+        "name": "ft",
+        "aliases": [],
+        "factors": [
+          {
+            "base": {
+              "name": "ft",
+              "aliases": [],
+              "dimension": {
+                "name": "LENGTH",
+                "aliases": [
+                  "LENGTH"
+                ],
+                "formula": "L¹"
+              },
+              "siUnitConversion": {
+                "multiplier": 0.3048,
+                "offset": 0
+              }
+            },
+            "prefix": null,
+            "exponent": 1
+          }
+        ]
+      }
+    },
+    "Y3": {
+      "magnitude": 0.3333333333333333,
+      "unitOfMeasure": {
+        "name": "acre",
+        "aliases": [],
+        "factors": [
+          {
+            "base": {
+              "name": "acre",
+              "aliases": [],
+              "dimension": {
+                "name": "AREA",
+                "aliases": [
+                  "AREA",
+                  "PERMEABILITY"
+                ],
+                "formula": "L²"
+              },
+              "siUnitConversion": {
+                "multiplier": 4047,
+                "offset": 0
+              }
+            },
+            "prefix": null,
+            "exponent": 1
+          }
+        ]
+      }
+    }
+}
